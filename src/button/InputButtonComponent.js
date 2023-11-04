@@ -19,7 +19,7 @@ const InputButtonComponent = ({ onDeleteClick, onValueChange }) => {
         placeholder="人物名を入力"
         value={inputValue}
         onChange={handleInputChange}
-        className="my-4 py-4 px-4 w-[60%] rounded-md border-solid border-black boreder-2 outline"
+        className="mt-4 py-4 px-4 w-[60%] rounded-md border-solid border-black boreder-2 outline"
       />
       <button
         onClick={handleDeleteClick}
