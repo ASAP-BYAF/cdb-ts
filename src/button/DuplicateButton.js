@@ -42,12 +42,22 @@ const ParentComponent = ({ onChangeAllValue }) => {
           />
         ))}
       </div>
-      <button onClick={handleAddComponent}>AND 検索する人物を増やす</button>
+      <button
+        onClick={handleAddComponent}
+        className="mb-2 py-2 px-4 rounded-md outline outline-emerald-500
+            hover:bg-emerald-100"
+      >
+        AND 検索する人物を増やす
+      </button>
+      <button
+        onClick={handleGetAllValues}
+        className="mx-4 px-2 rounded-md outline outline-emerald-500 bg-emerald-500
+            font-bold hover:bg-white"
+      >
+        検索
+      </button>
       <div>
-        <button onClick={handleGetAllValues}>検索</button>
-      </div>
-      <div>
-        <h3>以下の人物で AND 検索しました</h3>
+        <span>以下の人物で AND 検索しました</span>
         <p>
           <pre>
             {allInputValues.length === 0 || allInputValues.includes(undefined)
