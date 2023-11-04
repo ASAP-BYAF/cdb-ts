@@ -30,16 +30,18 @@ const ParentComponent = ({ onChangeAllValue }) => {
 
   return (
     <div>
-      {inputComponents.map((component) => (
-        <InputButtonComponent
-          key={component.id}
-          onDeleteClick={() => handleDeleteComponent(component.id)}
-          onValueChange={(value) => {
-            // Update the input value for the component
-            component.inputValue = value;
-          }}
-        />
-      ))}
+      <div className="flex justify-center flex-wrap">
+        {inputComponents.map((component) => (
+          <InputButtonComponent
+            key={component.id}
+            onDeleteClick={() => handleDeleteComponent(component.id)}
+            onValueChange={(value) => {
+              // Update the input value for the component
+              component.inputValue = value;
+            }}
+          />
+        ))}
+      </div>
       <button onClick={handleAddComponent}>AND 検索する人物を増やす</button>
       <div>
         <button onClick={handleGetAllValues}>検索</button>

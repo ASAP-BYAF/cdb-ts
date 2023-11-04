@@ -29,7 +29,7 @@ import {
 } from "./api/appearing.js";
 import { addFile, getFileById, updateFile } from "./api/file.js";
 import Button from "./button/Button.js";
-import Header from "./Header.js";
+import Header from "./Header.tsx";
 
 const RefineRadio = () => {
   const [questions, setQuestions] = useState([]);
