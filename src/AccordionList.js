@@ -15,9 +15,13 @@ const AccordionList = ({
 
   return (
     <li key={index} className={className}>
-      {label}
-      <span className="accordion-header" onClick={() => toggleAccordion()}>
-        {open ? "▲" : "▼"}
+      <span
+        className="py-2 w-[100%] flex justify-between
+            hover:underline"
+        onClick={() => toggleAccordion()}
+      >
+        <span className="pl-2 inline-block">{label}</span>
+        <span className="pr-8 inline-block text-xl">{open ? "▲" : "▼"}</span>
       </span>
       {open && <React.Fragment>{children}</React.Fragment>}
     </li>

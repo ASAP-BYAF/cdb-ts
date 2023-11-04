@@ -7,7 +7,7 @@ const makeGroupedList = (data) => {
       <AccordionList
         index={volNum}
         label={`${volNum} 巻`}
-        className="bg-emerald-500 mx-auto w-[50%] text-left"
+        className="border-solid border-t-2 border-emerald-500 mx-auto w-[50%] text-left bg-emerald-500"
         initOpen={i_vol === 0 ? true : false}
       >
         <ul key={volNum}>
@@ -15,13 +15,15 @@ const makeGroupedList = (data) => {
             <AccordionList
               index={`${volNum}-${fileNum}`}
               label={`${fileNum}話: ${items[0]["file_name"]}`}
-              className="bg-emerald-300"
+              className="border-solid border-t-2 border-emerald-500 bg-white"
               initOpen={i_file === 0 ? true : false}
             >
               <ul key={fileNum}>
                 {items.map((item, index) => (
-                  <li key={index} className="bg-emerald-100">
-                    {item.task_title} ({item.appearing_detail_name})
+                  <li key={index} className="bg-emerald-100 ">
+                    <ul className="p-2 inline-block">
+                      {item.task_title} ({item.appearing_detail_name})
+                    </ul>
                   </li>
                 ))}
               </ul>
