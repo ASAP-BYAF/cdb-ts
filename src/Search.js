@@ -36,7 +36,7 @@ const Search = () => {
     <div>
       <Header />
       <ParentComponent onChangeAllValue={setFilterList} />
-      <ul>{memoAppearingList}</ul>
+      <ul className="mx-auto w-[50%] text-left">{memoAppearingList}</ul>
     </div>
   );
 };
