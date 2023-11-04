@@ -22,9 +22,12 @@ const ParentComponent = ({ onChangeAllValue }) => {
     inputComponents.forEach((component) => {
       allValues.push(component.inputValue);
     });
-    setAllInputValues(allValues);
-    if (allValues.length > 0 && !allValues.includes(undefined)) {
-      onChangeAllValue(allValues);
+    const filteredArray = allValues.filter(
+      (item) => item !== undefined && item.trim() !== ""
+    );
+    setAllInputValues(filteredArray);
+    if (filteredArray.length > 0 && !filteredArray.includes(undefined)) {
+      onChangeAllValue(filteredArray);
     }
   };
 
