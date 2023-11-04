@@ -59,13 +59,15 @@ const ParentComponent = ({ onChangeAllValue }) => {
       </button>
       <div>
         <span>以下の人物で AND 検索しました</span>
-        <p>
-          <pre>
-            {allInputValues.length === 0 || allInputValues.includes(undefined)
-              ? "絞り込みなし"
-              : allInputValues.join(" / ")}
-          </pre>
-        </p>
+        <div className="py-4">
+          {allInputValues.length === 0 || allInputValues.includes(undefined)
+            ? "絞り込みなし"
+            : allInputValues.map((component) => (
+                <span className="bg-emerald-100 rounded-3xl my-4 mx-2 p-2 opacity-70">
+                  {component}
+                </span>
+              ))}
+        </div>
       </div>
     </div>
   );
