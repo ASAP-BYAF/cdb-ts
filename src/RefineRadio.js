@@ -30,6 +30,7 @@ import {
 import { addFile, getFileById, updateFile } from "./api/file.js";
 import Button from "./button/Button.js";
 import Header from "./Header.tsx";
+import Footer from "./Footer.tsx";
 
 const RefineRadio = () => {
   const [questions, setQuestions] = useState([]);
@@ -411,71 +412,73 @@ const RefineRadio = () => {
   return (
     <div>
       <Header />
+      <main className="min-h-[80vh]">
+        {/* 事件の巻数、話数、名前を登録 */}
+        <div>
+          <NumberDropdown
+            n_st={1}
+            n_ed={103}
+            label="巻"
+            handleChange={handleVolNumChange}
+          />
+          <NumberDropdown
+            n_st={1}
+            n_ed={11}
+            label="話"
+            handleChange={handleFileNumChange}
+          />
+          <input
+            type="text"
+            value={filename}
+            onChange={(e) => {
+              setFileName(e.target.value);
+            }}
+          />
+          <Button
+            name="confirmButton"
+            handleClick={confirmFileName}
+            icon="confirm"
+          />
+        </div>
 
-      {/* 事件の巻数、話数、名前を登録 */}
-      <div>
-        <NumberDropdown
-          n_st={1}
-          n_ed={103}
-          label="巻"
-          handleChange={handleVolNumChange}
-        />
-        <NumberDropdown
-          n_st={1}
-          n_ed={11}
-          label="話"
-          handleChange={handleFileNumChange}
-        />
+        {/* 人物の登録、登場の登録・変更 */}
+        <div style={{ display: fileExist && optionExist ? "block" : "none" }}>
+          <input
+            type="text"
+            placeholder="人物を絞り込む"
+            onChange={handleInputChange}
+          />
+          <button
+            className="addQuestionButton"
+            type="button"
+            onClick={handleAddTask}
+            style={{ display: visibleAdd ? "inline-block" : "none" }}
+          >
+            add
+          </button>
+          {memoQuestions}
+        </div>
+
+        <hr></hr>
+
+        {/* 登場の仕方の登録 */}
         <input
           type="text"
-          value={filename}
+          placeholder="add options"
           onChange={(e) => {
-            setFileName(e.target.value);
+            setOptionInput(e.target.value);
           }}
         />
-        <Button
-          name="confirmButton"
-          handleClick={confirmFileName}
-          icon="confirm"
-        />
-      </div>
-
-      {/* 人物の登録、登場の登録・変更 */}
-      <div style={{ display: fileExist && optionExist ? "block" : "none" }}>
-        <input
-          type="text"
-          placeholder="人物を絞り込む"
-          onChange={handleInputChange}
-        />
-        <button
-          className="addQuestionButton"
-          type="button"
-          onClick={handleAddTask}
-          style={{ display: visibleAdd ? "inline-block" : "none" }}
-        >
+        <button type="button" onClick={() => handleAddOption(optionInput)}>
           add
         </button>
-        {memoQuestions}
-      </div>
+        <div>{optionList}</div>
 
-      <hr></hr>
-
-      {/* 登場の仕方の登録 */}
-      <input
-        type="text"
-        placeholder="add options"
-        onChange={(e) => {
-          setOptionInput(e.target.value);
-        }}
-      />
-      <button type="button" onClick={() => handleAddOption(optionInput)}>
-        add
-      </button>
-      <div>{optionList}</div>
-
-      {/* 削除・変更時のモーダル */}
-      {modalConfig && <MyDialog {...modalConfig} />}
-      {modalConfigRename && <MyDialogRename {...modalConfigRename} />}
+        {/* 削除・変更時のモーダル */}
+        {modalConfig && <MyDialog {...modalConfig} />}
+        {modalConfigRename && <MyDialogRename {...modalConfigRename} />}
+      </main>
+      <Footer />
     </div>
   );
 };
