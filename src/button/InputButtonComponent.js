@@ -23,18 +23,19 @@ const InputButtonComponent = ({ onDeleteClick, onValueChange }) => {
       />
       <button
         onClick={handleDeleteClick}
-        className="px-2 bg-emerald-500 rounded-[50%] border-solid border-black boreder-2 outline font-bold
+        className="inline-block px-2 bg-emerald-500 rounded-[50%] border-solid border-black boreder-2 outline font-bold
             hover:bg-emerald-100 relative group"
       >
         ×
-        {/* <p
-          className="absolute -left-8 rounded text-[12px] 
-            font-bold text-white px-10 bg-slate-600
+        <div
+          className="absolute -left-4
+            rounded text-[12px] w-[250%]
+            font-bold text-white bg-slate-600
             opacity-50 invisible
             group-hover:visible"
         >
-          設定
-        </p> */}
+          人物を削除
+        </div>
       </button>
     </div>
   );
