@@ -3,7 +3,7 @@ import React from "react";
 type WiseWordProps = {
   word: string;
   person: string;
-  reference: string;
+  reference?: string;
 };
 
 const WiseWord: React.FC<WiseWordProps> = (props: WiseWordProps) => {
