@@ -65,11 +65,13 @@ const ParentComponent = ({ onChangeAllValue }) => {
               絞り込みなし
             </span>
           ) : (
-            allInputValues.map((component) => (
-              <span className="bg-emerald-100 rounded-3xl my-4 mx-2 p-2 opacity-70">
-                {component}
-              </span>
-            ))
+            <div className="overflow-x-auto whitespace-nowrap">
+              {allInputValues.map((component) => (
+                <span className="inline-block bg-emerald-100 rounded-3xl my-4 mx-2 p-2 opacity-70">
+                  {component}
+                </span>
+              ))}
+            </div>
           )}
         </div>
       </div>
