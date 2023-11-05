@@ -7,7 +7,7 @@ const BaseFrame = (props: { children: React.ReactElement }) => {
   return (
     <div>
       <Header />
-      <main className="min-h-[80vh]">{children}</main>
+      <main className="min-h-[80vh] pb-10 bg-slate-100">{children}</main>
       <Footer />
     </div>
   );
