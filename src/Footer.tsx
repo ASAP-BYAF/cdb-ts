@@ -1,15 +1,24 @@
-import { Link } from "react-router-dom";
 import React from "react";
+import LinkButton from "./LinkButton";
 
 const Footer: React.FC = () => {
   return (
-    <div className="bg-emerald-100 py-4 text-xl flex px-4">
-      <Link
-        className="bg-emerald-500 px-4 py-2 rounded-md font-bold"
-        to="https://github.com/ASAP-BYAF"
-      >
+    <div className="bg-emerald-100 p-4 text-xl flex gap-x-4 overflow-auto whitespace-nowrap">
+      <LinkButton to="https://github.com/ASAP-BYAF" plusStyle="bg-emerald-500">
         github
-      </Link>
+      </LinkButton>
+      <LinkButton
+        to="https://comp.chem.tohoku.ac.jp/ComplexRI/"
+        plusStyle="bg-emerald-500"
+      >
+        ComplexRI
+      </LinkButton>
+      <LinkButton
+        to="https://snippet.hopto.org/snippet/snippet/"
+        plusStyle="bg-emerald-500"
+      >
+        SnippetApp
+      </LinkButton>
     </div>
   );
 };
