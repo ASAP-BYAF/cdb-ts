@@ -10,7 +10,11 @@ type LinkButtonProps = {
 const LinkButton: React.FC<LinkButtonProps> = (props: LinkButtonProps) => {
   const { to, children, plusStyle = "???" } = props;
   return (
-    <Link className={`px-4 py-2 rounded-md font-bold ${plusStyle}`} to={to}>
+    <Link
+      className={`px-4 py-2 rounded-md font-bold ${plusStyle}`}
+      to={to}
+      target="_blank"
+    >
       {children}
     </Link>
   );
