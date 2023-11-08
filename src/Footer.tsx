@@ -13,6 +13,12 @@ const Footer: React.FC = () => {
       >
         ComplexRI
       </LinkButton>
+      <LinkButton
+        to="https://snippet.hopto.org/snippet/snippet/"
+        plusStyle="bg-emerald-500"
+      >
+        SnippetApp
+      </LinkButton>
     </div>
   );
 };
