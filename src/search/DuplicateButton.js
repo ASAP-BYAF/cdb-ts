@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import InputButtonComponent from "./InputButtonComponent";
+import InputButtonComponent from "search/InputButtonComponent";
+import SearchExec from "search/SearchExec";
+import CharaAddButton from "./CharaAddButton";
+import SearchCondiList from "./SearchCondiList";
 
 const ParentComponent = ({ onChangeAllValue }) => {
   const [inputComponents, setInputComponents] = useState([{ id: 1 }]);
@@ -43,38 +46,9 @@ const ParentComponent = ({ onChangeAllValue }) => {
           />
         ))}
       </div>
-      <button
-        onClick={handleAddComponent}
-        className="mt-4 mb-2 py-2 px-4 rounded-md outline outline-emerald-500
-            hover:bg-emerald-100"
-      >
-        AND 検索する人物を増やす
-      </button>
-      <button
-        onClick={handleGetAllValues}
-        className="mx-4 px-2 rounded-md outline outline-emerald-500 bg-emerald-500
-            font-bold hover:bg-white"
-      >
-        検索
-      </button>
-      <div>
-        <span>以下の人物で AND 検索しました</span>
-        <div className="py-4">
-          {allInputValues.length === 0 || allInputValues.includes(undefined) ? (
-            <span className="bg-emerald-100 rounded-3xl my-4 mx-2 p-2 opacity-70">
-              絞り込みなし
-            </span>
-          ) : (
-            <div className="overflow-x-auto whitespace-nowrap">
-              {allInputValues.map((component) => (
-                <span className="inline-block bg-emerald-100 rounded-3xl my-4 mx-2 p-2 opacity-70">
-                  {component}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
+      <CharaAddButton onclick={handleAddComponent} />
+      <SearchExec onclick={handleGetAllValues} />
+      <SearchCondiList charaList={allInputValues} />
     </div>
   );
 };
