@@ -4,7 +4,6 @@ import makeGroupedList from "search/GroupedList";
 import ParentComponent from "search/DuplicateButton";
 import BaseFrame from "BaseFrame";
 import { useGlobalSpinnerActionsContext } from "spinner/GlobalSpinnerContext";
-import GlobalSpinner from "spinner/GlobalSpinner";
 
 const SearchBase = () => {
   const [appearingList, setAppearingList] = useState<
@@ -50,7 +49,6 @@ const SearchBase = () => {
   return (
     <BaseFrame>
       <div>
-        <GlobalSpinner />
         <ParentComponent onChangeAllValue={setFilterList} />
         <ul className="mx-auto md:w-[50%] text-left">{appearingList}</ul>
       </div>

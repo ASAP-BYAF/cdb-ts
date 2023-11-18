@@ -8,14 +8,14 @@ type SpinnerProps = {
  */
 const Spinner = (props: SpinnerProps) => {
   return (
-    <div className="bg-slate-100 opacity-90 z-10 fixed w-[100%] h-[100%]">
+    <div className="bg-slate-100 opacity-90 z-10 fixed w-[100%] h-[100%] flex flex-col justify-center">
       {/* Ref: https://coliss.com/articles/build-websites/operation/work/svg-spinners-by-n3r4zzurr0.html */}
       <svg
-        width="100"
-        height="100"
+        width="300"
+        height="300"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
-        className="mx-auto mt-10"
+        className="mx-auto"
       >
         <g>
           <circle cx="12" cy="2.5" r="1.5" opacity=".14" />
