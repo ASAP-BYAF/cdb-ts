@@ -1,7 +1,7 @@
 import "./App.css";
 import "./output.css";
 import RefineRadio from "./RefineRadio";
-import Search from "./Search";
+import Search from "search/Search";
 import Home from "./Home";
 import { Routes, Route } from "react-router-dom";
 
