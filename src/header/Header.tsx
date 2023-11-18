@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Header: React.FC = () => {
   return (
-    <div>
+    <div className="sticky top-0 bg-slate-100 z-10">
       <div className="p-10 md:flex">
         <div className="md:flex-1 flex">
           <div className="w-9">
