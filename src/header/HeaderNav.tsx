@@ -1,9 +1,9 @@
 import React from "react";
 import LinkButton from "LinkButton";
 
-const HeaderLink: React.FC = () => {
+const HeaderNav: React.FC = () => {
   return (
-    <div className="bg-emerald-500 text-xl flex">
+    <div className="bg-emerald-500 text-xl flex sticky top-0">
       <LinkButton
         to="/"
         plusStyle="hover:bg-emerald-100 flex-1 outline outline-1"
@@ -26,4 +26,4 @@ const HeaderLink: React.FC = () => {
   );
 };
 
-export default HeaderLink;
+export default HeaderNav;

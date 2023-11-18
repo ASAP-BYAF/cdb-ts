@@ -1,12 +1,16 @@
-import Header from "./header/Header";
+import HeaderTitle from "./header/HeaderTitle";
+import HeaderNav from "header/HeaderNav";
 import Footer from "./Footer";
 import React from "react";
+import GlobalSpinner from "spinner/GlobalSpinner";
 
 const BaseFrame = (props: { children: React.ReactElement }) => {
   const { children } = props;
   return (
     <div>
-      <Header />
+      <GlobalSpinner />
+      <HeaderTitle />
+      <HeaderNav />
       <main className="min-h-[80vh] pb-10 bg-slate-100">{children}</main>
       <Footer />
     </div>
