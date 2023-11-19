@@ -30,6 +30,7 @@ import {
 import { addFile, getFileById, updateFile } from "./api/file.js";
 import Button from "./button/Button.js";
 import BaseFrame from "./BaseFrame.tsx";
+import { useNavigate } from "react-router-dom";
 
 const RefineRadio = () => {
   const [questions, setQuestions] = useState([]);
@@ -51,6 +52,18 @@ const RefineRadio = () => {
   const [file, setFile] = useState(1);
   const [filename, setFileName] = useState("");
   const [fileId, setFileId] = useState();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (true) {
+      const currentPath = window.location.pathname;
+
+      navigate("/", {
+        state: { redirect_to: currentPath },
+      });
+    }
+  }, [navigate]);
 
   // DB から質問のリストを取得。
   // 空の依存リストを渡すことで、コンポーネントがマウントされたときにのみ実行される
