@@ -30,6 +30,7 @@ import {
 import { addFile, getFileById, updateFile } from "./api/file.js";
 import Button from "./button/Button.js";
 import BaseFrame from "./BaseFrame.tsx";
+import useAuthGuard from "auth/authGuard";
 
 const RefineRadio = () => {
   const [questions, setQuestions] = useState([]);
@@ -52,8 +53,9 @@ const RefineRadio = () => {
   const [filename, setFileName] = useState("");
   const [fileId, setFileId] = useState();
 
-  // DB から質問のリストを取得。
-  // 空の依存リストを渡すことで、コンポーネントがマウントされたときにのみ実行される
+  // 認証ガード
+  useAuthGuard("/signin");
+
   useEffect(() => {
     // console.log("useeffect");
     const fetchData = async () => {
