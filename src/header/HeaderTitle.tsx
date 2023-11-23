@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ToSigninButton from "./ToSigninButton";
+import ToSignoutButton from "./ToSignoutButton";
 
 const HeaderTitle: React.FC = () => {
   return (
@@ -23,6 +24,7 @@ const HeaderTitle: React.FC = () => {
         </div>
         <div className="flex justify-center md:flex-1 md:justify-end">
           <ToSigninButton />
+          <ToSignoutButton />
         </div>
       </div>
     </div>
