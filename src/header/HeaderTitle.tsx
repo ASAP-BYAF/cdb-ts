@@ -1,9 +1,30 @@
+import { useState } from "react";
 import React from "react";
 import { Link } from "react-router-dom";
-import ToSigninButton from "./ToSigninButton";
-import ToSignoutButton from "./ToSignoutButton";
+// import ToSigninButton from "./ToSigninButton";
+// import ToSignoutButton from "./ToSignoutButton";
+import ToggleStatusButton from "./ToggleStatusButton";
+import { confirm } from "api/auth";
 
 const HeaderTitle: React.FC = () => {
+  const [signinFlag, setSigninFlag]: [
+    string,
+    React.Dispatch<React.SetStateAction<string>>
+  ] = useState("");
+
+  const confirmSignin = async () => {
+    const res = await confirm();
+
+    // サインインが確認できなかった時はサインイン画面にリダイレクト
+    if (res === 401) {
+      setSigninFlag("out");
+    } else {
+      setSigninFlag("in");
+    }
+  };
+
+  confirmSignin();
+
   return (
     <div className="bg-slate-100">
       <div className="p-10 md:flex">
@@ -23,8 +44,15 @@ const HeaderTitle: React.FC = () => {
           </div>
         </div>
         <div className="flex justify-center md:flex-1 md:justify-end">
-          <ToSigninButton />
-          <ToSignoutButton />
+          {signinFlag === "" ? (
+            <ToggleStatusButton link="/" label="Now Loading..." />
+          ) : undefined}
+          {signinFlag === "in" ? (
+            <ToggleStatusButton link="/signout" label="サインアウト" />
+          ) : undefined}
+          {signinFlag === "out" ? (
+            <ToggleStatusButton link="/signin" label="サインイン" />
+          ) : undefined}
         </div>
       </div>
     </div>
