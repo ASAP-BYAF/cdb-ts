@@ -1,5 +1,5 @@
 import BaseFrame from "BaseFrame";
-import WiseWord from "home/WiseWord";
+import WiseWord from "app/home/WiseWord";
 
 const Home = (): JSX.Element => {
   return (

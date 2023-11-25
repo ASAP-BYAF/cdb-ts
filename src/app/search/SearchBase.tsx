@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getAll, getFilteredByTask } from "api/search";
-import makeGroupedList from "search/GroupedList";
-import ParentComponent from "search/DuplicateButton";
+import makeGroupedList from "app/search/GroupedList";
+import ParentComponent from "app/search/DuplicateButton";
 import BaseFrame from "BaseFrame";
 import { useGlobalSpinnerActionsContext } from "spinner/GlobalSpinnerContext";
 

@@ -1,4 +1,4 @@
-import AccordionList from "search/AccordionList";
+import AccordionList from "app/search/AccordionList";
 
 const makeGroupedList = (data) => {
   // マップしてJSX生成

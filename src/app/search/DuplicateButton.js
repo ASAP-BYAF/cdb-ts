@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import InputButtonComponent from "search/InputButtonComponent";
-import SearchExec from "search/SearchExec";
+import InputButtonComponent from "app/search/InputButtonComponent";
+import SearchExec from "app/search/SearchExec";
 import CharaAddButton from "./CharaAddButton";
 import SearchCondiList from "./SearchCondiList";
 

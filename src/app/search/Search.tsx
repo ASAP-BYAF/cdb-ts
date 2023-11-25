@@ -1,5 +1,5 @@
 import SpinnerProviderWrapper from "spinner/wrapper";
-import SearchBase from "search/SearchBase";
+import SearchBase from "app/search/SearchBase";
 
 const Search = () => {
   return (

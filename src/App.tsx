@@ -1,8 +1,8 @@
 import "css/App.css";
 import "css/output.css";
 import RefineRadio from "RefineRadio";
-import Search from "search/Search";
-import Home from "home/Home";
+import Search from "app/search/Search";
+import Home from "app/home/Home";
 import Signin from "auth/Signin";
 import Signout from "auth/Signout";
 import { Routes, Route } from "react-router-dom";
