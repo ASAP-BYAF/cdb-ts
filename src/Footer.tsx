@@ -1,7 +1,7 @@
 import React from "react";
-import LinkButton from "./LinkButton";
+import LinkButton from "button/LinkButton";
 
-const Footer: React.FC = () => {
+const Footer = (): JSX.Element => {
   return (
     <div className="bg-emerald-100 p-4 text-xl flex gap-x-4 overflow-auto whitespace-nowrap">
       <LinkButton

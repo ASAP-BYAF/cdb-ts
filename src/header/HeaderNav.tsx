@@ -1,7 +1,7 @@
 import React from "react";
-import LinkButton from "LinkButton";
+import LinkButton from "button/LinkButton";
 
-const HeaderNav: React.FC = () => {
+const HeaderNav = (): JSX.Element => {
   return (
     <div className="bg-emerald-500 text-xl flex sticky top-0 z-20">
       <LinkButton
