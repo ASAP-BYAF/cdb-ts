@@ -1,5 +1,5 @@
 import React from "react";
-import LinkButton from "button/LinkButton";
+import LinkButton from "components/button/LinkButton";
 
 const HeaderNav = (): JSX.Element => {
   return (

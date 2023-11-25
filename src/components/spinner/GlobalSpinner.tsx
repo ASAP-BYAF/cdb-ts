@@ -1,5 +1,5 @@
-import Spinner from "spinner/Spinner";
-import { useGlobalSpinnerContext } from "spinner/GlobalSpinnerContext";
+import Spinner from "components/spinner/Spinner";
+import { useGlobalSpinnerContext } from "components/spinner/GlobalSpinnerContext";
 
 /**
  * グローバルスピナー

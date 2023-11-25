@@ -1,7 +1,7 @@
-import Header from "header/Header";
-import Footer from "footer/Footer";
+import Header from "components/header/Header";
+import Footer from "components/footer/Footer";
 import React from "react";
-import GlobalSpinner from "spinner/GlobalSpinner";
+import GlobalSpinner from "components/spinner/GlobalSpinner";
 
 const BaseFrame = (props: { children: React.ReactElement }): JSX.Element => {
   const { children } = props;
