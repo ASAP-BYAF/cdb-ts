@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 
-const AccordionList = ({
-  index,
-  label,
-  children,
-  className = "",
-  initOpen = false,
-}) => {
+type AccordionProps = {
+  index: number;
+  label: string;
+  children: React.ReactNode;
+  className?: string;
+  initOpen?: boolean;
+};
+const AccordionList = (props: AccordionProps): JSX.Element => {
+  const { index, label, children, className = "", initOpen = false } = props;
   const [open, setOpen] = useState(initOpen);
 
   const toggleAccordion = () => {
@@ -23,7 +25,7 @@ const AccordionList = ({
         <span className="pl-2 inline-block">{label}</span>
         <span className="pr-8 inline-block text-xl">{open ? "▲" : "▼"}</span>
       </span>
-      {open && <React.Fragment>{children}</React.Fragment>}
+      {open && <>{children}</>}
     </li>
   );
 };
