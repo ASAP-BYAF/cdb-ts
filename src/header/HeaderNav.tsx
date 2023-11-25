@@ -3,7 +3,7 @@ import LinkButton from "LinkButton";
 
 const HeaderNav: React.FC = () => {
   return (
-    <div className="bg-emerald-500 text-xl flex sticky top-0">
+    <div className="bg-emerald-500 text-xl flex sticky top-0 z-20">
       <LinkButton
         to="/"
         plusStyle="hover:bg-emerald-100 flex-1 outline outline-1"
