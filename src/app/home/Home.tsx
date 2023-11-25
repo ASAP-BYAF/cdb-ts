@@ -1,4 +1,4 @@
-import BaseFrame from "BaseFrame";
+import BaseFrame from "components/BaseFrame";
 import WiseWord from "app/home/WiseWord";
 
 const Home = (): JSX.Element => {
