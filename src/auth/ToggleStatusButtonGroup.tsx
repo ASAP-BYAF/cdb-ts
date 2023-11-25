@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ToggleStatusButton from "./ToggleStatusButton";
+import ToggleStatusButton from "auth/ToggleStatusButton";
 import { confirm } from "api/auth";
 
 const ToggleStatusButtonGroup = (): JSX.Element => {

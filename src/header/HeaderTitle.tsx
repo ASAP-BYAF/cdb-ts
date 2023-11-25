@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import ToggleStatusButtonGroup from "./ToggleStatusButtonGroup";
+import ToggleStatusButtonGroup from "auth/ToggleStatusButtonGroup";
 
 const HeaderTitle: React.FC = () => {
   return (

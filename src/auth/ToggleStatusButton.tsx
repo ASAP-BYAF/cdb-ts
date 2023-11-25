@@ -1,5 +1,5 @@
 import React from "react";
-import LinkButton from "LinkButton";
+import LinkButton from "button/LinkButton";
 
 export type ToggleStatusButtonProps = { link: string; label: string };
 
