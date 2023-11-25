@@ -22,7 +22,6 @@ const ToggleStatusButtonGroup = (): JSX.Element => {
 
   confirmSignin();
 
-  console.log(signinFlag);
   return (
     <>
       {signinFlag === "" ? (
