@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 
-const InputButtonComponent = ({ onDeleteClick, onValueChange }) => {
+type InputButtonProps = {
+  onDeleteClick: () => {};
+  onValueChange: (args: string) => {};
+};
+const InputButton = (props: InputButtonProps) => {
+  const { onDeleteClick, onValueChange } = props;
   const [inputValue, setInputValue] = useState("");
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
     onValueChange(e.target.value);
-  };
-
-  const handleDeleteClick = () => {
-    onDeleteClick();
   };
 
   return (
@@ -22,7 +23,7 @@ const InputButtonComponent = ({ onDeleteClick, onValueChange }) => {
         className="mt-4 py-4 px-4 w-[60%] rounded-md border-solid border-black boreder-2 outline"
       />
       <button
-        onClick={handleDeleteClick}
+        onClick={onDeleteClick}
         className="inline-block px-2 bg-emerald-500 rounded-[50%] border-solid border-black boreder-2 outline font-bold
             hover:bg-emerald-100 relative group"
       >
@@ -41,4 +42,4 @@ const InputButtonComponent = ({ onDeleteClick, onValueChange }) => {
   );
 };
 
-export default InputButtonComponent;
+export default InputButton;

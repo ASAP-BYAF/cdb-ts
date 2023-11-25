@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import InputButtonComponent from "app/search/InputButtonComponent";
+import InputButton from "app/search/InputButton";
 import SearchExec from "app/search/SearchExec";
 import CharaAddButton from "./CharaAddButton";
 import SearchCondiList from "./SearchCondiList";
@@ -36,7 +36,7 @@ const ParentComponent = ({ onChangeAllValue }) => {
     <div>
       <div className="flex justify-center flex-wrap">
         {inputComponents.map((component) => (
-          <InputButtonComponent
+          <InputButton
             key={component.id}
             onDeleteClick={() => handleDeleteComponent(component.id)}
             onValueChange={(value) => {
