@@ -1,4 +1,4 @@
-import { fetcher } from "./fetcher.js";
+import { fetcher } from "./fetcher";
 
 type SigninRetProps = { message: string } | number;
 type SignoutRetProps = { message: string } | number;
@@ -14,7 +14,7 @@ export const signin = async (pass: string): Promise<SigninRetProps> => {
     headers: {
       "Content-type": "application/json; charset=UTF-8",
     },
-    credentials: "include",
+    credentials: "include" as RequestCredentials,
   };
   const res = await fetcher(url, data);
   return res;
@@ -28,7 +28,7 @@ export const confirm = async (): Promise<ConfirmRetProps> => {
     headers: {
       "Content-type": "application/json; charset=UTF-8",
     },
-    credentials: "include",
+    credentials: "include" as RequestCredentials,
   };
   const res = await fetcher(url, data);
   return res;
@@ -42,7 +42,7 @@ export const signout = async (): Promise<SignoutRetProps> => {
     headers: {
       "Content-type": "application/json; charset=UTF-8",
     },
-    credentials: "include",
+    credentials: "include" as RequestCredentials,
   };
   const res = await fetcher(url, data);
   return res;
