@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 type AccordionProps = {
-  index: number;
+  index: string;
   label: string;
   children: React.ReactNode;
   className?: string;
