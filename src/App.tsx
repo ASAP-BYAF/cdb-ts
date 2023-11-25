@@ -7,7 +7,7 @@ import Signin from "auth/Signin";
 import Signout from "auth/Signout";
 import { Routes, Route } from "react-router-dom";
 
-function App() {
+const App = (): JSX.Element => {
   return (
     <div className="App">
       <Routes>
@@ -19,5 +19,5 @@ function App() {
       </Routes>
     </div>
   );
-}
+};
 export default App;
