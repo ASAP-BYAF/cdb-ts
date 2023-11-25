@@ -1,4 +1,4 @@
-export const fetcher = async (resource, data) => {
+export const fetcher = async (resource: string, data: RequestInit) => {
   const res = await fetch(resource, data);
   const resJson = await res.json();
   if (!res.ok) {
