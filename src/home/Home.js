@@ -1,5 +1,5 @@
-import BaseFrame from "./BaseFrame";
-import WiseWord from "./WiseWord";
+import BaseFrame from "BaseFrame";
+import WiseWord from "home/WiseWord";
 
 const Home = () => {
   return (
