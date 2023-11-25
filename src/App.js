@@ -1,6 +1,6 @@
-import "./App.css";
-import "./output.css";
-import RefineRadio from "./RefineRadio";
+import "css/App.css";
+import "css/output.css";
+import RefineRadio from "RefineRadio";
 import Search from "search/Search";
 import Home from "home/Home";
 import Signin from "auth/Signin";

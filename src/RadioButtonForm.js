@@ -3,7 +3,7 @@ import RadioButtonGroup from "./RadioButtonGroup";
 import { deleteItemFromObject } from "./util/delete";
 import { renameKeyInObject } from "./util/rename";
 import { arrayToObject, concatObject } from "./util/add";
-import Button from "./button/Button.js";
+import Button from "./button/Button";
 
 function RadioButtonForm(props) {
   const {

@@ -8,10 +8,10 @@ import {
   getTaskAll,
   getTaskByTitle,
   updateTask,
-} from "./api/task.js";
-import { concatObject } from "./util/add.js";
-import { deleteItemFromArray, deleteItemFromObject } from "./util/delete.js";
-import { renameItemInArray } from "./util/rename.js";
+} from "./api/task";
+import { concatObject } from "./util/add";
+import { deleteItemFromArray, deleteItemFromObject } from "./util/delete";
+import { renameItemInArray } from "./util/rename";
 import NumberDropdown from "./NumberDropdown";
 import { arrayToObject } from "./util/add";
 import {
@@ -19,16 +19,16 @@ import {
   deleteAppearingDetail,
   getAppearingDetailByName,
   updateAppearingDetail,
-} from "./api/appearingDetail.js";
+} from "./api/appearingDetail";
 import {
   addAppearing,
   deleteAppearing,
   getAppearingAll,
   getAppearingWithFileId,
   updateAppearing,
-} from "./api/appearing.js";
-import { addFile, getFileById, updateFile } from "./api/file.js";
-import Button from "./button/Button.js";
+} from "./api/appearing";
+import { addFile, getFileById, updateFile } from "./api/file";
+import Button from "./button/Button";
 import BaseFrame from "./BaseFrame.tsx";
 import useAuthGuard from "auth/authGuard";
 
