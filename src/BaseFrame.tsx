@@ -3,7 +3,7 @@ import Footer from "./Footer";
 import React from "react";
 import GlobalSpinner from "spinner/GlobalSpinner";
 
-const BaseFrame = (props: { children: React.ReactElement }) => {
+const BaseFrame = (props: { children: React.ReactElement }): JSX.Element => {
   const { children } = props;
   return (
     <div>
