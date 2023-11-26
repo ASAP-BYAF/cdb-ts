@@ -1,5 +1,5 @@
 import { useState } from "react";
-import BaseFrame from "BaseFrame";
+import BaseFrame from "components/BaseFrame";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { signin } from "api/auth";

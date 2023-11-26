@@ -25,8 +25,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "twc-dev": "npx tailwindcss -i ./src/input.css -o ./src/output.css --watch",
-    "twc-build": "npx tailwindcss -i ./src/input.css -o ./src/output.css --minify"
+    "twc-dev": "npx tailwindcss -i ./src/css/input.css -o ./src/css/output.css --watch",
+    "twc-build": "npx tailwindcss -i ./src/css/input.css -o ./src/css/output.css --minify"
   },
   "eslintConfig": {
     "extends": [
