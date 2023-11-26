@@ -69,7 +69,7 @@ function RadioButtonForm(props) {
     );
     questions.forEach((elem, idx) => {
       tmpOptionList.push(
-        <div key={elem} className="py-2">
+        <div key={elem} className="py-1">
           <RadioButton
             label={elem}
             options={options}

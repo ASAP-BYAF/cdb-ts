@@ -28,7 +28,7 @@ import {
   updateAppearing,
 } from "api/appearing";
 import { addFile, getFileById, updateFile } from "api/file";
-import Button from "components/button/Button";
+import Trans2GButton from "components/button/Trans2GButton";
 import BaseFrame from "components/BaseFrame";
 import useAuthGuard from "auth/authGuard";
 
@@ -150,7 +150,8 @@ const RefineRadio = () => {
     return ret;
   };
 
-  const handleRenameOption = async (x) => {
+  const handleRenameOption = async (e) => {
+    const x = e.target.name;
     const ret = await toggleRenameModel(x);
     const ret_trimed = ret.trim();
     if (ret !== "cancel" && ret_trimed) {
@@ -184,7 +185,8 @@ const RefineRadio = () => {
     return ret;
   };
 
-  const handleDeleteOption = async (appearing_detail_name) => {
+  const handleDeleteOption = async (e) => {
+    const appearing_detail_name = e.target.name;
     const ret = await toggleDeleteModel();
     if (ret === "ok") {
       await deleteAppearingDetail(appearing_detail_name);
@@ -381,12 +383,22 @@ const RefineRadio = () => {
     const tmpOptionList = [];
     Object.values(options).forEach((item, idx) => {
       tmpOptionList.push(
-        <div key={item}>
+        <div key={item} className="py-1">
           <span>
             {idx}: {item} /
           </span>
-          <Button name={item} handleClick={handleDeleteOption} icon="✕" />
-          <Button name={item} handleClick={handleRenameOption} icon="✑" />
+          <Trans2GButton
+            label="✕"
+            name={item}
+            onclick={handleDeleteOption}
+            plusStyle="mx-1 px-1 hover:text-emerald-500"
+          />
+          <Trans2GButton
+            label="✑"
+            name={item}
+            onclick={handleRenameOption}
+            plusStyle="mx-1 px-1 hover:text-emerald-500"
+          />
         </div>
       );
     });
@@ -436,11 +448,7 @@ const RefineRadio = () => {
             setFileName(e.target.value);
           }}
         />
-        <Button
-          name="confirmButton"
-          handleClick={confirmFileName}
-          icon="confirm"
-        />
+        <Trans2GButton label="confirm" onclick={confirmFileName} />
       </div>
 
       {/* 人物の登録、登場の登録・変更 */}
