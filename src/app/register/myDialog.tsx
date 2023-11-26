@@ -7,7 +7,13 @@ import {
   Button,
 } from "@mui/material";
 
-export function MyDialog(props) {
+type myDialogProps = {
+  onClose: (args: any) => void;
+  title: string;
+  message: string;
+};
+
+const MyDialog = (props: myDialogProps) => {
   const { onClose, title, message } = props;
 
   return (
@@ -24,4 +30,6 @@ export function MyDialog(props) {
       </DialogActions>
     </Dialog>
   );
-}
+};
+
+export default MyDialog;
