@@ -3,30 +3,29 @@ import InputButton from "app/search/InputButton";
 import SearchExec from "app/search/SearchExec";
 import CharaAddButton from "./CharaAddButton";
 import SearchCondiList from "./SearchCondiList";
+import { deleteItemFromObject } from "util/delete";
+import { concatObject } from "util/add";
 
 const ParentComponent = ({ onChangeAllValue }) => {
-  const [inputComponents, setInputComponents] = useState([{ id: 1 }]);
+  const [inputComponents, setInputComponents] = useState({ 1: "" });
   const [allInputValues, setAllInputValues] = useState([]);
   const [serialNum, setSerialNum] = useState(1);
 
   const handleAddComponent = () => {
-    // const newId = inputComponents.length + 1;
     const newId = serialNum + 1;
     setSerialNum(newId);
-    setInputComponents([...inputComponents, { id: newId }]);
+    setInputComponents(concatObject(inputComponents, { [newId]: "" }));
   };
 
   const handleDeleteComponent = (id) => {
-    const updatedComponents = inputComponents.filter(
-      (component) => component.id !== id
-    );
+    const updatedComponents = deleteItemFromObject(inputComponents, id);
     setInputComponents(updatedComponents);
   };
 
   const handleGetAllValues = async () => {
     const allValues = [];
-    inputComponents.forEach((component) => {
-      allValues.push(component.inputValue);
+    Object.values(inputComponents).forEach((value) => {
+      allValues.push(value);
     });
     const filteredArray = allValues.filter(
       (item) => item !== undefined && item.trim() !== ""
@@ -38,16 +37,19 @@ const ParentComponent = ({ onChangeAllValue }) => {
   return (
     <div>
       <div className="flex justify-center flex-wrap">
-        {inputComponents.map((component) => (
-          <InputButton
-            key={component.id}
-            onDeleteClick={() => handleDeleteComponent(component.id)}
-            onValueChange={(value) => {
-              // Update the input value for the component
-              component.inputValue = value;
-            }}
-          />
-        ))}
+        {Object.keys(inputComponents).map((key) => {
+          const key_ = Number(key);
+          return (
+            <InputButton
+              key={key_}
+              onDeleteClick={() => handleDeleteComponent(key_)}
+              onValueChange={(value) => {
+                // Update the input value for the component
+                inputComponents[key_] = value;
+              }}
+            />
+          );
+        })}
       </div>
       <CharaAddButton onclick={handleAddComponent} />
       <SearchExec onclick={handleGetAllValues} />
