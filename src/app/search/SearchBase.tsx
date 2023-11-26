@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getAll, getFilteredByTask } from "api/search";
 import makeGroupedList from "app/search/GroupedList";
-import ParentComponent from "app/search/DuplicateInputButton";
+import ManagedInput from "app/search/ManagedInput";
 import BaseFrame from "components/BaseFrame";
 import { useGlobalSpinnerActionsContext } from "components/spinner/GlobalSpinnerContext";
 
@@ -49,7 +49,7 @@ const SearchBase = () => {
   return (
     <BaseFrame>
       <div>
-        <ParentComponent onChangeAllValue={setFilterList} />
+        <ManagedInput onChangeAllValue={setFilterList} />
         <ul className="mx-auto md:w-[50%] text-left">{appearingList}</ul>
       </div>
     </BaseFrame>

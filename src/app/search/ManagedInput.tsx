@@ -6,11 +6,11 @@ import SearchCondiList from "./SearchCondiList";
 import { deleteItemFromObject } from "util/delete";
 import { concatObject } from "util/add";
 
-type ParentComponentProps = {
+type ManagedInputProps = {
   onChangeAllValue: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-const ParentComponent = (props: ParentComponentProps): JSX.Element => {
+const ManagedInput = (props: ManagedInputProps): JSX.Element => {
   const { onChangeAllValue } = props;
   const [inputComponents, setInputComponents] = useState<{
     [key: number]: string;
@@ -65,4 +65,4 @@ const ParentComponent = (props: ParentComponentProps): JSX.Element => {
   );
 };
 
-export default ParentComponent;
+export default ManagedInput;
