@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import InputButton from "app/search/InputButton";
-import CharaAddButton from "./CharaAddButton";
 import SearchCondiList from "./SearchCondiList";
 import { deleteItemFromObject } from "util/delete";
 import { concatObject } from "util/add";
 import G2WButton from "components/button/G2WButton";
+import Trans2GButton from "components/button/Trans2GButton";
 
 type ManagedInputProps = {
   onChangeAllValue: React.Dispatch<React.SetStateAction<string[]>>;
@@ -58,7 +58,11 @@ const ManagedInput = (props: ManagedInputProps): JSX.Element => {
           );
         })}
       </div>
-      <CharaAddButton onclick={handleAddComponent} />
+      <Trans2GButton
+        label="AND 検索する人物を追加"
+        onclick={handleAddComponent}
+        plusStyle="mt-4 mb-2 py-2 px-4 "
+      />
       <G2WButton
         label="検索"
         onclick={handleGetAllValues}

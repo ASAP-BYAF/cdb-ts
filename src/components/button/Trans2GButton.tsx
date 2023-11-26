@@ -1,23 +1,23 @@
 import OnClickButton from "./OnClickButton";
 
-type G2WButtonProps = {
+type Trans2GButtonProps = {
   label: string;
   onclick: () => {} | void;
   plusStyle?: string;
 };
 
-const G2WButton = (props: G2WButtonProps) => {
+const Trans2GButton = (props: Trans2GButtonProps) => {
   const { label, onclick, plusStyle = "" } = props;
 
   return (
     <OnClickButton
       label={label}
       onclick={onclick}
-      baseStyle="rounded-md outline outline-emerald-500 bg-emerald-500
-          font-bold hover:bg-white"
+      baseStyle="rounded-md outline outline-emerald-500
+      hover:bg-emerald-100"
       plusStyle={plusStyle}
     />
   );
 };
 
-export default G2WButton;
+export default Trans2GButton;
