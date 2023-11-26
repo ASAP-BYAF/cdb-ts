@@ -1,6 +1,22 @@
 import AccordionList from "app/search/AccordionList";
 
-const makeGroupedList = (data) => {
+type CharaAppearingDetail = {
+  file_name: string;
+  task_title: string;
+  appearing_detail_name: string;
+};
+
+type File = CharaAppearingDetail[];
+
+type Vol = {
+  [fileId: string]: File;
+};
+
+type JsonData = {
+  [volId: string]: Vol;
+};
+
+const makeGroupedList = (data: JsonData) => {
   // マップしてJSX生成
   const listItems = Object.entries(data).map(
     ([volNum, fileNumGroup], i_vol) => (
