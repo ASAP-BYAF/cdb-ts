@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { getAll, getFilteredByTask } from "api/search";
 import makeGroupedList from "app/search/GroupedList";
-import ParentComponent from "app/search/DuplicateButton";
+import ParentComponent from "app/search/DuplicateInputButton";
 import BaseFrame from "components/BaseFrame";
-import { useGlobalSpinnerActionsContext } from "spinner/GlobalSpinnerContext";
+import { useGlobalSpinnerActionsContext } from "components/spinner/GlobalSpinnerContext";
 
 const SearchBase = () => {
   const [appearingList, setAppearingList] = useState<
     JSX.Element[] | undefined
   >();
-  const [filterList, setFilterList] = useState([]);
+  const [filterList, setFilterList] = useState<string[]>([]);
   const setGlobalSpinner = useGlobalSpinnerActionsContext();
 
   const getAllAndMakeGroup = async () => {

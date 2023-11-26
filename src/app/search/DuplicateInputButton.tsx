@@ -6,9 +6,16 @@ import SearchCondiList from "./SearchCondiList";
 import { deleteItemFromObject } from "util/delete";
 import { concatObject } from "util/add";
 
-const ParentComponent = ({ onChangeAllValue }) => {
-  const [inputComponents, setInputComponents] = useState({ 1: "" });
-  const [allInputValues, setAllInputValues] = useState([]);
+type ParentComponentProps = {
+  onChangeAllValue: React.Dispatch<React.SetStateAction<string[]>>;
+};
+
+const ParentComponent = (props: ParentComponentProps): JSX.Element => {
+  const { onChangeAllValue } = props;
+  const [inputComponents, setInputComponents] = useState<{
+    [key: number]: string;
+  }>({ 1: "" });
+  const [allInputValues, setAllInputValues] = useState<string[]>([]);
   const [serialNum, setSerialNum] = useState(1);
 
   const handleAddComponent = () => {
@@ -17,13 +24,13 @@ const ParentComponent = ({ onChangeAllValue }) => {
     setInputComponents(concatObject(inputComponents, { [newId]: "" }));
   };
 
-  const handleDeleteComponent = (id) => {
+  const handleDeleteComponent = (id: number) => {
     const updatedComponents = deleteItemFromObject(inputComponents, id);
     setInputComponents(updatedComponents);
   };
 
   const handleGetAllValues = async () => {
-    const allValues = [];
+    const allValues: string[] = [];
     Object.values(inputComponents).forEach((value) => {
       allValues.push(value);
     });

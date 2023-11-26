@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 
 type InputButtonProps = {
-  onDeleteClick: () => {};
-  onValueChange: (args: string) => {};
+  onDeleteClick: () => void;
+  onValueChange: (args: string) => void;
 };
+
 const InputButton = (props: InputButtonProps) => {
   const { onDeleteClick, onValueChange } = props;
   const [inputValue, setInputValue] = useState("");

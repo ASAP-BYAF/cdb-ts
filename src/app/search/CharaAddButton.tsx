@@ -1,4 +1,4 @@
-const CharaAddButton = (props: { onclick: () => {} }) => {
+const CharaAddButton = (props: { onclick: () => void }) => {
   const { onclick } = props;
 
   return (
