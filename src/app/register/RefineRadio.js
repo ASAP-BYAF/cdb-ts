@@ -12,7 +12,7 @@ import {
 import { concatObject } from "util/add";
 import { deleteItemFromArray, deleteItemFromObject } from "util/delete";
 import { renameItemInArray } from "util/rename";
-import NumberDropdown from "app/register/NumberDropdown";
+import NumberDropdown from "components/dropdown/NumberDropdown";
 import { arrayToObject } from "util/add";
 import {
   addAppearingDetail,
