@@ -7,9 +7,12 @@ import SearchCondiList from "./SearchCondiList";
 const ParentComponent = ({ onChangeAllValue }) => {
   const [inputComponents, setInputComponents] = useState([{ id: 1 }]);
   const [allInputValues, setAllInputValues] = useState([]);
+  const [serialNum, setSerialNum] = useState(1);
 
   const handleAddComponent = () => {
-    const newId = inputComponents.length + 1;
+    // const newId = inputComponents.length + 1;
+    const newId = serialNum + 1;
+    setSerialNum(newId);
     setInputComponents([...inputComponents, { id: newId }]);
   };
 
