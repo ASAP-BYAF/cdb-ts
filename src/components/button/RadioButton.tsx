@@ -19,6 +19,7 @@ const RadioButton = (props: RadioButtonProps): JSX.Element => {
             value={option}
             checked={selectedValue === option}
             onChange={onChange}
+            className="w-6 h-6"
           />
         </label>
       ))}
