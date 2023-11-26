@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
-import { MyDialog } from "app/register/myDialog";
-import { MyDialogRename } from "app/register/myDialogRename";
+import MyDialog from "app/register/myDialog";
+import MyDialogRename from "app/register/myDialogRename";
 import RadioButtonForm from "app/register/RadioButtonForm";
 import {
   addTask,

@@ -8,18 +8,18 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-type myDialogProps = {
-  onClose: (args: any) => void,
-  title: string,
-  message: string,
-  oldText: string,
+type myDialogRenameProps = {
+  onClose: (args: any) => void;
+  title: string;
+  message: string;
+  oldText: string;
 };
 
-const MyDialogRename = (props) => {
+const MyDialogRename = (props: myDialogRenameProps) => {
   const { onClose, title, message, oldText } = props;
   const [filterText, setFilterText] = useState(oldText);
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newText = event.target.value;
     setFilterText(newText);
   };
