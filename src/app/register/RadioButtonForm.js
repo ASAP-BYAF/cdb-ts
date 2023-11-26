@@ -2,8 +2,8 @@ import React, { useState, useMemo } from "react";
 import { deleteItemFromObject } from "util/delete";
 import { renameKeyInObject } from "util/rename";
 import { arrayToObject, concatObject } from "util/add";
-import Button from "components/button/Button";
 import RadioButton from "components/button/RadioButton";
+import G2WButton from "components/button/G2WButton";
 
 function RadioButtonForm(props) {
   const {
@@ -49,7 +49,8 @@ function RadioButtonForm(props) {
     provideOptionChange({ name: name, value: value });
   };
 
-  const handleResetClick = (name) => {
+  const handleResetClick = (e) => {
+    const name = e.target.name;
     const nameList = document.getElementsByName(name);
     nameList.forEach((elem) => {
       elem.checked = false;
@@ -68,19 +69,30 @@ function RadioButtonForm(props) {
     );
     questions.forEach((elem, idx) => {
       tmpOptionList.push(
-        <div key={elem}>
+        <div key={elem} className="py-2">
           <RadioButton
             label={elem}
             options={options}
             selectedValue={selectedOptions[elem]}
             onChange={handleOptionChange}
           />
-          <Button name={elem} handleClick={handleDeleteClick} icon="✕" />
-          <Button name={elem} handleClick={handleRenameClick} icon="✑" />
-          <Button
+          <G2WButton
+            label="✕"
             name={elem}
-            handleClick={() => handleResetClick(elem)}
-            icon="↻"
+            onclick={handleDeleteClick}
+            plusStyle="mx-1 px-1 text-white hover:text-emerald-500"
+          />
+          <G2WButton
+            label="✑"
+            name={elem}
+            onclick={handleRenameClick}
+            plusStyle="mx-1 px-1 text-white hover:text-emerald-500"
+          />
+          <G2WButton
+            label="↻"
+            name={elem}
+            onclick={handleResetClick}
+            plusStyle="mx-1 px-1 text-white hover:text-emerald-500"
           />
         </div>
       );

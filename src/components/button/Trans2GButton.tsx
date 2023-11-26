@@ -2,7 +2,7 @@ import OnClickButton from "./OnClickButton";
 
 type Trans2GButtonProps = {
   label: string;
-  onclick: () => {} | void;
+  onclick: (args: React.MouseEvent<HTMLButtonElement>) => {} | void;
   plusStyle?: string;
 };
 

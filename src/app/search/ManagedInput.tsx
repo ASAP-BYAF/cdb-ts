@@ -18,6 +18,8 @@ const ManagedInput = (props: ManagedInputProps): JSX.Element => {
   const [allInputValues, setAllInputValues] = useState<string[]>([]);
   const [serialNum, setSerialNum] = useState(1);
 
+  // 引数の型が Trans2GButton の onclick と違うがこれでいいのか？
+  // 一応、動いてはいる。
   const handleAddComponent = () => {
     const newId = serialNum + 1;
     setSerialNum(newId);
@@ -29,6 +31,8 @@ const ManagedInput = (props: ManagedInputProps): JSX.Element => {
     setInputComponents(updatedComponents);
   };
 
+  // 引数の型が G2WButton の onclick と違うがこれでいいのか？
+  // 一応、動いてはいる。
   const handleGetAllValues = async () => {
     const allValues: string[] = [];
     Object.values(inputComponents).forEach((value) => {

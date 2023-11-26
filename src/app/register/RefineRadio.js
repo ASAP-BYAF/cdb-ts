@@ -161,7 +161,8 @@ const RefineRadio = () => {
     }
   };
 
-  const handleRenameTask = async (x) => {
+  const handleRenameTask = async (e) => {
+    const x = e.target.name;
     const ret = await toggleRenameModel(x);
     const ret_trimed = ret.trim();
     if (ret !== "cancel" && ret_trimed && !allQuestions.includes(ret_trimed)) {
@@ -196,7 +197,9 @@ const RefineRadio = () => {
     }
   };
 
-  const handleDeleteTask = async (x) => {
+  const handleDeleteTask = async (e) => {
+    const x = e.target.name;
+    console.log(x);
     const ret = await toggleDeleteModel();
     if (ret === "ok") {
       updateQuestions([x], "deleted");
