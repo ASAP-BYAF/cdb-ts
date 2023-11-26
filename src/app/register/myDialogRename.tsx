@@ -8,7 +8,14 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-export function MyDialogRename(props) {
+type myDialogProps = {
+  onClose: (args: any) => void,
+  title: string,
+  message: string,
+  oldText: string,
+};
+
+const MyDialogRename = (props) => {
   const { onClose, title, message, oldText } = props;
   const [filterText, setFilterText] = useState(oldText);
 
@@ -37,4 +44,6 @@ export function MyDialogRename(props) {
       </DialogActions>
     </Dialog>
   );
-}
+};
+
+export default MyDialogRename;
