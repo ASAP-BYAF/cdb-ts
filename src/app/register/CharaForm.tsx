@@ -36,10 +36,7 @@ const CharaForm = (props: CharaFormProps): JSX.Element => {
   // 最初のロード時に前回までの選択状況を取得し、初期値にする。
   useMemo(() => {
     setSelectedOptions(selectedOptionsBefore);
-    console.log(selectedOptionsBefore);
   }, [selectedOptionsBefore]);
-  console.log("selectedOptions");
-  console.log(selectedOptions);
 
   // 人物名の追加、削除、変更に応じて選択状況を変化させる。
   useMemo(() => {
