@@ -44,6 +44,7 @@ const CharaForm = (props: CharaFormProps): JSX.Element => {
 
     switch (sign) {
       case "added":
+        // selectedOptions の型に合わせて未選択は NaN としている。
         setSelectedOptions((prev) =>
           concatObject(prev, arrayToObject(diff, NaN))
         );
@@ -88,6 +89,8 @@ const CharaForm = (props: CharaFormProps): JSX.Element => {
       const inputElement = elem as HTMLInputElement;
       inputElement.checked = false;
     });
+
+    // selectedOptions の型に合わせて未選択は NaN としている。
     setSelectedOptions({
       ...selectedOptions,
       [name]: NaN,
