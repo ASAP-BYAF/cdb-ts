@@ -5,7 +5,20 @@ import { arrayToObject, concatObject } from "util/add";
 import RadioButton from "components/button/RadioButton";
 import G2WButton from "components/button/G2WButton";
 
-function RadioButtonForm(props) {
+type CharaFormProps = {
+  questions: string[];
+  questionsDiff: [string, string[]];
+  options: number[];
+  handleDeleteClick: (args: React.MouseEvent<HTMLButtonElement>) => {} | void;
+  handleRenameClick: (args: React.MouseEvent<HTMLButtonElement>) => {} | void;
+  provideOptionChange: (args: {
+    name: string;
+    value: string | number;
+  }) => {} | void;
+  selectedOptionsBefore: { [key: string]: number };
+};
+
+const CharaForm = (props: CharaFormProps): JSX.Element => {
   const {
     questions,
     questionsDiff,
@@ -16,12 +29,17 @@ function RadioButtonForm(props) {
     selectedOptionsBefore = {},
   } = props;
 
-  const [selectedOptions, setSelectedOptions] = useState({});
+  const [selectedOptions, setSelectedOptions] = useState<{
+    [key: string]: number;
+  }>({});
 
   // 最初のロード時に前回までの選択状況を取得し、初期値にする。
   useMemo(() => {
     setSelectedOptions(selectedOptionsBefore);
+    console.log(selectedOptionsBefore);
   }, [selectedOptionsBefore]);
+  console.log("selectedOptions");
+  console.log(selectedOptions);
 
   // 人物名の追加、削除、変更に応じて選択状況を変化させる。
   useMemo(() => {
@@ -34,7 +52,15 @@ function RadioButtonForm(props) {
         );
         break;
       case "deleted":
-        setSelectedOptions((prev) => deleteItemFromObject(prev, diff));
+        let tmpSelectedOptions = selectedOptions;
+        diff.forEach(
+          (deletedItem) =>
+            (tmpSelectedOptions = deleteItemFromObject(
+              tmpSelectedOptions,
+              deletedItem
+            ))
+        );
+        setSelectedOptions(tmpSelectedOptions);
         break;
       case "renamed":
         const [oldValue, newValue] = diff;
@@ -48,8 +74,9 @@ function RadioButtonForm(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [questionsDiff]);
 
-  const handleOptionChange = (e) => {
-    const { name, value } = e.target;
+  const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    // const name = e.currentTarget.name;
+    const { name, value } = e.currentTarget;
     setSelectedOptions({
       ...selectedOptions,
       [name]: Number(value),
@@ -57,11 +84,12 @@ function RadioButtonForm(props) {
     provideOptionChange({ name: name, value: value });
   };
 
-  const handleResetClick = (e) => {
-    const name = e.target.name;
+  const handleResetClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const name = e.currentTarget.name;
     const nameList = document.getElementsByName(name);
     nameList.forEach((elem) => {
-      elem.checked = false;
+      const inputElement = elem as HTMLInputElement;
+      inputElement.checked = false;
     });
     setSelectedOptions({
       ...selectedOptions,
@@ -70,7 +98,7 @@ function RadioButtonForm(props) {
     provideOptionChange({ name: name, value: NaN });
   };
 
-  const handleButtonClick = (icon) => {
+  const handleButtonClick = (icon: string) => {
     switch (icon) {
       case "✕":
         return handleDeleteClick;
@@ -113,6 +141,6 @@ function RadioButtonForm(props) {
       {memoQuestions}
     </div>
   );
-}
+};
 
-export default RadioButtonForm;
+export default CharaForm;
