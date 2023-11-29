@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import MyDialog from "app/register/myDialog";
 import MyDialogRename from "app/register/myDialogRename";
-import RadioButtonForm from "app/register/RadioButtonForm";
+import CharaForm from "./CharaForm";
 import {
   addTask,
   deleteTaskById,
@@ -408,7 +408,7 @@ const RefineRadio = () => {
   const memoQuestions = useMemo(() => {
     return (
       <div>
-        <RadioButtonForm
+        <CharaForm
           questions={questions}
           questionsDiff={questionsDiff}
           options={Object.keys(options).map((item, idx) => {
