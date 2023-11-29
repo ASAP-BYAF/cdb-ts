@@ -1,7 +1,7 @@
 type RadioButtonProps = {
   label: string;
-  options: string[];
-  selectedValue: string;
+  options: number[];
+  selectedValue: number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
