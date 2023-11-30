@@ -7,7 +7,7 @@ type AppearingDetailFormProps = {
 };
 
 // RefineRadion.js から必要な情報受け取って
-// キャラクターの登場の仕方の選択肢の作成フォームの見た目を調整します。
+// キャラクターの登場の仕方の選択肢の作成フォームです。
 // 実際の DB 上の処理は RefineRadio.js で行っています。
 const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
   const {
