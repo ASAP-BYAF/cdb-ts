@@ -31,6 +31,7 @@ import { addFile, getFileById, updateFile } from "api/file";
 import Trans2GButton from "components/button/Trans2GButton";
 import BaseFrame from "components/BaseFrame";
 import useAuthGuard from "auth/authGuard";
+import AppearingDetailForm from "./AppearingDetailForm";
 
 const RefineRadio = () => {
   const [questions, setQuestions] = useState([]);
@@ -380,32 +381,6 @@ const RefineRadio = () => {
     }
   }, [fileId]);
 
-  const optionList = useMemo(() => {
-    const tmpOptionList = [];
-    Object.values(options).forEach((item, idx) => {
-      tmpOptionList.push(
-        <div key={item} className="py-1">
-          <span>
-            {idx}: {item} /
-          </span>
-          <Trans2GButton
-            label="✕"
-            name={item}
-            onclick={handleDeleteOption}
-            plusStyle="mx-1 px-1 hover:text-emerald-500"
-          />
-          <Trans2GButton
-            label="✑"
-            name={item}
-            onclick={handleRenameOption}
-            plusStyle="mx-1 px-1 hover:text-emerald-500"
-          />
-        </div>
-      );
-    });
-    return tmpOptionList;
-  }, [options]);
-
   return (
     <BaseFrame>
       {/* 事件の巻数、話数、名前を登録 */}
@@ -473,7 +448,11 @@ const RefineRadio = () => {
       <button type="button" onClick={() => handleAddOption(optionInput)}>
         add
       </button>
-      <div>{optionList}</div>
+      <AppearingDetailForm
+        options={options}
+        handleDeleteClick={handleDeleteOption}
+        handleRenameClick={handleRenameOption}
+      />
 
       {/* 削除・変更時のモーダル */}
       {modalConfig && <MyDialog {...modalConfig} />}

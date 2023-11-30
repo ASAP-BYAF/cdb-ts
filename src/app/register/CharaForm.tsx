@@ -18,7 +18,8 @@ type CharaFormProps = {
   selectedOptionsBefore: { [key: string]: number };
 };
 
-// キャラクターの登場の仕方の見た目を調整します。
+// RefineRadion.js から必要な情報受け取って
+// キャラクターごとの登場の仕方を選択するフォームの見た目を調整します。
 // 実際の DB 上の処理は RefineRadio.js で行っています。
 const CharaForm = (props: CharaFormProps): JSX.Element => {
   const {
