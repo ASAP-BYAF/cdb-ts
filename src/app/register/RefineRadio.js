@@ -57,7 +57,6 @@ const RefineRadio = () => {
   useAuthGuard("/signin");
 
   useEffect(() => {
-    // console.log("useeffect");
     const fetchData = async () => {
       try {
         const res = await getTaskAll();
@@ -224,10 +223,12 @@ const RefineRadio = () => {
       setAllQuestions((prev) => [...prev, ...x]);
       setQuestionsDiff([sign, diff]);
     } else if (sign === "deleted") {
-      const diff = x[0];
-      setQuestions((prev) => deleteItemFromArray(prev, diff));
-      setAllQuestions((prev) => deleteItemFromArray(prev, diff));
-      setQuestionsDiff([sign, diff]);
+      // CharaFrom.tsx において questionsDiff の第二項は string[] 型なので配列で渡す。
+      // questions, allQuestions は string[] 型なので
+      // deleteItemFromArray に対して、削除したい値は string で与える。
+      setQuestions((prev) => deleteItemFromArray(prev, x[0]));
+      setAllQuestions((prev) => deleteItemFromArray(prev, x[0]));
+      setQuestionsDiff([sign, x]);
     } else if (sign === "renamed") {
       const oldValue = x[0];
       const newValue = x[1];
@@ -405,26 +406,6 @@ const RefineRadio = () => {
     return tmpOptionList;
   }, [options]);
 
-  const memoQuestions = useMemo(() => {
-    return (
-      <div>
-        <CharaForm
-          questions={questions}
-          questionsDiff={questionsDiff}
-          options={Object.keys(options).map((item, idx) => {
-            return idx;
-          })}
-          handleDeleteClick={handleDeleteTask}
-          handleRenameClick={handleRenameTask}
-          provideOptionChange={setOptionSelectedDiff}
-          selectedOptionsBefore={selectedOptionBefore}
-        />
-        {questions.length === 0 && <div>該当する人物が見つかりません</div>}
-      </div>
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [questions, options, selectedOptionBefore]);
-
   return (
     <BaseFrame>
       {/* 事件の巻数、話数、名前を登録 */}
@@ -466,7 +447,17 @@ const RefineRadio = () => {
         >
           add
         </button>
-        {memoQuestions}
+        <CharaForm
+          questions={questions}
+          questionsDiff={questionsDiff}
+          options={Object.keys(options).map((item, idx) => {
+            return idx;
+          })}
+          handleDeleteClick={handleDeleteTask}
+          handleRenameClick={handleRenameTask}
+          provideOptionChange={setOptionSelectedDiff}
+          selectedOptionsBefore={selectedOptionBefore}
+        />
       </div>
 
       <hr></hr>

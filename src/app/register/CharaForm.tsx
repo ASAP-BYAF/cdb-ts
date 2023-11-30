@@ -18,6 +18,8 @@ type CharaFormProps = {
   selectedOptionsBefore: { [key: string]: number };
 };
 
+// キャラクターの登場の仕方の見た目を調整します。
+// 実際の DB 上の処理は RefineRadio.js で行っています。
 const CharaForm = (props: CharaFormProps): JSX.Element => {
   const {
     questions,
@@ -111,34 +113,30 @@ const CharaForm = (props: CharaFormProps): JSX.Element => {
     }
   };
 
-  const memoQuestions = useMemo(() => {
-    return questions.flatMap((elem) => (
-      <div key={elem} className="py-2">
-        <RadioButton
-          label={elem}
-          options={options}
-          selectedValue={selectedOptions[elem]}
-          onChange={handleOptionChange}
-        />
-        {["✕", "✑", "↻"].map((icon, idx) => (
-          <G2WButton
-            key={idx}
-            label={icon}
-            name={elem}
-            onclick={handleButtonClick(icon)}
-            plusStyle="mx-1 px-1 text-white hover:text-emerald-500"
-          />
-        ))}
-      </div>
-    ));
-  }, [questions, selectedOptions, options]);
-
   return (
     <div>
       {options.map((option) => (
         <span key={option}>{option}</span>
       ))}
-      {memoQuestions}
+      {questions.flatMap((elem) => (
+        <div key={elem} className="py-2">
+          <RadioButton
+            label={elem}
+            options={options}
+            selectedValue={selectedOptions[elem]}
+            onChange={handleOptionChange}
+          />
+          {["✕", "✑", "↻"].map((icon, idx) => (
+            <G2WButton
+              key={idx}
+              label={icon}
+              name={elem}
+              onclick={handleButtonClick(icon)}
+              plusStyle="mx-1 px-1 text-white hover:text-emerald-500"
+            />
+          ))}
+        </div>
+      ))}
     </div>
   );
 };
