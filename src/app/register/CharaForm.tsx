@@ -41,7 +41,7 @@ const CharaForm = (props: CharaFormProps): JSX.Element => {
     setSelectedOptions(selectedOptionsBefore);
   }, [selectedOptionsBefore]);
 
-  // 人物名の追加、削除、変更に応じて選択状況を変化させる。
+  // 親要素から人物名の追加、削除、変更の情報を受け取り、それに応じて選択状況を変化させる。
   useMemo(() => {
     const [sign, diff] = questionsDiff;
 
@@ -75,8 +75,8 @@ const CharaForm = (props: CharaFormProps): JSX.Element => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [questionsDiff]);
 
+  // 選択肢が変更されたときに選択状況を画面上で変更し、変更内容を親要素に変更を伝える。
   const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    // const name = e.currentTarget.name;
     const { name, value } = e.currentTarget;
     setSelectedOptions({
       ...selectedOptions,
@@ -85,6 +85,7 @@ const CharaForm = (props: CharaFormProps): JSX.Element => {
     provideOptionChange({ name: name, value: value });
   };
 
+  // 選択肢が変更されたときに選択状況を画面上で変更し、変更内容を親要素に変更を伝える。
   const handleResetClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const name = e.currentTarget.name;
     const nameList = document.getElementsByName(name);
