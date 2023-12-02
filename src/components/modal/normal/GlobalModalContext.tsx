@@ -11,11 +11,11 @@ const GlobalModalActionsContext = createContext<
   // eslint-disable-next-line @typescript-eslint/no-empty-function
 >(() => {});
 
-// グローバルスピナーの表示・非表示
+// グローバルモーダルの表示・非表示
 export const useGlobalModalContext = (): ModalProps | undefined =>
   useContext<ModalProps | undefined>(GlobalModalContext);
 
-// グローバルスピナーの表示・非表示のアクション
+// グローバルモーダルの表示・非表示のアクション
 export const useGlobalModalActionsContext = (): React.Dispatch<
   React.SetStateAction<ModalProps | undefined>
 > =>
@@ -28,7 +28,7 @@ interface GlobalModalContextProviderProps {
 }
 
 /**
- * グローバルスピナーコンテキストプロバイダー
+ * グローバルモーダルコンテキストプロバイダー
  */
 const GlobalModalContextProvider = ({
   children,
