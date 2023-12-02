@@ -6,7 +6,7 @@ import { renameItemInArray } from "util/rename";
 import { deleteItemFromArray } from "util/delete";
 
 type ADRFormProps = {
-  providedOptions?: string[];
+  providedOptions: string[];
   handleClickAddAdditional?: (arg?: string) => {} | void;
   handleClickDeleteAdditional?: (arg?: string) => {} | void;
   handleClickRenameAdditional?: (arg?: string, arg2?: string) => {} | void;
@@ -17,7 +17,7 @@ type ADRFormProps = {
 // ADR は Add, Delete, Rename の頭文字をとっています。
 const ADRForm = (props: ADRFormProps): JSX.Element => {
   const {
-    providedOptions = ["tmp", "tmp2"],
+    providedOptions,
     handleClickAddAdditional = () => {},
     handleClickDeleteAdditional = () => {},
     handleClickRenameAdditional = () => {},
