@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import Trans2GButton from "components/button/Trans2GButton";
 import { useGlobalModalActionsContext } from "components/modal/normal/GlobalModalContext";
 import { useGlobalModalWithInputActionsContext } from "components/modal/with-input/GlobalModalWithInputContext";
@@ -28,7 +28,7 @@ const ADRForm = (props: ADRFormProps): JSX.Element => {
   const setGlobalModal = useGlobalModalActionsContext();
   const setGlobalModalWithInput = useGlobalModalWithInputActionsContext();
 
-  useMemo(() => {
+  useEffect(() => {
     setOptions(providedOptions);
   }, [providedOptions]);
 
