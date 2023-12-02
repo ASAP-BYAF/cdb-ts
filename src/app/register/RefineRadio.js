@@ -1,11 +1,11 @@
-import SpinnerProviderWrapper from "components/spinner/wrapper";
 import RefineRadioBase from "app/register/RefineRadioBase";
+import GlobalSpinnerContextProvider from "components/spinner/GlobalSpinnerContext";
 
 const Search = () => {
   return (
-    <SpinnerProviderWrapper>
+    <GlobalSpinnerContextProvider>
       <RefineRadioBase />
-    </SpinnerProviderWrapper>
+    </GlobalSpinnerContextProvider>
   );
 };
 
