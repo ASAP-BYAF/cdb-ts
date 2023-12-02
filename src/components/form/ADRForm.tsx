@@ -38,13 +38,13 @@ const ADRForm = (props: ADRFormProps): JSX.Element => {
   };
 
   const handleClickRename = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    const optionName = e.currentTarget.name;
+    const oldOptionName = e.currentTarget.name;
     const newOptionName = await new Promise<string>((resolve) => {
       setGlobalModalWithInput({
         onClose: resolve,
         title: "新しい選択肢を入力してください。",
         message: "空白のみにはできません。",
-        oldText: optionName,
+        oldText: oldOptionName,
       });
     });
     setGlobalModalWithInput(undefined);
@@ -55,10 +55,10 @@ const ADRForm = (props: ADRFormProps): JSX.Element => {
       !options.includes(newOptionName_trimed)
     ) {
       setOptions((prev) =>
-        renameItemInArray(prev, optionName, newOptionName_trimed)
+        renameItemInArray(prev, oldOptionName, newOptionName_trimed)
       );
       // ここに追加処理を記載
-      handleClickRenameAdditional(optionName, newOptionName_trimed);
+      handleClickRenameAdditional(oldOptionName, newOptionName_trimed);
     }
     // if (ret !== "cancel" && ret_trimed) なども関数内に含めればよい。
   };
@@ -74,8 +74,7 @@ const ADRForm = (props: ADRFormProps): JSX.Element => {
     });
     setGlobalModal(undefined);
     if (ret === "ok") {
-      const newOptions = deleteItemFromArray(options, optionName);
-      setOptions(newOptions);
+      setOptions((prev) => deleteItemFromArray(prev, optionName));
       // ここに追加処理を記載
       handleClickDeleteAdditional(optionName);
     }
