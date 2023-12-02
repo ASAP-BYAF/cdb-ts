@@ -14,6 +14,7 @@ type ADRFormProps = {
 
 // 選択肢の追加、削除、名前の変更ができるフォームです。
 // Additional の関数を渡すことでそれぞれの動作に処理を追加できます。
+// ADR は Add, Delete, Rename の頭文字をとっています。
 const ADRForm = (props: ADRFormProps): JSX.Element => {
   const {
     providedOptions = ["tmp", "tmp2"],
