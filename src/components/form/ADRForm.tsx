@@ -60,7 +60,6 @@ const ADRForm = (props: ADRFormProps): JSX.Element => {
       // ここに追加処理を記載
       handleClickRenameAdditional(oldOptionName, newOptionName_trimed);
     }
-    // if (ret !== "cancel" && ret_trimed) なども関数内に含めればよい。
   };
 
   const handleClickDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
