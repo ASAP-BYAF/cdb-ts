@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import InputButton from "app/search/InputButton";
 import SearchCondiList from "./SearchCondiList";
-import { deleteItemFromObject } from "util/delete";
+import { deleteItemFromObjectbyKey } from "util/delete";
 import { concatObject } from "util/add";
 import G2WButton from "components/button/G2WButton";
 import Trans2GButton from "components/button/Trans2GButton";
@@ -27,7 +27,7 @@ const ManagedInput = (props: ManagedInputProps): JSX.Element => {
   };
 
   const handleDeleteComponent = (id: number) => {
-    const updatedComponents = deleteItemFromObject(inputComponents, id);
+    const updatedComponents = deleteItemFromObjectbyKey(inputComponents, id);
     setInputComponents(updatedComponents);
   };
 

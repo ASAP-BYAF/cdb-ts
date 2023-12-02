@@ -1,5 +1,8 @@
 import { MyObj } from "./util";
-import { deleteItemFromArrayInObject, deleteItemFromObject } from "./delete";
+import {
+  deleteItemFromArrayInObject,
+  deleteItemFromObjectbyKey,
+} from "./delete";
 
 // 配列の特定の値を別の値に変更する。
 //  例: [value1, value2, value3, ...]
@@ -16,7 +19,7 @@ export const renameItemInArray = (array: MyObj, x: any, x_prime: any) => {
 //    `--> { key1_prime: value1, key2: value2, ...}
 export const renameKeyInObject = (obj: MyObj, x: any, x_prime: any) => {
   const value = obj[x];
-  const obj_ = deleteItemFromObject(obj, x);
+  const obj_ = deleteItemFromObjectbyKey(obj, x);
   obj_[x_prime] = value;
   return obj_;
 };

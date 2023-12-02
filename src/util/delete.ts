@@ -9,7 +9,21 @@ export const deleteItemFromArray = (array: MyArr, x: any) => {
 
 // Rf: https://chaika.hatenablog.com/entry/2020/05/13/083000
 // { key1: value1, key2: value2, ...} というオブジェクトからキーを指定してある値を削除する。
-export const deleteItemFromObject = (prev: MyObj, key: string | number) => {
+export const deleteItemFromObjectbyKey = (
+  prev: MyObj,
+  key: string | number
+) => {
+  const { [key]: _, ...newObj } = prev;
+  return newObj;
+};
+
+// Rf: https://chaika.hatenablog.com/entry/2020/05/13/083000
+// { key1: value1, key2: value2, ...} というオブジェクトから値を指定して削除する。
+export const deleteItemFromObjectbyValue = (
+  prev: MyObj,
+  value: string | number
+) => {
+  const key = Object.keys(prev).find((key) => prev[key] === value) as string;
   const { [key]: _, ...newObj } = prev;
   return newObj;
 };

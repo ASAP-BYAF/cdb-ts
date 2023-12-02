@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { deleteItemFromObject } from "util/delete";
+import { deleteItemFromObjectbyKey } from "util/delete";
 import { renameKeyInObject } from "util/rename";
 import { arrayToObject, concatObject } from "util/add";
 import RadioButton from "components/button/RadioButton";
@@ -56,7 +56,7 @@ const CharaForm = (props: CharaFormProps): JSX.Element => {
         let tmpSelectedOptions = selectedOptions;
         diff.forEach(
           (deletedItem) =>
-            (tmpSelectedOptions = deleteItemFromObject(
+            (tmpSelectedOptions = deleteItemFromObjectbyKey(
               tmpSelectedOptions,
               deletedItem
             ))
