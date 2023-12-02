@@ -32,7 +32,7 @@ const ADRForm = (props: ADRFormProps): JSX.Element => {
     setOptions(providedOptions);
   }, [providedOptions]);
 
-  const handleAddOption = async () => {
+  const handleClickAdd = async () => {
     setOptions((prev) => [...prev, optionInput]);
     handleClickAddAdditional(optionInput);
   };
@@ -90,7 +90,7 @@ const ADRForm = (props: ADRFormProps): JSX.Element => {
           setOptionInput(e.target.value);
         }}
       />
-      <button type="button" onClick={handleAddOption}>
+      <button type="button" onClick={handleClickAdd}>
         選択肢を追加
       </button>
 
