@@ -24,6 +24,15 @@ export const renameKeyInObject = (obj: MyObj, x: any, x_prime: any) => {
   return obj_;
 };
 
+// オブジェクトの特定の値を変更する。
+// 例: { key1: value1, key2: value2, ...}
+//    `--> { key1: value1_prime, key2: value2, ...}
+export const renameValueInObject = (obj: MyObj, x: any, x_prime: any) => {
+  const key = Object.keys(obj).find((key) => obj[key] === x) as string;
+  const obj_ = { ...obj, [key]: x_prime };
+  return obj_;
+};
+
 // { key1: [array1], key2: [array2], ...} というオブジェクトの配列のある値を別の値に変更する。
 export const renameItemInArrayInObject = (
   obj: MyObj,
