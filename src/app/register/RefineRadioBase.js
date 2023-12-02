@@ -1,6 +1,4 @@
 import { useState, useMemo, useEffect } from "react";
-import MyDialog from "app/register/myDialog";
-import MyDialogRename from "app/register/myDialogRename";
 import CharaForm from "./CharaForm";
 import {
   addTask,
@@ -10,8 +8,8 @@ import {
   updateTask,
 } from "api/task";
 import { concatObject } from "util/add";
-import { deleteItemFromArray, deleteItemFromObject } from "util/delete";
-import { renameItemInArray } from "util/rename";
+import { deleteItemFromArray, deleteItemFromObjectbyValue } from "util/delete";
+import { renameItemInArray, renameValueInObject } from "util/rename";
 import NumberDropdown from "components/dropdown/NumberDropdown";
 import { arrayToObject } from "util/add";
 import {
@@ -31,15 +29,16 @@ import { addFile, getFileById, updateFile } from "api/file";
 import Trans2GButton from "components/button/Trans2GButton";
 import BaseFrame from "components/BaseFrame";
 import useAuthGuard from "auth/authGuard";
-import AppearingDetailForm from "./AppearingDetailForm";
 import { useGlobalSpinnerActionsContext } from "components/spinner/GlobalSpinnerContext";
+import { useGlobalModalActionsContext } from "components/modal/normal/GlobalModalContext";
+import { useGlobalModalWithInputActionsContext } from "components/modal/with-input/GlobalModalWithInputContext";
+import ADRForm from "components/form/ADRForm";
 
 const RefineRadioBase = () => {
   const [questions, setQuestions] = useState([]);
   const [questionsDiff, setQuestionsDiff] = useState([]);
   const [allQuestions, setAllQuestions] = useState([]);
   const [filterText, setFilterText] = useState("");
-  const [optionInput, setOptionInput] = useState("");
   const [options, setOptions] = useState([]);
   const [optionSelectedDiff, setOptionSelectedDiff] = useState([]);
   const [visibleAdd, setVisibleAdd] = useState(false);
@@ -48,8 +47,6 @@ const RefineRadioBase = () => {
   const [selectedOptionBefore, setSelectedOptionBefore] = useState(
     arrayToObject(questions, options[0])
   );
-  const [modalConfig, setModalConfig] = useState(undefined);
-  const [modalConfigRename, setModalConfigRename] = useState(undefined);
   const [vol, setVol] = useState(1);
   const [file, setFile] = useState(1);
   const [filename, setFileName] = useState("");
@@ -130,10 +127,26 @@ const RefineRadioBase = () => {
   const handleAddOption = async (newOptionName) => {
     setGlobalSpinner(true);
     const res = await addAppearingDetail(newOptionName);
-    const appearing_detail_id = res.id;
+    setOptions((prev) => concatObject(prev, { [res.id]: newOptionName }));
+    setGlobalSpinner(false);
+  };
+
+  const handleRenameOption = async (oldOptionName, newOptionName) => {
+    setGlobalSpinner(true);
+    const res = await getAppearingDetailByName(oldOptionName);
+    await updateAppearingDetail(res.id, newOptionName);
     setOptions((prev) =>
-      concatObject(prev, { [appearing_detail_id]: newOptionName })
+      renameValueInObject(prev, oldOptionName, newOptionName)
     );
+    setGlobalSpinner(false);
+  };
+
+  const handleDeleteOption = async (oldOptionName) => {
+    setGlobalSpinner(true);
+    await deleteAppearingDetail(oldOptionName);
+    const aaa = deleteItemFromObjectbyValue(options, oldOptionName);
+    setOptions(aaa);
+    await getSelectedBefore(aaa, fileId);
     setGlobalSpinner(false);
   };
 
@@ -146,31 +159,18 @@ const RefineRadioBase = () => {
     setGlobalSpinner(false);
   };
 
+  const setGlobalWithInput = useGlobalModalWithInputActionsContext();
   const toggleRenameModel = async (x) => {
     const ret = await new Promise((resolve) => {
-      setModalConfigRename({
+      setGlobalWithInput({
         onClose: resolve,
         title: "新しい選択肢を入力してください。",
         message: "空白のみにはできません。",
         oldText: x,
       });
     });
-    setModalConfigRename(undefined);
+    setGlobalWithInput(undefined);
     return ret;
-  };
-
-  const handleRenameOption = async (e) => {
-    const x = e.target.name;
-    const ret = await toggleRenameModel(x);
-    const ret_trimed = ret.trim();
-    if (ret !== "cancel" && ret_trimed) {
-      setGlobalSpinner(true);
-      const res = await getAppearingDetailByName(x);
-      const appearing_detail_id = res.id;
-      await updateAppearingDetail(appearing_detail_id, ret);
-      setOptions((prev) => ({ ...prev, [appearing_detail_id]: ret }));
-      setGlobalSpinner(false);
-    }
   };
 
   const handleRenameTask = async (e) => {
@@ -186,32 +186,17 @@ const RefineRadioBase = () => {
     }
   };
 
+  const setGlobalModal = useGlobalModalActionsContext();
   const toggleDeleteModel = async () => {
     const ret = await new Promise((resolve) => {
-      setModalConfig({
+      setGlobalModal({
         onClose: resolve,
         title: "削除します。よろしいですか?",
         message: "削除すると二度と元に戻せません。",
       });
     });
-    setModalConfig(undefined);
+    setGlobalModal(undefined);
     return ret;
-  };
-
-  const handleDeleteOption = async (e) => {
-    const appearing_detail_name = e.target.name;
-    const ret = await toggleDeleteModel();
-    if (ret === "ok") {
-      setGlobalSpinner(true);
-      await deleteAppearingDetail(appearing_detail_name);
-      const old_id = Object.keys(options).find(
-        (key) => options[key] === appearing_detail_name
-      );
-      const newOptions = deleteItemFromObject(options, old_id);
-      setOptions(newOptions);
-      await getSelectedBefore(newOptions, fileId);
-      setGlobalSpinner(false);
-    }
   };
 
   const handleDeleteTask = async (e) => {
@@ -459,26 +444,12 @@ const RefineRadioBase = () => {
 
       <hr></hr>
 
-      {/* 登場の仕方の登録 */}
-      <input
-        type="text"
-        placeholder="add options"
-        onChange={(e) => {
-          setOptionInput(e.target.value);
-        }}
+      <ADRForm
+        providedOptions={Object.values(options)}
+        handleClickAddAdditional={handleAddOption}
+        handleClickDeleteAdditional={handleDeleteOption}
+        handleClickRenameAdditional={handleRenameOption}
       />
-      <button type="button" onClick={() => handleAddOption(optionInput)}>
-        add
-      </button>
-      <AppearingDetailForm
-        options={options}
-        handleDeleteClick={handleDeleteOption}
-        handleRenameClick={handleRenameOption}
-      />
-
-      {/* 削除・変更時のモーダル */}
-      {modalConfig && <MyDialog {...modalConfig} />}
-      {modalConfigRename && <MyDialogRename {...modalConfigRename} />}
     </BaseFrame>
   );
 };
