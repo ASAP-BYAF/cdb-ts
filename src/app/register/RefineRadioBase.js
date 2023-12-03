@@ -179,64 +179,62 @@ const RefineRadioBase = () => {
   // ==========================================================================
 
   const getSelectedBefore = async (options, file_id) => {
-    // 入力
+    // ===== 役割 =============================================================
+    //    質問 questions の各質問の選択肢 options に対して登録済みの値を取得する。
+    //
+    // ===== 入力 =============================================================
     //    options = {
-    //               appearingDetailId1: appearingDetailName1,
-    //               appearingDetailId2: appearingDetailName2,
+    //               optionId_1: optionName_1,
+    //               optionId_2: optionName_2,
     //               ...
     //              }
     //
     //    file_id = integer
     //
-    // 中で定義している変数の説明
+    // ===== 中で定義している変数の説明 =========================================
     //     (1) appearingList = [
-    //                      {taskId1: x1, fileId1: y1, appearingDetailId1: z1},
-    //                      {taskId2: x2, fileId2: y2, appearingDetailId2: z2},
+    //                      {questionId: questionId_1 , fileId: fileId_1 , optionId: optionId_1 },
+    //                      {questionId: questionId_2 , fileId: fileId_2 , optionId: optionId_2 },
     //                      ...
     //                     ]
-    //         現在選択されている file に対して登録されているすべての登場の仕方
-    // 　　　　　を集めたもの。
+    //         fileId に対して登録されているすべての登場の仕方を集めたもの。(fileId_i はすべて同一の値)
     //
-    //     (2) taskIdNameObj = {taskId1: taskName1, taskId2: taskName2, ...}
-    //         task に関して id と name を対応付けたオブジェクト。
+    //     (2) questionIdNameObj = {questionId_1: questionName_1, questionId_2: questionName_2, ...}
+    //         question に関して id と name を対応付けたオブジェクト。
     //
-    //     (3) appearingDetailIdList = [appearingDetailId1, appearingDetailId2, ...]
-    //         option に含まれる id を順に並べたもの。id と選択肢の番号を対応付けることが目的。
+    //     (3) optionIdList = [optionId_1, optionId_2, ...]
+    //         option に含まれる id を順に並べたもの。id とフォーム上での選択肢番号を対応付けることが目的。
+    //         optionId_i のフォーム上での選択肢番号は optionNum_i = i-1。
     //
-    //     (4) tmpSelectedBefore = {taskName1: optionNum1, taskName2: optionNum2, ....}
-    //         task の名前と登場の仕方を結びつけている。登場の仕方は選択肢の番号に変換されている。
+    //     (4) tmpSelectedBefore = {questionName_1: optionNum_1, questionName_2: optionNum_2, ....}
+    //         question の名前と option の選択番号を結びつけている。
     //
-    //     処理内容
-    //         (1) の各要素について taskId を (2) を通して taskName に変換、
-    //         appearingDetailId を (3) を通して optionNum に変換し、(4) を作成。
+    // ===== 処理内容 ==========================================================
+    //         (1) の各要素について questionId を (2) を通して questionName を取得、
+    //         optionId を (3) を通して optionNum を取得し、(4) を作成し、返す。
     //
 
-    // console.log(`fileId = ${fileId}`);
-    // console.log(`fileExist = ${fileExist}`);
-    // console.log(`optionExist = ${optionExist}`);
-    // console.log("options !!");
-    // console.log(options);
-    // console.log("================================");
     try {
       setGlobalSpinner(true);
+      // API をたたいて (1) を取得。
       const appearlingList = await getAppearingWithFileId(file_id);
-      const taskIdNameObj = await questions.reduce(async (acc, item) => {
+      // 全ての質問名に対して API をたたいて、質問の id を取得し、(2) を作成。
+      const questionIdNameObj = await questions.reduce(async (acc, item) => {
         acc = await acc;
-        const taskId = await getTaskIdFromDb(item);
-        acc = { ...acc, [taskId]: item };
+        const questionId = await getTaskIdFromDb(item);
+        acc = { ...acc, [questionId]: item };
         return acc;
       }, {});
-      const appearingDetailIdList = Object.keys(options);
+      // (3) を作成
+      const optionIdList = Object.keys(options);
+      // (4) を作成。
       const tmpSelectedBefore = appearlingList.reduce((acc, item) => {
-        const taskId = item["task_id"];
-        const task = taskIdNameObj[taskId];
-        const appearingDetailId = item["appearing_detail_id"];
-        const optionNum = appearingDetailIdList.indexOf(
-          String(appearingDetailId)
-        );
-        return { ...acc, [task]: optionNum };
+        const questionId = item["task_id"];
+        const questionName = questionIdNameObj[questionId];
+        const optionId = item["appearing_detail_id"];
+        const optionNum = optionIdList.indexOf(String(optionId));
+        return { ...acc, [questionName]: optionNum };
       }, {});
-      console.log(tmpSelectedBefore);
       setSelectedOptionBefore(tmpSelectedBefore);
     } catch {
       console.error(
