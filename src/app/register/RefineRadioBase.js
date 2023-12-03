@@ -33,11 +33,7 @@ import ADRIForm from "components/form/ADRIForm";
 
 const RefineRadioBase = () => {
   const [questions, setQuestions] = useState([]);
-  const [questionsDiff, setQuestionsDiff] = useState([]);
-  const [allQuestions, setAllQuestions] = useState([]);
-  const [filterText, setFilterText] = useState("");
   const [options, setOptions] = useState([]);
-  const [optionSelectedDiff, setOptionSelectedDiff] = useState([]);
   const [fileExist, setFileExist] = useState(false);
   const [optionExist, setOptionExist] = useState(false);
   const [selectedOptionBefore, setSelectedOptionBefore] = useState(
@@ -58,7 +54,7 @@ const RefineRadioBase = () => {
       try {
         const res = await getTaskAll();
         const taskNameList = res.map((item) => item["title"]);
-        updateQuestions(taskNameList, "added");
+        setQuestions((prev) => [...prev, ...taskNameList]);
       } catch (error) {
         console.error(error);
       }
@@ -101,6 +97,7 @@ const RefineRadioBase = () => {
     setGlobalSpinner(false);
   };
 
+  // 登場ステータスフォームに対する追加処理
   const handleAddOption = async (newOptionName) => {
     setGlobalSpinner(true);
     const res = await addAppearingDetail(newOptionName);
@@ -127,6 +124,7 @@ const RefineRadioBase = () => {
     setGlobalSpinner(false);
   };
 
+  // 登録情報フォームに対する追加処理
   const handleAddQuestion = async (newQuestionName) => {
     setGlobalSpinner(true);
     //　task (人物) を DB にも追加する。
@@ -220,7 +218,7 @@ const RefineRadioBase = () => {
     try {
       setGlobalSpinner(true);
       const appearlingList = await getAppearingWithFileId(file_id);
-      const taskIdNameObj = await allQuestions.reduce(async (acc, item) => {
+      const taskIdNameObj = await questions.reduce(async (acc, item) => {
         acc = await acc;
         const taskId = await getTaskIdFromDb(item);
         acc = { ...acc, [taskId]: item };
@@ -273,36 +271,6 @@ const RefineRadioBase = () => {
       await getSelectedBefore(options, fileId);
     }
   }, [fileId, fileExist, optionExist]);
-
-  useMemo(async () => {
-    // console.log("usememo3");
-    setGlobalSpinner(true);
-    if (Object.keys(optionSelectedDiff).length !== 0) {
-      const task_id = await getTaskIdFromDb(optionSelectedDiff["name"]);
-      if (optionSelectedDiff["value"]) {
-        const selectedOptionNum =
-          Object.values(options)[optionSelectedDiff["value"]];
-        const new_appearing_detail_id = Object.keys(options).find(
-          (key) => options[key] === selectedOptionNum
-        );
-        const res = await updateAppearing(
-          fileId,
-          task_id,
-          new_appearing_detail_id
-        );
-        // 未選択の場合、更新する対象が見つからないので、新たに作成する。
-        if (res === 404) {
-          console.error(
-            "未選択の場合、更新する対象が見つからないので、新たに作成する。"
-          );
-          await addAppearing(fileId, task_id, new_appearing_detail_id);
-        }
-      } else {
-        await deleteAppearing(fileId, task_id);
-      }
-    }
-    setGlobalSpinner(false);
-  }, [optionSelectedDiff]);
 
   // 巻数あるいはファイル番号が変わるたびにこの関数を実行
   useMemo(async () => {
