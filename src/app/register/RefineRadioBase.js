@@ -97,7 +97,7 @@ const RefineRadioBase = () => {
     setGlobalSpinner(false);
   };
 
-  // 登場ステータスフォームに対する追加処理
+  // 登場ステータスフォームに対する追加処理 =======================================
   const handleAddOption = async (newOptionName) => {
     setGlobalSpinner(true);
     const res = await addAppearingDetail(newOptionName);
@@ -123,8 +123,9 @@ const RefineRadioBase = () => {
     );
     setGlobalSpinner(false);
   };
+  // ==========================================================================
 
-  // 登録情報フォームに対する追加処理
+  // 登録情報フォームに対する追加処理 ============================================
   const handleAddQuestion = async (newQuestionName) => {
     setGlobalSpinner(true);
     //　task (人物) を DB にも追加する。
@@ -175,6 +176,7 @@ const RefineRadioBase = () => {
     }
     setGlobalSpinner(false);
   };
+  // ==========================================================================
 
   const getSelectedBefore = async (options, file_id) => {
     // 入力
