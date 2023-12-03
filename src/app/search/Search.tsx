@@ -1,5 +1,5 @@
 import SearchBase from "app/search/SearchBase";
-import GlobalSpinnerContextProvider from "components/spinner/GlobalSpinnerContext";
+import GlobalSpinnerContextProvider from "contexts/spinner/GlobalSpinnerContext";
 
 const Search = () => {
   return (

@@ -1,5 +1,5 @@
 import Modal from "components/modal/normal/Modal";
-import { useGlobalModalContext } from "components/modal/normal/GlobalModalContext";
+import { useGlobalModalContext } from "contexts/modal/normal/GlobalModalContext";
 
 /**
  * グローバルモーダル

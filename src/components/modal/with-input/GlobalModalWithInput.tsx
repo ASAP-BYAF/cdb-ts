@@ -1,5 +1,5 @@
 import ModalWithInput from "./ModalWithInput";
-import { useGlobalModalWithInputContext } from "./GlobalModalWithInputContext";
+import { useGlobalModalWithInputContext } from "contexts/modal/with-input/GlobalModalWithInputContext";
 
 /**
  * 入力欄付きモーダル

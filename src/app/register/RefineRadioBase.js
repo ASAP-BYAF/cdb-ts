@@ -1,5 +1,8 @@
 import { useState, useMemo, useEffect } from "react";
-import CharaForm from "./CharaForm";
+import { concatObject, arrayToObject } from "util/add";
+import { deleteItemFromArray, deleteItemFromObjectbyValue } from "util/delete";
+import { renameItemInArray, renameValueInObject } from "util/rename";
+import NumberDropdown from "components/dropdown/NumberDropdown";
 import {
   addTask,
   deleteTaskById,
@@ -7,11 +10,6 @@ import {
   getTaskByTitle,
   updateTask,
 } from "api/task";
-import { concatObject } from "util/add";
-import { deleteItemFromArray, deleteItemFromObjectbyValue } from "util/delete";
-import { renameItemInArray, renameValueInObject } from "util/rename";
-import NumberDropdown from "components/dropdown/NumberDropdown";
-import { arrayToObject } from "util/add";
 import {
   addAppearingDetail,
   deleteAppearingDetail,
@@ -29,10 +27,9 @@ import { addFile, getFileById, updateFile } from "api/file";
 import Trans2GButton from "components/button/Trans2GButton";
 import BaseFrame from "components/BaseFrame";
 import useAuthGuard from "auth/authGuard";
-import { useGlobalSpinnerActionsContext } from "components/spinner/GlobalSpinnerContext";
-import { useGlobalModalActionsContext } from "components/modal/normal/GlobalModalContext";
-import { useGlobalModalWithInputActionsContext } from "components/modal/with-input/GlobalModalWithInputContext";
+import { useGlobalSpinnerActionsContext } from "contexts/spinner/GlobalSpinnerContext";
 import ADRForm from "components/form/ADRForm";
+import ADRIForm from "components/form/ADRIForm";
 
 const RefineRadioBase = () => {
   const [questions, setQuestions] = useState([]);
@@ -41,7 +38,6 @@ const RefineRadioBase = () => {
   const [filterText, setFilterText] = useState("");
   const [options, setOptions] = useState([]);
   const [optionSelectedDiff, setOptionSelectedDiff] = useState([]);
-  const [visibleAdd, setVisibleAdd] = useState(false);
   const [fileExist, setFileExist] = useState(false);
   const [optionExist, setOptionExist] = useState(false);
   const [selectedOptionBefore, setSelectedOptionBefore] = useState(
@@ -93,25 +89,6 @@ const RefineRadioBase = () => {
     setFile(x);
   };
 
-  const handleInputChange = (event) => {
-    const newText = event.target.value.toLowerCase();
-    setFilterText(newText);
-    const filteredquestions = allQuestions.filter((item) =>
-      item.toLowerCase().includes(newText)
-    );
-    // 配列の中身を比較。中身が異なるときだけ questions の状態を更新。
-    // 単に questions !== filteredquestions とするだけではだめだった。
-    if (JSON.stringify(questions) !== JSON.stringify(filteredquestions)) {
-      setQuestions(filteredquestions);
-    }
-    // 選択肢の追加ボタンは検索に該当する選択肢がないときにだけ表示。
-    if (filteredquestions.length === 0) {
-      setVisibleAdd(true);
-    } else {
-      setVisibleAdd(false);
-    }
-  };
-
   const confirmFileName = async () => {
     setGlobalSpinner(true);
     if (fileId < 0) {
@@ -155,23 +132,10 @@ const RefineRadioBase = () => {
     updateQuestions([filterText], "added");
     //　task (人物) を DB にも追加する。
     await addTask(filterText);
-    setVisibleAdd(false);
     setGlobalSpinner(false);
   };
 
-  const setGlobalWithInput = useGlobalModalWithInputActionsContext();
-  const toggleRenameModel = async (x) => {
-    const ret = await new Promise((resolve) => {
-      setGlobalWithInput({
-        onClose: resolve,
-        title: "新しい選択肢を入力してください。",
-        message: "空白のみにはできません。",
-        oldText: x,
-      });
-    });
-    setGlobalWithInput(undefined);
-    return ret;
-  };
+  const toggleRenameModel = async (x) => {};
 
   const handleRenameTask = async (e) => {
     const x = e.target.name;
@@ -186,18 +150,7 @@ const RefineRadioBase = () => {
     }
   };
 
-  const setGlobalModal = useGlobalModalActionsContext();
-  const toggleDeleteModel = async () => {
-    const ret = await new Promise((resolve) => {
-      setGlobalModal({
-        onClose: resolve,
-        title: "削除します。よろしいですか?",
-        message: "削除すると二度と元に戻せません。",
-      });
-    });
-    setGlobalModal(undefined);
-    return ret;
-  };
+  const toggleDeleteModel = async () => {};
 
   const handleDeleteTask = async (e) => {
     const x = e.target.name;
@@ -300,6 +253,7 @@ const RefineRadioBase = () => {
         );
         return { ...acc, [task]: optionNum };
       }, {});
+      console.log(tmpSelectedBefore);
       setSelectedOptionBefore(tmpSelectedBefore);
     } catch {
       console.error(
@@ -391,59 +345,44 @@ const RefineRadioBase = () => {
   return (
     <BaseFrame>
       {/* 事件の巻数、話数、名前を登録 */}
-      <div>
-        <NumberDropdown
-          n_st={1}
-          n_ed={103}
-          label="巻"
-          handleChange={handleVolNumChange}
-        />
-        <NumberDropdown
-          n_st={1}
-          n_ed={11}
-          label="話"
-          handleChange={handleFileNumChange}
-        />
-        <input
-          type="text"
-          value={filename}
-          onChange={(e) => {
-            setFileName(e.target.value);
-          }}
-        />
-        <Trans2GButton label="confirm" onclick={confirmFileName} />
-      </div>
+      <NumberDropdown
+        n_st={1}
+        n_ed={103}
+        label="巻"
+        handleChange={handleVolNumChange}
+      />
+      <NumberDropdown
+        n_st={1}
+        n_ed={11}
+        label="話"
+        handleChange={handleFileNumChange}
+      />
+      <input
+        type="text"
+        value={filename}
+        onChange={(e) => {
+          setFileName(e.target.value);
+        }}
+      />
+      <Trans2GButton label="confirm" onclick={confirmFileName} />
 
       {/* 人物の登録、登場の登録・変更 */}
       <div style={{ display: fileExist && optionExist ? "block" : "none" }}>
-        <input
-          type="text"
-          placeholder="人物を絞り込む"
-          onChange={handleInputChange}
-        />
-        <button
-          className="addQuestionButton"
-          type="button"
-          onClick={handleAddTask}
-          style={{ display: visibleAdd ? "inline-block" : "none" }}
-        >
-          add
-        </button>
-        <CharaForm
-          questions={questions}
-          questionsDiff={questionsDiff}
+        <ADRIForm
+          providedQuestions={questions}
+          providedSelectedOptions={selectedOptionBefore}
+          unselectedValue={NaN}
           options={Object.keys(options).map((item, idx) => {
             return idx;
           })}
-          handleDeleteClick={handleDeleteTask}
-          handleRenameClick={handleRenameTask}
-          provideOptionChange={setOptionSelectedDiff}
-          selectedOptionsBefore={selectedOptionBefore}
+          // handleSelectChangeAdditional={}
+          handleClickAddAdditional={handleAddTask}
+          handleClickDeleteAdditional={handleDeleteTask}
+          handleClickRenameAdditional={handleRenameTask}
+          // handleClickInitAdditional={handleInitOption}
         />
       </div>
-
       <hr></hr>
-
       <ADRForm
         providedOptions={Object.values(options)}
         handleClickAddAdditional={handleAddOption}

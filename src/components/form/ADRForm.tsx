@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Trans2GButton from "components/button/Trans2GButton";
-import { useGlobalModalActionsContext } from "components/modal/normal/GlobalModalContext";
-import { useGlobalModalWithInputActionsContext } from "components/modal/with-input/GlobalModalWithInputContext";
+import { useGlobalModalActionsContext } from "contexts/modal/normal/GlobalModalContext";
+import { useGlobalModalWithInputActionsContext } from "contexts/modal/with-input/GlobalModalWithInputContext";
 import { renameItemInArray } from "util/rename";
 import { deleteItemFromArray } from "util/delete";
 
