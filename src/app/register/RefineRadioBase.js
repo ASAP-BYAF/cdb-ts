@@ -108,6 +108,15 @@ const RefineRadioBase = () => {
     setGlobalSpinner(false);
   };
 
+  const handleDeleteOption = async (oldOptionName) => {
+    setGlobalSpinner(true);
+    await deleteAppearingDetail(oldOptionName);
+    const newOptions = deleteItemFromObjectbyValue(options, oldOptionName);
+    setOptions(newOptions);
+    await getSelectedBefore(newOptions, fileId);
+    setGlobalSpinner(false);
+  };
+
   const handleRenameOption = async (oldOptionName, newOptionName) => {
     setGlobalSpinner(true);
     const res = await getAppearingDetailByName(oldOptionName);
@@ -118,81 +127,55 @@ const RefineRadioBase = () => {
     setGlobalSpinner(false);
   };
 
-  const handleDeleteOption = async (oldOptionName) => {
+  const handleAddQuestion = async (newQuestionName) => {
     setGlobalSpinner(true);
-    await deleteAppearingDetail(oldOptionName);
-    const aaa = deleteItemFromObjectbyValue(options, oldOptionName);
-    setOptions(aaa);
-    await getSelectedBefore(aaa, fileId);
-    setGlobalSpinner(false);
-  };
-
-  const handleAddTask = async () => {
-    setGlobalSpinner(true);
-    updateQuestions([filterText], "added");
     //　task (人物) を DB にも追加する。
-    await addTask(filterText);
+    await addTask(newQuestionName);
+    setQuestions((prev) => [...prev, newQuestionName]);
     setGlobalSpinner(false);
   };
 
-  const toggleRenameModel = async (x) => {};
-
-  const handleRenameTask = async (e) => {
-    const x = e.target.name;
-    const ret = await toggleRenameModel(x);
-    const ret_trimed = ret.trim();
-    if (ret !== "cancel" && ret_trimed && !allQuestions.includes(ret_trimed)) {
-      setGlobalSpinner(true);
-      updateQuestions([x, ret], "renamed");
-      const res = await getTaskByTitle(x);
-      await updateTask(res.id, ret);
-      setGlobalSpinner(false);
-    }
+  const handleDeleteQuestion = async (questionName) => {
+    setGlobalSpinner(true);
+    const res = await getTaskByTitle(questionName);
+    await deleteTaskById(res.id);
+    setQuestions((prev) => deleteItemFromArray(prev, questionName));
+    setGlobalSpinner(false);
   };
 
-  const toggleDeleteModel = async () => {};
-
-  const handleDeleteTask = async (e) => {
-    const x = e.target.name;
-    console.log(x);
-    const ret = await toggleDeleteModel();
-    if (ret === "ok") {
-      setGlobalSpinner(true);
-      updateQuestions([x], "deleted");
-      const res = await getTaskByTitle(x);
-      await deleteTaskById(res.id);
-      setGlobalSpinner(false);
-    }
+  const handleRenameQuestion = async (oldQuestionName, newQuestionName) => {
+    setGlobalSpinner(true);
+    const res = await getTaskByTitle(oldQuestionName);
+    await updateTask(res.id, newQuestionName);
+    setQuestions((prev) =>
+      renameItemInArray(prev, oldQuestionName, newQuestionName)
+    );
+    setGlobalSpinner(false);
   };
 
-  // 質問の追加、削除、変更時に現在表示している質問とすべての質問を更新。
-  // また、前回との差分を計算。
-  const updateQuestions = (x, sign) => {
-    // x は配列を想定。
-    if (sign === "added") {
-      // 最初の DB からとってくるときのみ x の長さは 1 とは限らない。
-      // そのため、diff = x[0] ではだめ。
-      const diff = x.filter((value) => {
-        return !questions.includes(value);
-      });
-      setQuestions((prev) => [...prev, ...x]);
-      setAllQuestions((prev) => [...prev, ...x]);
-      setQuestionsDiff([sign, diff]);
-    } else if (sign === "deleted") {
-      // CharaFrom.tsx において questionsDiff の第二項は string[] 型なので配列で渡す。
-      // questions, allQuestions は string[] 型なので
-      // deleteItemFromArray に対して、削除したい値は string で与える。
-      setQuestions((prev) => deleteItemFromArray(prev, x[0]));
-      setAllQuestions((prev) => deleteItemFromArray(prev, x[0]));
-      setQuestionsDiff([sign, x]);
-    } else if (sign === "renamed") {
-      const oldValue = x[0];
-      const newValue = x[1];
-      setQuestions((prev) => renameItemInArray(prev, oldValue, newValue));
-      setAllQuestions((prev) => renameItemInArray(prev, oldValue, newValue));
-      setQuestionsDiff([sign, [oldValue, newValue]]);
-      return "renamed";
+  const handleInitQuestion = async (questionName) => {
+    setGlobalSpinner(true);
+    const questionId = await getTaskIdFromDb(questionName);
+    await deleteAppearing(fileId, questionId);
+    setGlobalSpinner(false);
+  };
+
+  const handleSelectedOptionChange = async (
+    questionName,
+    newSeletedOptionNum
+  ) => {
+    setGlobalSpinner(true);
+    const questionId = await getTaskIdFromDb(questionName);
+    const newSeletedOptionId = Object.keys(options)[newSeletedOptionNum];
+    const res = await updateAppearing(fileId, questionId, newSeletedOptionId);
+    // 未選択の場合、更新する対象が見つからないので、新たに作成する。
+    if (res === 404) {
+      console.error(
+        "未選択の場合、更新する対象が見つからないので、新たに作成する。"
+      );
+      await addAppearing(fileId, questionId, newSeletedOptionId);
     }
+    setGlobalSpinner(false);
   };
 
   const getSelectedBefore = async (options, file_id) => {
@@ -375,11 +358,11 @@ const RefineRadioBase = () => {
           options={Object.keys(options).map((item, idx) => {
             return idx;
           })}
-          // handleSelectChangeAdditional={}
-          handleClickAddAdditional={handleAddTask}
-          handleClickDeleteAdditional={handleDeleteTask}
-          handleClickRenameAdditional={handleRenameTask}
-          // handleClickInitAdditional={handleInitOption}
+          handleSelectChangeAdditional={handleSelectedOptionChange}
+          handleClickAddAdditional={handleAddQuestion}
+          handleClickDeleteAdditional={handleDeleteQuestion}
+          handleClickRenameAdditional={handleRenameQuestion}
+          handleClickInitAdditional={handleInitQuestion}
         />
       </div>
       <hr></hr>
