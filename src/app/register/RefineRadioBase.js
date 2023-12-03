@@ -90,9 +90,9 @@ const RefineRadioBase = () => {
     if (fileId < 0) {
       const res = await addFile(vol, file, filename);
       setFileId(res.id);
+      setFileExist(true);
     } else {
-      const res = await updateFile(fileId, vol, file, filename);
-      setFileId(res.id);
+      await updateFile(fileId, vol, file, filename);
     }
     setGlobalSpinner(false);
   };
@@ -266,32 +266,25 @@ const RefineRadioBase = () => {
     // (1) fileId, fileExist (usememo4 内)
     // (2) optionExist の順 (useeffect -> usememo1 内)
     // という順序で変更されるから。
-    // fileExist は一応入れているだけ。
     if (fileExist && optionExist) {
       await getSelectedBefore(options, fileId);
     }
   }, [fileId, fileExist, optionExist]);
 
-  // 巻数あるいはファイル番号が変わるたびにこの関数を実行
+  // 巻数あるいはファイル番号が変更されたときにファイルの情報を更新
   useMemo(async () => {
     // console.log("usememo4");
     const res = await getFileById(vol, file);
     if (res.message === "None") {
       setFileName("");
       setFileId(-1);
+      setFileExist(false);
     } else {
       setFileName(res.file_name);
       setFileId(res.id);
+      setFileExist(true);
     }
   }, [vol, file]);
-
-  useMemo(() => {
-    if (fileId > 0) {
-      setFileExist(true);
-    } else {
-      setFileExist(false);
-    }
-  }, [fileId]);
 
   return (
     <BaseFrame>
