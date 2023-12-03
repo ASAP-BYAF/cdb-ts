@@ -11,11 +11,17 @@ type ADRIFormProps = {
   providedSelectedOptions?: { [key: string]: number };
   unselectedValue: number;
   options: number[];
-  handleSelectChangeAdditional?: (arg?: string, arg2?: number) => {} | void;
-  handleClickAddAdditional?: (arg?: string) => {} | void;
-  handleClickDeleteAdditional?: (arg?: string) => {} | void;
-  handleClickRenameAdditional?: (arg?: string, arg2?: string) => {} | void;
-  handleClickInitAdditional?: (arg?: string) => {} | void;
+  handleSelectChangeAdditional?: (
+    arg: string,
+    arg2: number
+  ) => {} | void | Promise<void>;
+  handleClickAddAdditional?: (arg: string) => {} | void | Promise<void>;
+  handleClickDeleteAdditional?: (arg: string) => {} | void | Promise<void>;
+  handleClickRenameAdditional?: (
+    arg: string,
+    arg2: string
+  ) => {} | void | Promise<void>;
+  handleClickInitAdditional?: (arg: string) => {} | void | Promise<void>;
 };
 
 // 質問の追加、削除、名前の変更、選択状況の初期化ができるフォームです。

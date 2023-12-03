@@ -31,25 +31,48 @@ import { useGlobalSpinnerActionsContext } from "contexts/spinner/GlobalSpinnerCo
 import ADRForm from "components/form/ADRForm";
 import ADRIForm from "components/form/ADRIForm";
 
-const RefineRadioBase = () => {
-  const [questions, setQuestions] = useState([]);
-  const [options, setOptions] = useState([]);
-  const [optionExist, setOptionExist] = useState(false);
-  const [selectedOptionBefore, setSelectedOptionBefore] = useState(
-    arrayToObject(questions, options[0])
-  );
+type Character = {
+  title: string;
+  id: number;
+};
+
+type AppearingDetail = {
+  appearing_detail: string;
+  id: number;
+};
+
+type Appearing = {
+  task_id: number;
+  file_id: number;
+  appearing_detail_id: number;
+};
+
+type OptionsIdName = {
+  [key: number]: string;
+};
+
+type selectedOptions = {
+  [key: string]: number;
+};
+
+const ManagedForm = (): JSX.Element => {
+  const [questions, setQuestions] = useState<string[]>([]);
+  const [options, setOptions] = useState<OptionsIdName>({});
+  const [optionExist, setOptionExist] = useState<boolean>(false);
+  const [selectedOptionBefore, setSelectedOptionBefore] =
+    useState<selectedOptions>(arrayToObject(questions, NaN));
 
   // (volNum, fileNum, fileName) の組と fileId が 1:1 で対応します。
-  const [volNum, setVolNum] = useState(1);
-  const [fileNum, setFileNum] = useState(1);
-  const [fileName, setFileName] = useState("");
-  const [fileId, setFileId] = useState();
-  const [fileExist, setFileExist] = useState(false);
+  const [volNum, setVolNum] = useState<number>(1);
+  const [fileNum, setFileNum] = useState<number>(1);
+  const [fileName, setFileName] = useState<string>("");
+  const [fileId, setFileId] = useState<number>(-1);
+  const [fileExist, setFileExist] = useState<boolean>(false);
 
   const setGlobalSpinner = useGlobalSpinnerActionsContext();
 
   // 認証ガード
-  useAuthGuard("/signin");
+  useAuthGuard();
 
   // 既に登録されている質問と選択肢を取得しました。
   useEffect(() => {
@@ -57,7 +80,7 @@ const RefineRadioBase = () => {
       // 質問の取得
       try {
         const res = await getTaskAll();
-        const resisteredQuestions = res.map((item) => item["title"]);
+        const resisteredQuestions = res.map((item: Character) => item["title"]);
         setQuestions((prev) => [...prev, ...resisteredQuestions]);
       } catch (error) {
         console.error(error);
@@ -66,9 +89,12 @@ const RefineRadioBase = () => {
       // 選択肢の取得
       try {
         const res = await getAppearingAll();
-        const registeredOptions = res.reduce((accumulator, x) => {
-          return { ...accumulator, [x["id"]]: x["appearing_detail"] };
-        }, {});
+        const registeredOptions = res.reduce(
+          (accumulator: OptionsIdName, x: AppearingDetail) => {
+            return { ...accumulator, [x["id"]]: x["appearing_detail"] };
+          },
+          {}
+        );
         setOptions(registeredOptions);
       } catch (error) {
         console.error(error);
@@ -79,16 +105,16 @@ const RefineRadioBase = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getTaskIdFromDb = async (title) => {
-    const res = await getTaskByTitle(title);
+  const getTaskIdFromDb = async (questionName: string) => {
+    const res = await getTaskByTitle(questionName);
     return res.id;
   };
 
-  const handleVolNumChange = (x) => {
-    setVolNum(x);
+  const handleVolNumChange = (x: string) => {
+    setVolNum(Number(x));
   };
-  const handleFileNumChange = (x) => {
-    setFileNum(x);
+  const handleFileNumChange = (x: string) => {
+    setFileNum(Number(x));
   };
 
   const confirmFileName = async () => {
@@ -104,14 +130,14 @@ const RefineRadioBase = () => {
   };
 
   // 登場ステータスフォームに対する追加処理 =======================================
-  const handleAddOption = async (newOptionName) => {
+  const handleAddOption = async (newOptionName: string): Promise<void> => {
     setGlobalSpinner(true);
     const res = await addAppearingDetail(newOptionName);
     setOptions((prev) => concatObject(prev, { [res.id]: newOptionName }));
     setGlobalSpinner(false);
   };
 
-  const handleDeleteOption = async (oldOptionName) => {
+  const handleDeleteOption = async (oldOptionName: string): Promise<void> => {
     setGlobalSpinner(true);
     await deleteAppearingDetail(oldOptionName);
     const newOptions = deleteItemFromObjectbyValue(options, oldOptionName);
@@ -120,7 +146,10 @@ const RefineRadioBase = () => {
     setGlobalSpinner(false);
   };
 
-  const handleRenameOption = async (oldOptionName, newOptionName) => {
+  const handleRenameOption = async (
+    oldOptionName: string,
+    newOptionName: string
+  ): Promise<void> => {
     setGlobalSpinner(true);
     const res = await getAppearingDetailByName(oldOptionName);
     await updateAppearingDetail(res.id, newOptionName);
@@ -132,7 +161,7 @@ const RefineRadioBase = () => {
   // ==========================================================================
 
   // 登録情報フォームに対する追加処理 ============================================
-  const handleAddQuestion = async (newQuestionName) => {
+  const handleAddQuestion = async (newQuestionName: string): Promise<void> => {
     setGlobalSpinner(true);
     //　task (人物) を DB にも追加する。
     await addTask(newQuestionName);
@@ -140,7 +169,7 @@ const RefineRadioBase = () => {
     setGlobalSpinner(false);
   };
 
-  const handleDeleteQuestion = async (questionName) => {
+  const handleDeleteQuestion = async (questionName: string): Promise<void> => {
     setGlobalSpinner(true);
     const res = await getTaskByTitle(questionName);
     await deleteTaskById(res.id);
@@ -148,7 +177,10 @@ const RefineRadioBase = () => {
     setGlobalSpinner(false);
   };
 
-  const handleRenameQuestion = async (oldQuestionName, newQuestionName) => {
+  const handleRenameQuestion = async (
+    oldQuestionName: string,
+    newQuestionName: string
+  ): Promise<void> => {
     setGlobalSpinner(true);
     const res = await getTaskByTitle(oldQuestionName);
     await updateTask(res.id, newQuestionName);
@@ -158,7 +190,7 @@ const RefineRadioBase = () => {
     setGlobalSpinner(false);
   };
 
-  const handleInitQuestion = async (questionName) => {
+  const handleInitQuestion = async (questionName: string): Promise<void> => {
     setGlobalSpinner(true);
     const questionId = await getTaskIdFromDb(questionName);
     await deleteAppearing(fileId, questionId);
@@ -166,12 +198,14 @@ const RefineRadioBase = () => {
   };
 
   const handleSelectedOptionChange = async (
-    questionName,
-    newSeletedOptionNum
-  ) => {
+    questionName: string,
+    newSeletedOptionNum: number
+  ): Promise<void> => {
     setGlobalSpinner(true);
     const questionId = await getTaskIdFromDb(questionName);
-    const newSeletedOptionId = Object.keys(options)[newSeletedOptionNum];
+    const newSeletedOptionId = Number(
+      Object.keys(options)[newSeletedOptionNum]
+    );
     const res = await updateAppearing(fileId, questionId, newSeletedOptionId);
     // 未選択の場合、更新する対象が見つからないので、新たに作成する。
     if (res === 404) {
@@ -184,7 +218,7 @@ const RefineRadioBase = () => {
   };
   // ==========================================================================
 
-  const getSelectedBefore = async (options, file_id) => {
+  const getSelectedBefore = async (options: OptionsIdName, file_id: number) => {
     // ===== 役割 =============================================================
     //    質問 questions の各質問の選択肢 options に対して登録済みの値を取得する。
     //
@@ -219,28 +253,42 @@ const RefineRadioBase = () => {
     //         (1) の各要素について questionId を (2) を通して questionName を取得、
     //         optionId を (3) を通して optionNum を取得し、(4) を作成し、返す。
     //
+    type QuestionIdNameObj = {
+      [key: number]: string;
+    };
 
     try {
       setGlobalSpinner(true);
       // API をたたいて (1) を取得。
       const appearlingList = await getAppearingWithFileId(file_id);
+
       // 全ての質問名に対して API をたたいて、質問の id を取得し、(2) を作成。
-      const questionIdNameObj = await questions.reduce(async (acc, item) => {
-        acc = await acc;
-        const questionId = await getTaskIdFromDb(item);
-        acc = { ...acc, [questionId]: item };
-        return acc;
-      }, {});
+      const questionIdNameObj: QuestionIdNameObj = await questions.reduce(
+        async (acc, item: string) => {
+          acc = await acc;
+          const questionId: number = await getTaskIdFromDb(item);
+          acc = { ...acc, [questionId]: item };
+          return acc;
+        },
+        {}
+      );
       // (3) を作成
       const optionIdList = Object.keys(options);
+
       // (4) を作成。
-      const tmpSelectedBefore = appearlingList.reduce((acc, item) => {
-        const questionId = item["task_id"];
-        const questionName = questionIdNameObj[questionId];
-        const optionId = item["appearing_detail_id"];
-        const optionNum = optionIdList.indexOf(String(optionId));
-        return { ...acc, [questionName]: optionNum };
-      }, {});
+      const tmpSelectedBefore = appearlingList.reduce(
+        (acc: selectedOptions, item: Appearing) => {
+          // (2) を通して questionName を取得
+          const questionId = item["task_id"];
+          const questionName = questionIdNameObj[questionId];
+
+          // (3) を通して optionNum を取得
+          const optionId = item["appearing_detail_id"];
+          const optionNum = optionIdList.indexOf(String(optionId));
+          return { ...acc, [questionName]: optionNum };
+        },
+        {}
+      );
       setSelectedOptionBefore(tmpSelectedBefore);
     } catch {
       console.error(
@@ -294,53 +342,55 @@ const RefineRadioBase = () => {
 
   return (
     <BaseFrame>
-      {/* 事件の巻数、話数、名前を登録 */}
-      <NumberDropdown
-        n_st={1}
-        n_ed={103}
-        label="巻"
-        handleChange={handleVolNumChange}
-      />
-      <NumberDropdown
-        n_st={1}
-        n_ed={11}
-        label="話"
-        handleChange={handleFileNumChange}
-      />
-      <input
-        type="text"
-        value={fileName}
-        onChange={(e) => {
-          setFileName(e.target.value);
-        }}
-      />
-      <Trans2GButton label="confirm" onclick={confirmFileName} />
-
-      {/* 人物の登録、登場の登録・変更 */}
-      <div style={{ display: fileExist && optionExist ? "block" : "none" }}>
-        <ADRIForm
-          providedQuestions={questions}
-          providedSelectedOptions={selectedOptionBefore}
-          unselectedValue={NaN}
-          options={Object.keys(options).map((item, idx) => {
-            return idx;
-          })}
-          handleSelectChangeAdditional={handleSelectedOptionChange}
-          handleClickAddAdditional={handleAddQuestion}
-          handleClickDeleteAdditional={handleDeleteQuestion}
-          handleClickRenameAdditional={handleRenameQuestion}
-          handleClickInitAdditional={handleInitQuestion}
+      <>
+        {/* 事件の巻数、話数、名前を登録 */}
+        <NumberDropdown
+          n_st={1}
+          n_ed={103}
+          label="巻"
+          handleChange={handleVolNumChange}
         />
-      </div>
-      <hr></hr>
-      <ADRForm
-        providedOptions={Object.values(options)}
-        handleClickAddAdditional={handleAddOption}
-        handleClickDeleteAdditional={handleDeleteOption}
-        handleClickRenameAdditional={handleRenameOption}
-      />
+        <NumberDropdown
+          n_st={1}
+          n_ed={11}
+          label="話"
+          handleChange={handleFileNumChange}
+        />
+        <input
+          type="text"
+          value={fileName}
+          onChange={(e) => {
+            setFileName(e.target.value);
+          }}
+        />
+        <Trans2GButton label="confirm" onclick={confirmFileName} />
+
+        {/* 人物の登録、登場の登録・変更 */}
+        <div style={{ display: fileExist && optionExist ? "block" : "none" }}>
+          <ADRIForm
+            providedQuestions={questions}
+            providedSelectedOptions={selectedOptionBefore}
+            unselectedValue={NaN}
+            options={Object.keys(options).map((item, idx) => {
+              return idx;
+            })}
+            handleSelectChangeAdditional={handleSelectedOptionChange}
+            handleClickAddAdditional={handleAddQuestion}
+            handleClickDeleteAdditional={handleDeleteQuestion}
+            handleClickRenameAdditional={handleRenameQuestion}
+            handleClickInitAdditional={handleInitQuestion}
+          />
+        </div>
+        <hr></hr>
+        <ADRForm
+          providedOptions={Object.values(options)}
+          handleClickAddAdditional={handleAddOption}
+          handleClickDeleteAdditional={handleDeleteOption}
+          handleClickRenameAdditional={handleRenameOption}
+        />
+      </>
     </BaseFrame>
   );
 };
 
-export default RefineRadioBase;
+export default ManagedForm;

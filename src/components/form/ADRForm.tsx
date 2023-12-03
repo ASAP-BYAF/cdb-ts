@@ -7,9 +7,12 @@ import { deleteItemFromArray } from "util/delete";
 
 type ADRFormProps = {
   providedOptions: string[];
-  handleClickAddAdditional?: (arg?: string) => {} | void;
-  handleClickDeleteAdditional?: (arg?: string) => {} | void;
-  handleClickRenameAdditional?: (arg?: string, arg2?: string) => {} | void;
+  handleClickAddAdditional?: (arg: string) => {} | void | Promise<void>;
+  handleClickDeleteAdditional?: (arg: string) => {} | void | Promise<void>;
+  handleClickRenameAdditional?: (
+    arg: string,
+    arg2: string
+  ) => {} | void | Promise<void>;
 };
 
 // 選択肢の追加、削除、名前の変更ができるフォームです。
