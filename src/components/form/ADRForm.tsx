@@ -34,6 +34,7 @@ const ADRForm = (props: ADRFormProps): JSX.Element => {
 
   const handleClickAdd = async () => {
     setOptions((prev) => [...prev, optionInput]);
+    setOptionInput("");
     handleClickAddAdditional(optionInput);
   };
 
@@ -84,6 +85,7 @@ const ADRForm = (props: ADRFormProps): JSX.Element => {
       <input
         type="text"
         placeholder="新しい選択肢名を入力"
+        value={optionInput}
         onChange={(e) => {
           setOptionInput(e.target.value);
         }}
