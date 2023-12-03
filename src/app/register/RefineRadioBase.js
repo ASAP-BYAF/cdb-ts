@@ -34,23 +34,27 @@ import ADRIForm from "components/form/ADRIForm";
 const RefineRadioBase = () => {
   const [questions, setQuestions] = useState([]);
   const [options, setOptions] = useState([]);
-  const [fileExist, setFileExist] = useState(false);
   const [optionExist, setOptionExist] = useState(false);
   const [selectedOptionBefore, setSelectedOptionBefore] = useState(
     arrayToObject(questions, options[0])
   );
-  const [vol, setVol] = useState(1);
-  const [file, setFile] = useState(1);
-  const [filename, setFileName] = useState("");
+
+  // (volNum, fileNum, fileName) の組と fileId が 1:1 で対応します。
+  const [volNum, setVolNum] = useState(1);
+  const [fileNum, setFileNum] = useState(1);
+  const [fileName, setFileName] = useState("");
   const [fileId, setFileId] = useState();
+  const [fileExist, setFileExist] = useState(false);
 
   const setGlobalSpinner = useGlobalSpinnerActionsContext();
 
   // 認証ガード
   useAuthGuard("/signin");
 
+  // 既に登録されている質問と選択肢を取得しました。
   useEffect(() => {
     const fetchData = async () => {
+      // 質問の取得
       try {
         const res = await getTaskAll();
         const resisteredQuestions = res.map((item) => item["title"]);
@@ -58,12 +62,14 @@ const RefineRadioBase = () => {
       } catch (error) {
         console.error(error);
       }
+
+      // 選択肢の取得
       try {
         const res = await getAppearingAll();
-        const appearingIdNameObj = res.reduce((accumulator, x) => {
+        const registeredOptions = res.reduce((accumulator, x) => {
           return { ...accumulator, [x["id"]]: x["appearing_detail"] };
         }, {});
-        setOptions(appearingIdNameObj);
+        setOptions(registeredOptions);
       } catch (error) {
         console.error(error);
       }
@@ -79,20 +85,20 @@ const RefineRadioBase = () => {
   };
 
   const handleVolNumChange = (x) => {
-    setVol(x);
+    setVolNum(x);
   };
   const handleFileNumChange = (x) => {
-    setFile(x);
+    setFileNum(x);
   };
 
   const confirmFileName = async () => {
     setGlobalSpinner(true);
     if (fileId < 0) {
-      const res = await addFile(vol, file, filename);
+      const res = await addFile(volNum, fileNum, fileName);
       setFileId(res.id);
       setFileExist(true);
     } else {
-      await updateFile(fileId, vol, file, filename);
+      await updateFile(fileId, volNum, fileNum, fileName);
     }
     setGlobalSpinner(false);
   };
@@ -274,7 +280,7 @@ const RefineRadioBase = () => {
   // 巻数あるいはファイル番号が変更されたときにファイルの情報を更新
   useMemo(async () => {
     // console.log("usememo4");
-    const res = await getFileById(vol, file);
+    const res = await getFileById(volNum, fileNum);
     if (res.message === "None") {
       setFileName("");
       setFileId(-1);
@@ -284,7 +290,7 @@ const RefineRadioBase = () => {
       setFileId(res.id);
       setFileExist(true);
     }
-  }, [vol, file]);
+  }, [volNum, fileNum]);
 
   return (
     <BaseFrame>
@@ -303,7 +309,7 @@ const RefineRadioBase = () => {
       />
       <input
         type="text"
-        value={filename}
+        value={fileName}
         onChange={(e) => {
           setFileName(e.target.value);
         }}
