@@ -1,7 +1,7 @@
 type OnClickButtonProps = {
   label: string;
   name?: string;
-  onclick: (args: undefined | React.MouseEvent<HTMLButtonElement>) => {} | void;
+  onclick: (args: React.MouseEvent<HTMLButtonElement>) => {} | void;
   baseStyle?: string;
   plusStyle?: string;
 };
@@ -11,7 +11,7 @@ const OnClickButton = (props: OnClickButtonProps) => {
 
   return (
     <button
-      onClick={onclick}
+      onClick={(e: React.MouseEvent<HTMLButtonElement>) => onclick(e)}
       name={name}
       className={`${baseStyle} ${plusStyle}`}
     >

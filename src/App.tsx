@@ -1,6 +1,6 @@
 import "css/App.css";
 import "css/output.css";
-import RefineRadio from "app/register/RefineRadio";
+import Register from "app/register/Register";
 import Search from "app/search/Search";
 import Home from "app/home/Home";
 import Signin from "auth/Signin";
@@ -13,7 +13,7 @@ const App = (): JSX.Element => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/register" element={<RefineRadio />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signout" element={<Signout />} />
       </Routes>

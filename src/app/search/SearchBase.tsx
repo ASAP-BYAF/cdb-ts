@@ -3,7 +3,7 @@ import { getAll, getFilteredByTask } from "api/search";
 import makeGroupedList from "app/search/GroupedList";
 import ManagedInput from "app/search/ManagedInput";
 import BaseFrame from "components/BaseFrame";
-import { useGlobalSpinnerActionsContext } from "components/spinner/GlobalSpinnerContext";
+import { useGlobalSpinnerActionsContext } from "contexts/spinner/GlobalSpinnerContext";
 
 const SearchBase = () => {
   const [appearingList, setAppearingList] = useState<

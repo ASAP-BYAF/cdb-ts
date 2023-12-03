@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import InputButton from "app/search/InputButton";
 import SearchCondiList from "./SearchCondiList";
-import { deleteItemFromObject } from "util/delete";
+import { deleteItemFromObjectbyKey } from "util/delete";
 import { concatObject } from "util/add";
 import G2WButton from "components/button/G2WButton";
 import Trans2GButton from "components/button/Trans2GButton";
@@ -18,6 +18,8 @@ const ManagedInput = (props: ManagedInputProps): JSX.Element => {
   const [allInputValues, setAllInputValues] = useState<string[]>([]);
   const [serialNum, setSerialNum] = useState(1);
 
+  // 引数の型が Trans2GButton の onclick と違うがこれでいいのか？
+  // 一応、動いてはいる。
   const handleAddComponent = () => {
     const newId = serialNum + 1;
     setSerialNum(newId);
@@ -25,10 +27,12 @@ const ManagedInput = (props: ManagedInputProps): JSX.Element => {
   };
 
   const handleDeleteComponent = (id: number) => {
-    const updatedComponents = deleteItemFromObject(inputComponents, id);
+    const updatedComponents = deleteItemFromObjectbyKey(inputComponents, id);
     setInputComponents(updatedComponents);
   };
 
+  // 引数の型が G2WButton の onclick と違うがこれでいいのか？
+  // 一応、動いてはいる。
   const handleGetAllValues = async () => {
     const allValues: string[] = [];
     Object.values(inputComponents).forEach((value) => {
