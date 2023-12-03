@@ -53,8 +53,8 @@ const RefineRadioBase = () => {
     const fetchData = async () => {
       try {
         const res = await getTaskAll();
-        const taskNameList = res.map((item) => item["title"]);
-        setQuestions((prev) => [...prev, ...taskNameList]);
+        const resisteredQuestions = res.map((item) => item["title"]);
+        setQuestions((prev) => [...prev, ...resisteredQuestions]);
       } catch (error) {
         console.error(error);
       }
