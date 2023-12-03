@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import G2WButton from "components/button/G2WButton";
 import RadioButton from "components/button/RadioButton";
-import { useGlobalModalActionsContext } from "components/modal/normal/GlobalModalContext";
-import { useGlobalModalWithInputActionsContext } from "components/modal/with-input/GlobalModalWithInputContext";
+import { useGlobalModalActionsContext } from "contexts/modal/normal/GlobalModalContext";
+import { useGlobalModalWithInputActionsContext } from "contexts/modal/with-input/GlobalModalWithInputContext";
 import { renameItemInArray, renameKeyInObject } from "util/rename";
 import { deleteItemFromArray, deleteItemFromObjectbyKey } from "util/delete";
 
@@ -11,7 +11,7 @@ type ADRIFormProps = {
   providedSelectedOptions?: { [key: string]: number };
   unselectedValue: number;
   options: number[];
-  handleSelectChangeAdditional?: (arg?: string) => {} | void;
+  handleSelectChangeAdditional?: (arg?: string, arg2?: number) => {} | void;
   handleClickAddAdditional?: (arg?: string) => {} | void;
   handleClickDeleteAdditional?: (arg?: string) => {} | void;
   handleClickRenameAdditional?: (arg?: string, arg2?: string) => {} | void;
@@ -47,24 +47,20 @@ const ADRIForm = (props: ADRIFormProps): JSX.Element => {
   // // 選択状況の初期値があれば設定する。
   useEffect(() => {
     setSelectedOptions(providedSelectedOptions);
-  }, []);
-  // }, [providedSelectedOptions]);
+  }, [providedSelectedOptions]);
 
   // 渡された質問のリストを使う。
   useEffect(() => {
     setQuestions(providedQuestions);
     setAllQuestions(providedQuestions);
-  }, []);
-  // }, [providedQuestions]);
+  }, [providedQuestions]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newText = e.target.value.toLowerCase();
-    console.log(newText);
     setQuestionInput(newText);
     const filteredQuestions = allQuestions.filter((item: string) =>
       item.toLowerCase().includes(newText)
     );
-    console.log(filteredQuestions);
     // 配列の中身を比較。中身が異なるときだけ questions の状態を更新。
     // 単に questions !== filteredQuestions とするだけではだめだった。
     if (JSON.stringify(questions) !== JSON.stringify(filteredQuestions)) {
@@ -78,13 +74,16 @@ const ADRIForm = (props: ADRIFormProps): JSX.Element => {
       ...selectedOptions,
       [name]: Number(value),
     });
-    handleSelectChangeAdditional();
+    // ここに追加処理を記載
+    handleSelectChangeAdditional(name, Number(value));
   };
 
   const handleClickAdd = async () => {
     setQuestions((prev) => [...prev, questionInput]);
     setAllQuestions((prev) => [...prev, questionInput]);
-    // handleClickAddAdditional();
+    setQuestionInput("");
+    // ここに追加処理を記載
+    handleClickAddAdditional(questionInput);
   };
 
   const handleClickRename = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -114,7 +113,7 @@ const ADRIForm = (props: ADRIFormProps): JSX.Element => {
         renameKeyInObject(prev, oldQuestionName, newQuestionName_trimed)
       );
       // ここに追加処理を記載
-      // handleClickRenameAdditional(questionName, newQuestionName_trimed);
+      handleClickRenameAdditional(oldQuestionName, newQuestionName_trimed);
     }
   };
 
@@ -135,11 +134,10 @@ const ADRIForm = (props: ADRIFormProps): JSX.Element => {
         deleteItemFromObjectbyKey(prev, questionName)
       );
       // ここに追加処理を記載
-      // handleClickDeleteAdditional(optionName);
+      handleClickDeleteAdditional(questionName);
     }
   };
 
-  // 選択肢が変更されたときに選択状況を画面上で変更し、変更内容を親要素に変更を伝える。
   const handleClickInit = (e: React.MouseEvent<HTMLButtonElement>) => {
     const optionName = e.currentTarget.name;
     const nameList = document.getElementsByName(optionName);
@@ -147,15 +145,14 @@ const ADRIForm = (props: ADRIFormProps): JSX.Element => {
       const inputElement = elem as HTMLInputElement;
       inputElement.checked = false;
     });
-    console.log(selectedOptions);
 
-    // handleClickInitAdditional(optionName);
-    // // selectedOptions の型に合わせて未選択は NaN としている。
     setSelectedOptions({
       ...selectedOptions,
       [optionName]: unselectedValue,
     });
-    // provideSelectChange({ name: name, value: NaN });
+
+    // ここに追加処理を記載
+    handleClickInitAdditional(optionName);
   };
 
   const handleButtonClick = (icon: string) => {
@@ -175,6 +172,7 @@ const ADRIForm = (props: ADRIFormProps): JSX.Element => {
     <>
       <input
         type="text"
+        value={questionInput}
         placeholder="人物を絞り込む"
         onChange={handleInputChange}
       />
@@ -186,10 +184,11 @@ const ADRIForm = (props: ADRIFormProps): JSX.Element => {
       >
         add
       </button>
-
-      {options.map((option) => (
-        <span key={option}>{option}</span>
-      ))}
+      <p>
+        {options.map((option) => (
+          <span key={option}>{option} / </span>
+        ))}
+      </p>
 
       {questions.flatMap((elem) => (
         <div key={elem} className="py-2">
