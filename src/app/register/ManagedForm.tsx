@@ -30,6 +30,7 @@ import useAuthGuard from "auth/authGuard";
 import { useGlobalSpinnerActionsContext } from "contexts/spinner/GlobalSpinnerContext";
 import ADRForm from "components/form/ADRForm";
 import ADRIForm from "components/form/ADRIForm";
+import TextAreaWithButton from "components/form/TextAreaWithButton";
 
 type Character = {
   title: string;
@@ -117,14 +118,14 @@ const ManagedForm = (): JSX.Element => {
     setFileNum(Number(x));
   };
 
-  const confirmFileName = async () => {
+  const confirmFileName = async (filename: string) => {
     setGlobalSpinner(true);
     if (fileId < 0) {
-      const res = await addFile(volNum, fileNum, fileName);
+      const res = await addFile(volNum, fileNum, filename);
       setFileId(res.id);
       setFileExist(true);
     } else {
-      await updateFile(fileId, volNum, fileNum, fileName);
+      await updateFile(fileId, volNum, fileNum, filename);
     }
     setGlobalSpinner(false);
   };
@@ -356,15 +357,11 @@ const ManagedForm = (): JSX.Element => {
           label="話"
           handleChange={handleFileNumChange}
         />
-        <input
-          type="text"
-          value={fileName}
-          onChange={(e) => {
-            setFileName(e.target.value);
-          }}
+        <TextAreaWithButton
+          placeholder="ファイル名を入力"
+          handleClick={confirmFileName}
+          defaultValue={fileName}
         />
-        <Trans2GButton label="confirm" onclick={confirmFileName} />
-
         {/* 人物の登録、登場の登録・変更 */}
         <div style={{ display: fileExist && optionExist ? "block" : "none" }}>
           <ADRIForm
