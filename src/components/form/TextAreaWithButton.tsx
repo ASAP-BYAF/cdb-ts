@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
-import Trans2GButton from "components/button/Trans2GButton";
+import OnClickButton from "components/button/OnClickButton";
 
 type TextAreaWithButtonProps = {
   placeholder?: string;
   buttonLabel?: string;
   handleClick?: (arg: string) => {} | void | Promise<void>;
-  plusStyle?: string;
+  handleOnChangeAdditional?: (arg: string) => {} | void | Promise<void>;
+  plusStyleParent?: string;
+  plusStyleTextArea?: string;
+  plusStyleButton?: string;
   defaultValue?: string;
 };
 
@@ -17,7 +20,10 @@ const TextAreaWithButton = (props: TextAreaWithButtonProps): JSX.Element => {
     placeholder = "ここに入力してください。",
     buttonLabel = "確定",
     handleClick = (x) => {},
-    plusStyle = "",
+    handleOnChangeAdditional = (x) => {},
+    plusStyleParent = "",
+    plusStyleTextArea = "",
+    plusStyleButton = "",
     defaultValue = "",
   } = props;
   const [inputText, setInputText] = useState<string>("");
@@ -26,21 +32,29 @@ const TextAreaWithButton = (props: TextAreaWithButtonProps): JSX.Element => {
     setInputText(defaultValue);
   }, [defaultValue]);
 
+  const handleOnChange = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newInputValue = e.target.value;
+    setInputText(newInputValue);
+    handleOnChangeAdditional(newInputValue);
+  };
+
   const handleOnClick = async () => {
     handleClick(inputText);
   };
 
   return (
-    <div>
+    <div className={plusStyleParent}>
       <textarea
         placeholder={placeholder}
         value={inputText}
-        onChange={(e) => {
-          setInputText(e.target.value);
-        }}
-        className={`m-4 px-4 rounded-md outline resize ${plusStyle}`}
+        onChange={handleOnChange}
+        className={`m-4 px-4 rounded-md outline resize ${plusStyleTextArea}`}
       />
-      <Trans2GButton label={buttonLabel} onclick={handleOnClick} />
+      <OnClickButton
+        label={buttonLabel}
+        onclick={handleOnClick}
+        plusStyle={plusStyleButton}
+      />
     </div>
   );
 };
