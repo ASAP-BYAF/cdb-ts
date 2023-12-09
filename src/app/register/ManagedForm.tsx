@@ -361,6 +361,8 @@ const ManagedForm = (): JSX.Element => {
           placeholder="ファイル名を入力"
           handleClick={confirmFileName}
           defaultValue={fileName}
+          plusStyleButton="rounded-md outline outline-emerald-500 bg-emerald-500
+          font-bold hover:bg-white"
         />
         {/* 人物の登録、登場の登録・変更 */}
         <div style={{ display: fileExist && optionExist ? "block" : "none" }}>
