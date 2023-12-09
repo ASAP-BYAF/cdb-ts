@@ -5,6 +5,7 @@ import { deleteItemFromObjectbyKey } from "util/delete";
 import { concatObject } from "util/add";
 import G2WButton from "components/button/G2WButton";
 import Trans2GButton from "components/button/Trans2GButton";
+import TextAreaWithButton from "components/form/TextAreaWithButton";
 
 type ManagedInputProps = {
   onChangeAllValue: React.Dispatch<React.SetStateAction<string[]>>;
@@ -51,13 +52,17 @@ const ManagedInput = (props: ManagedInputProps): JSX.Element => {
         {Object.keys(inputComponents).map((key) => {
           const key_ = Number(key);
           return (
-            <InputButton
+            <TextAreaWithButton
               key={key_}
-              onDeleteClick={() => handleDeleteComponent(key_)}
-              onValueChange={(value) => {
+              handleClick={() => handleDeleteComponent(key_)}
+              handleOnChangeAdditional={(value) => {
                 // Update the input value for the component
                 inputComponents[key_] = value;
               }}
+              buttonLabel="✕"
+              plusStyleParent="relative"
+              plusStyleButton="inline-block px-2 bg-emerald-500 rounded-[50%] border-solid border-black boreder-2 outline font-bold
+              hover:bg-emerald-100 absolute top-2 left-0"
             />
           );
         })}
