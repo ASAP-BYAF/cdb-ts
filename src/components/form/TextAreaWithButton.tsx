@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import OnClickButton from "components/button/OnClickButton";
 
+type StringToVoidFunction = (arg: string) => {} | void | Promise<void>;
+
 type TextAreaWithButtonProps = {
-  placeholder?: string;
-  buttonLabel?: string;
-  handleClick?: (arg: string) => {} | void | Promise<void>;
-  handleOnChangeAdditional?: (arg: string) => {} | void | Promise<void>;
   plusStyleParent?: string;
   plusStyleTextArea?: string;
-  plusStyleButton?: string;
+  placeholder?: string;
   defaultValue?: string;
+  handleOnChangeAdditional?: StringToVoidFunction;
+  plusStyleButton?: string[];
+  buttonLabel?: string[];
+  handleClick?: StringToVoidFunction[];
 };
 
 // 質問の追加、削除、名前の変更、選択状況の初期化ができるフォームです。
@@ -17,14 +19,14 @@ type TextAreaWithButtonProps = {
 // ADRI は Add, Delete, Rename, Initialize の頭文字をとっています。
 const TextAreaWithButton = (props: TextAreaWithButtonProps): JSX.Element => {
   const {
-    placeholder = "ここに入力してください。",
-    buttonLabel = "確定",
-    handleClick = (x) => {},
-    handleOnChangeAdditional = (x) => {},
     plusStyleParent = "",
     plusStyleTextArea = "",
-    plusStyleButton = "",
+    placeholder = "ここに入力してください。",
     defaultValue = "",
+    handleOnChangeAdditional = (x) => {},
+    plusStyleButton = [""],
+    buttonLabel = ["確定"],
+    handleClick = [(x) => {}],
   } = props;
   const [inputText, setInputText] = useState<string>("");
 
@@ -38,8 +40,9 @@ const TextAreaWithButton = (props: TextAreaWithButtonProps): JSX.Element => {
     handleOnChangeAdditional(newInputValue);
   };
 
-  const handleOnClick = async () => {
-    handleClick(inputText);
+  const handleOnClick = async (key: number) => {
+    // 定義されているときのみクリック時の処理を実行
+    handleClick[key] && handleClick[key](inputText);
   };
 
   return (
@@ -50,11 +53,14 @@ const TextAreaWithButton = (props: TextAreaWithButtonProps): JSX.Element => {
         onChange={handleOnChange}
         className={`m-4 px-4 rounded-md outline resize ${plusStyleTextArea}`}
       />
-      <OnClickButton
-        label={buttonLabel}
-        onclick={handleOnClick}
-        plusStyle={plusStyleButton}
-      />
+      {plusStyleButton.map((style, index) => (
+        <OnClickButton
+          key={index}
+          label={buttonLabel[index] ?? "確定"}
+          onclick={() => handleOnClick(index)}
+          plusStyle={style}
+        />
+      ))}
     </div>
   );
 };

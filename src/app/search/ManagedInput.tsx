@@ -53,15 +53,17 @@ const ManagedInput = (props: ManagedInputProps): JSX.Element => {
           return (
             <TextAreaWithButton
               key={key_}
-              handleClick={() => handleDeleteComponent(key_)}
+              handleClick={[() => handleDeleteComponent(key_)]}
               handleOnChangeAdditional={(value) => {
                 // Update the input value for the component
                 inputComponents[key_] = value;
               }}
-              buttonLabel="✕"
+              buttonLabel={["✕"]}
               plusStyleParent="relative"
-              plusStyleButton="inline-block px-2 bg-emerald-500 rounded-[50%] border-solid border-black boreder-2 outline font-bold
-              hover:bg-emerald-100 absolute top-2 left-0"
+              plusStyleButton={[
+                "inline-block px-2 bg-emerald-500 rounded-[50%] border-solid border-black \
+                 boreder-2 outline font-bold hover:bg-emerald-100 absolute top-2 left-0",
+              ]}
             />
           );
         })}

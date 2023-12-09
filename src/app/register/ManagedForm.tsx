@@ -24,7 +24,6 @@ import {
   updateAppearing,
 } from "api/appearing";
 import { addFile, getFileById, updateFile } from "api/file";
-import Trans2GButton from "components/button/Trans2GButton";
 import BaseFrame from "components/BaseFrame";
 import useAuthGuard from "auth/authGuard";
 import { useGlobalSpinnerActionsContext } from "contexts/spinner/GlobalSpinnerContext";
@@ -359,10 +358,11 @@ const ManagedForm = (): JSX.Element => {
         />
         <TextAreaWithButton
           placeholder="ファイル名を入力"
-          handleClick={confirmFileName}
           defaultValue={fileName}
-          plusStyleButton="rounded-md outline outline-emerald-500 bg-emerald-500
-          font-bold hover:bg-white"
+          handleClick={[confirmFileName]}
+          plusStyleButton={[
+            "rounded-md outline outline-emerald-500 bg-emerald-500 font-bold hover:bg-white",
+          ]}
         />
         {/* 人物の登録、登場の登録・変更 */}
         <div style={{ display: fileExist && optionExist ? "block" : "none" }}>
