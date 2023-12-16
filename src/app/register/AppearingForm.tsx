@@ -37,9 +37,6 @@ const AppearingForm = (props: AppearingFormProps): JSX.Element => {
 
   const setGlobalSpinner = useGlobalSpinnerActionsContext();
 
-  // 認証ガード
-  useAuthGuard();
-
   // 既に登録されている質問と選択肢を取得しました。
   useEffect(() => {
     const fetchData = async () => {
