@@ -18,7 +18,7 @@ import {
 import useAuthGuard from "auth/authGuard";
 import { useGlobalSpinnerActionsContext } from "contexts/spinner/GlobalSpinnerContext";
 import ADRIForm from "components/form/ADRIForm";
-import { convertArrayToObj } from "util/convert";
+import TextAreaWithButton from "components/form/TextAreaWithButton";
 
 type Character = {
   title: string;
@@ -39,12 +39,12 @@ type selectedOptions = {
   [key: string]: number;
 };
 
-type AppearingDetailFormProps = {
+type WisewordPersonFromProps = {
   options: OptionsIdName;
   fileId: number;
 };
 
-const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
+const WisewordPersonFrom = (props: WisewordPersonFromProps): JSX.Element => {
   const { options, fileId } = props;
 
   const [questions, setQuestions] = useState<string[]>([]);
@@ -52,6 +52,9 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
     useState<selectedOptions>(arrayToObject(questions, NaN));
 
   const setGlobalSpinner = useGlobalSpinnerActionsContext();
+
+  // 認証ガード
+  useAuthGuard();
 
   // 既に登録されている質問と選択肢を取得しました。
   useEffect(() => {
@@ -154,7 +157,7 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
     //                     ]
     //         fileId に対して登録されているすべての登場の仕方を集めたもの。(fileId_i はすべて同一の値)
     //
-    //     (2) questionsIdNameObj = {questionId_1: questionName_1, questionId_2: questionName_2, ...}
+    //     (2) questionIdNameObj = {questionId_1: questionName_1, questionId_2: questionName_2, ...}
     //         question に関して id と name を対応付けたオブジェクト。
     //
     //     (3) optionIdList = [optionId_1, optionId_2, ...]
@@ -177,11 +180,16 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
       // API をたたいて (1) を取得。
       const appearlingList = await getAppearingWithFileId(fileId);
 
-      // (2) を作成。
-      const questionsList = await getTaskAll();
-      const questionsIdNameObj: QuestionIdNameObj =
-        convertArrayToObj(questionsList);
-
+      // 全ての質問名に対して API をたたいて、質問の id を取得し、(2) を作成。
+      const questionIdNameObj: QuestionIdNameObj = await questions.reduce(
+        async (acc, item: string) => {
+          acc = await acc;
+          const questionId: number = await getTaskIdFromDb(item);
+          acc = { ...acc, [questionId]: item };
+          return acc;
+        },
+        {}
+      );
       // (3) を作成
       const optionIdList = Object.keys(options);
 
@@ -190,7 +198,7 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
         (acc: selectedOptions, item: Appearing) => {
           // (2) を通して questionName を取得
           const questionId = item["task_id"];
-          const questionName = questionsIdNameObj[questionId];
+          const questionName = questionIdNameObj[questionId];
 
           // (3) を通して optionNum を取得
           const optionId = item["appearing_detail_id"];
@@ -209,21 +217,25 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
     }
   }, [options, fileId]);
 
+  console.log("selectedOptionBefore2");
+  console.log(selectedOptionBefore);
+
   return (
-    <ADRIForm
-      providedQuestions={questions}
-      providedSelectedOptions={selectedOptionBefore}
-      unselectedValue={NaN}
-      options={Object.keys(options).map((item, idx) => {
-        return idx;
-      })}
-      handleSelectChangeAdditional={handleSelectedOptionChange}
-      handleClickAddAdditional={handleAddQuestion}
-      handleClickDeleteAdditional={handleDeleteQuestion}
-      handleClickRenameAdditional={handleRenameQuestion}
-      handleClickInitAdditional={handleInitQuestion}
-    />
+    <TextAreaWithButton />
+    // <ADRIForm
+    //   providedQuestions={questions}
+    //   providedSelectedOptions={selectedOptionBefore}
+    //   unselectedValue={NaN}
+    //   options={Object.keys(options).map((item, idx) => {
+    //     return idx;
+    //   })}
+    //   handleSelectChangeAdditional={handleSelectedOptionChange}
+    //   handleClickAddAdditional={handleAddQuestion}
+    //   handleClickDeleteAdditional={handleDeleteQuestion}
+    //   handleClickRenameAdditional={handleRenameQuestion}
+    //   handleClickInitAdditional={handleInitQuestion}
+    // />
   );
 };
 
-export default AppearingDetailForm;
+export default WisewordPersonFrom;

@@ -4,6 +4,7 @@ import { useGlobalModalActionsContext } from "contexts/modal/normal/GlobalModalC
 import { useGlobalModalWithInputActionsContext } from "contexts/modal/with-input/GlobalModalWithInputContext";
 import { renameItemInArray } from "util/rename";
 import { deleteItemFromArray } from "util/delete";
+import TextAreaWithButton from "./TextAreaWithButton";
 
 type ADRFormProps = {
   providedOptions: string[];
@@ -26,7 +27,6 @@ const ADRForm = (props: ADRFormProps): JSX.Element => {
     handleClickRenameAdditional = () => {},
   } = props;
 
-  const [optionInput, setOptionInput] = useState<string>("");
   const [options, setOptions] = useState<string[]>([]);
   const setGlobalModal = useGlobalModalActionsContext();
   const setGlobalModalWithInput = useGlobalModalWithInputActionsContext();
@@ -35,10 +35,9 @@ const ADRForm = (props: ADRFormProps): JSX.Element => {
     setOptions(providedOptions);
   }, [providedOptions]);
 
-  const handleClickAdd = async () => {
-    setOptions((prev) => [...prev, optionInput]);
-    setOptionInput("");
-    handleClickAddAdditional(optionInput);
+  const handleClickAdd = async (inputText: string) => {
+    setOptions((prev) => [...prev, inputText]);
+    handleClickAddAdditional(inputText);
   };
 
   const handleClickRename = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -85,17 +84,10 @@ const ADRForm = (props: ADRFormProps): JSX.Element => {
 
   return (
     <>
-      <input
-        type="text"
+      <TextAreaWithButton
         placeholder="新しい選択肢名を入力"
-        value={optionInput}
-        onChange={(e) => {
-          setOptionInput(e.target.value);
-        }}
+        handleClick={[handleClickAdd]}
       />
-      <button type="button" onClick={handleClickAdd}>
-        選択肢を追加
-      </button>
 
       {options.map((item, idx) => (
         <div key={item} className="py-1">

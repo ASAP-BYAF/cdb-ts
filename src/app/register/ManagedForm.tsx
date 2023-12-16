@@ -76,9 +76,7 @@ const ManagedForm = (): JSX.Element => {
           ]}
         />
         {/* 人物の登録、登場の登録・変更 */}
-        <div>
-          <AppearingForm fileId={fileId} />
-        </div>
+        <AppearingForm fileId={fileId} />
         <hr></hr>
       </>
     </BaseFrame>
