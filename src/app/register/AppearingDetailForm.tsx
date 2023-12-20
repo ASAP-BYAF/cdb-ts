@@ -15,10 +15,11 @@ import {
   getAppearingWithFileId,
   updateAppearing,
 } from "api/appearing";
-import useAuthGuard from "auth/authGuard";
 import { useGlobalSpinnerActionsContext } from "contexts/spinner/GlobalSpinnerContext";
 import ADRIForm from "components/form/ADRIForm";
 import { convertArrayToObj } from "util/convert";
+import Dropdown from "components/dropdown/Dropdown";
+import { removeNaNKeys } from "util/filter";
 
 type Character = {
   title: string;
@@ -50,6 +51,7 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
   const [questions, setQuestions] = useState<string[]>([]);
   const [selectedOptionBefore, setSelectedOptionBefore] =
     useState<selectedOptions>(arrayToObject(questions, NaN));
+  const [selectedOption, setSelectedOption] = useState<string[]>([]);
 
   const setGlobalSpinner = useGlobalSpinnerActionsContext();
 
@@ -85,6 +87,11 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
   };
 
   const handleDeleteQuestion = async (questionName: string): Promise<void> => {
+    deleteOnDB(questionName);
+    setSelectedOption((prev) => deleteItemFromArray(prev, questionName));
+  };
+
+  const deleteOnDB = async (questionName: string) => {
     setGlobalSpinner(true);
     const res = await getTaskByTitle(questionName);
     await deleteTaskById(res.id);
@@ -96,6 +103,14 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
     oldQuestionName: string,
     newQuestionName: string
   ): Promise<void> => {
+    renameOnDB(oldQuestionName, newQuestionName);
+    renameOnSelectedOptions(oldQuestionName, newQuestionName);
+  };
+
+  const renameOnDB = async (
+    oldQuestionName: string,
+    newQuestionName: string
+  ) => {
     setGlobalSpinner(true);
     const res = await getTaskByTitle(oldQuestionName);
     await updateTask(res.id, newQuestionName);
@@ -105,7 +120,20 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
     setGlobalSpinner(false);
   };
 
+  const renameOnSelectedOptions = (
+    oldQuestionName: string,
+    newQuestionName: string
+  ) => {
+    const tmp = deleteItemFromArray(selectedOption, oldQuestionName);
+    setSelectedOption([...tmp, newQuestionName]);
+  };
+
   const handleInitQuestion = async (questionName: string): Promise<void> => {
+    initOnDB(questionName);
+    setSelectedOption((prev) => deleteItemFromArray(prev, questionName));
+  };
+
+  const initOnDB = async (questionName: string) => {
     setGlobalSpinner(true);
     const questionId = await getTaskIdFromDb(questionName);
     await deleteAppearing(fileId, questionId);
@@ -113,6 +141,14 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
   };
 
   const handleSelectedOptionChange = async (
+    questionName: string,
+    newSeletedOptionNum: number
+  ): Promise<void> => {
+    createOrUpdateOnDB(questionName, newSeletedOptionNum);
+    createOnSelectedOptions(questionName);
+  };
+
+  const createOrUpdateOnDB = async (
     questionName: string,
     newSeletedOptionNum: number
   ): Promise<void> => {
@@ -131,6 +167,15 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
     }
     setGlobalSpinner(false);
   };
+
+  const createOnSelectedOptions = async (
+    questionName: string
+  ): Promise<void> => {
+    if (!selectedOption.includes(questionName)) {
+      setSelectedOption((prev) => [questionName, ...prev]);
+    }
+  };
+
   // ==========================================================================
 
   useMemo(async () => {
@@ -209,20 +254,27 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
     }
   }, [options, fileId]);
 
+  useMemo(() => {
+    setSelectedOption(Object.keys(removeNaNKeys(selectedOptionBefore)));
+  }, [selectedOptionBefore]);
+
   return (
-    <ADRIForm
-      providedQuestions={questions}
-      providedSelectedOptions={selectedOptionBefore}
-      unselectedValue={NaN}
-      options={Object.keys(options).map((item, idx) => {
-        return idx;
-      })}
-      handleSelectChangeAdditional={handleSelectedOptionChange}
-      handleClickAddAdditional={handleAddQuestion}
-      handleClickDeleteAdditional={handleDeleteQuestion}
-      handleClickRenameAdditional={handleRenameQuestion}
-      handleClickInitAdditional={handleInitQuestion}
-    />
+    <>
+      <ADRIForm
+        providedQuestions={questions}
+        providedSelectedOptions={selectedOptionBefore}
+        unselectedValue={NaN}
+        options={Object.keys(options).map((item, idx) => {
+          return idx;
+        })}
+        handleSelectChangeAdditional={handleSelectedOptionChange}
+        handleClickAddAdditional={handleAddQuestion}
+        handleClickDeleteAdditional={handleDeleteQuestion}
+        handleClickRenameAdditional={handleRenameQuestion}
+        handleClickInitAdditional={handleInitQuestion}
+      />
+      <Dropdown providedOptions={selectedOption} />
+    </>
   );
 };
 
