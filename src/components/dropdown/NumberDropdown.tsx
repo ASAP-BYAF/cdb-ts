@@ -1,3 +1,5 @@
+import Dropdown from "./Dropdown";
+
 type NumberDropdownProps = {
   n_st: number;
   n_ed: number;
@@ -7,27 +9,17 @@ type NumberDropdownProps = {
 
 const NumberDropdown = (props: NumberDropdownProps): JSX.Element => {
   const { n_st, n_ed, label = "default", handleChange = () => {} } = props;
-  const options = [];
+  const serial_num_list = [];
   for (let i = n_st; i <= n_ed; i++) {
-    options.push(
-      <option key={i} value={i}>
-        {i}
-      </option>
-    );
+    serial_num_list.push(i);
   }
 
   return (
-    <span>
-      <select
-        id="numberDropdown"
-        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-          handleChange(e.target.value)
-        }
-      >
-        {options}
-      </select>
-      <label htmlFor="numberDropdown"> {label} </label>
-    </span>
+    <Dropdown
+      providedOptions={serial_num_list}
+      label={label}
+      handleChange={handleChange}
+    />
   );
 };
 
