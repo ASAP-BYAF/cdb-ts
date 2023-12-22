@@ -41,7 +41,7 @@ const TextAreaWithButton = (props: TextAreaWithButtonProps): JSX.Element => {
   };
 
   const handleOnClick = async (key: number) => {
-    // 定義されているときのみクリック時の処理を実行
+    // 定義されていればクリック時の処理を実行
     handleClick[key] && handleClick[key](inputText);
   };
 
@@ -53,12 +53,12 @@ const TextAreaWithButton = (props: TextAreaWithButtonProps): JSX.Element => {
         onChange={handleOnChange}
         className={`m-4 px-4 rounded-md outline resize ${plusStyleTextArea}`}
       />
-      {plusStyleButton.map((style, index) => (
+      {buttonLabel.map((label, index) => (
         <OnClickButton
           key={index}
-          label={buttonLabel[index] ?? "確定"}
+          label={label ?? "確定"}
           onclick={() => handleOnClick(index)}
-          plusStyle={style}
+          plusStyle={plusStyleButton[index] ?? ""}
         />
       ))}
     </div>
