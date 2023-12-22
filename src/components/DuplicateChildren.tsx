@@ -89,8 +89,7 @@ const DuplicateChildren = (
   };
 
   const handleDeleteItem = (itemId: number) => {
-    console.log(itemId);
-    // setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
+    setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
   };
 
   return (
