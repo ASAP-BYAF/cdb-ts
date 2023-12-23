@@ -58,3 +58,8 @@ export const deleteTaskById = async (task_id: number) => {
   const res = await fetcher(url, data);
   return res;
 };
+
+export const getTaskIdFromDb = async (title: string): Promise<number> => {
+  const res = await getTaskByTitle(title);
+  return res.id;
+};
