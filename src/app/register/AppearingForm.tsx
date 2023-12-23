@@ -11,7 +11,6 @@ import {
 } from "api/appearingDetail";
 import { getAppearingAll } from "api/appearing";
 
-import useAuthGuard from "auth/authGuard";
 import { useGlobalSpinnerActionsContext } from "contexts/spinner/GlobalSpinnerContext";
 import ADRForm from "components/form/ADRForm";
 import AppearingDetailForm from "./AppearingDetailForm";

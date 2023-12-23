@@ -18,8 +18,9 @@ import {
 import { useGlobalSpinnerActionsContext } from "contexts/spinner/GlobalSpinnerContext";
 import ADRIForm from "components/form/ADRIForm";
 import { convertArrayToObj } from "util/convert";
-import Dropdown from "components/dropdown/Dropdown";
 import { removeNaNKeys } from "util/filter";
+import WisewordForm from "./WisewordForm";
+import { getTaskIdFromDb } from "api/task";
 
 type Character = {
   title: string;
@@ -36,7 +37,7 @@ type OptionsIdName = {
   [key: number]: string;
 };
 
-type selectedOptions = {
+type selectedOptionsObj = {
   [key: string]: number;
 };
 
@@ -50,7 +51,7 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
 
   const [questions, setQuestions] = useState<string[]>([]);
   const [selectedOptionBefore, setSelectedOptionBefore] =
-    useState<selectedOptions>(arrayToObject(questions, NaN));
+    useState<selectedOptionsObj>(arrayToObject(questions, NaN));
   const [selectedOption, setSelectedOption] = useState<string[]>([]);
 
   const setGlobalSpinner = useGlobalSpinnerActionsContext();
@@ -71,11 +72,6 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const getTaskIdFromDb = async (questionName: string) => {
-    const res = await getTaskByTitle(questionName);
-    return res.id;
-  };
 
   // 登録情報フォームに対する追加処理 ============================================
   const handleAddQuestion = async (newQuestionName: string): Promise<void> => {
@@ -232,7 +228,7 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
 
       // (4) を作成。
       const tmpSelectedBefore = appearlingList.reduce(
-        (acc: selectedOptions, item: Appearing) => {
+        (acc: selectedOptionsObj, item: Appearing) => {
           // (2) を通して questionName を取得
           const questionId = item["task_id"];
           const questionName = questionsIdNameObj[questionId];
@@ -273,7 +269,8 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
         handleClickRenameAdditional={handleRenameQuestion}
         handleClickInitAdditional={handleInitQuestion}
       />
-      <Dropdown providedOptions={selectedOption} />
+      <hr></hr>
+      <WisewordForm fileId={fileId} characters={selectedOption} />
     </>
   );
 };

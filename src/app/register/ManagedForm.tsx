@@ -20,14 +20,17 @@ const ManagedForm = (): JSX.Element => {
   // 認証ガード
   useAuthGuard();
 
-  const handleVolNumChange = (x: string) => {
-    setVolNum(Number(x));
+  const handleVolNumChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setVolNum(Number(e.currentTarget.value));
   };
-  const handleFileNumChange = (x: string) => {
-    setFileNum(Number(x));
+  const handleFileNumChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFileNum(Number(e.currentTarget.value));
   };
 
-  const confirmFileName = async (filename: string) => {
+  const confirmFileName = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    filename: string
+  ) => {
     setGlobalSpinner(true);
     if (fileId < 0) {
       const res = await addFile(volNum, fileNum, filename);
@@ -59,12 +62,14 @@ const ManagedForm = (): JSX.Element => {
           n_st={1}
           n_ed={103}
           label="巻"
+          defaultValue={volNum}
           handleChange={handleVolNumChange}
         />
         <NumberDropdown
           n_st={1}
           n_ed={11}
           label="話"
+          defaultValue={fileNum}
           handleChange={handleFileNumChange}
         />
         <TextAreaWithButton
