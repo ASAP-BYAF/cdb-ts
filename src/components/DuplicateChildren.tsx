@@ -23,6 +23,13 @@ type MultiTextAreaWithButtonProps = {
   labelForDeleteButton?: string;
   plusStyleAddButton?: string;
   plusStyleDeleteButton?: string;
+  //
+  // 要素削除時の追加処理
+  //
+  handleClickDeleteAdditional?: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    arg: number
+  ) => {} | void | Promise<void>;
 };
 
 const DuplicateChildren = (
@@ -35,6 +42,7 @@ const DuplicateChildren = (
     labelForDeleteButton = "削除",
     plusStyleAddButton,
     plusStyleDeleteButton,
+    handleClickDeleteAdditional = () => {},
   } = props;
   const [items, setItems] = useState<ElementObj[]>([]);
   const [serialNum, setSerialNum] = useState(0);
@@ -72,7 +80,7 @@ const DuplicateChildren = (
           <div key={serialNumber}>
             {newElement}
             <OnClickButton
-              onclick={() => handleDeleteItem(serialNumber)}
+              onclick={(e) => handleDeleteItem(e, serialNumber)}
               label={labelForDeleteButton}
               plusStyle={plusStyleDeleteButton}
             />
@@ -88,8 +96,12 @@ const DuplicateChildren = (
     return [newId, newItems];
   };
 
-  const handleDeleteItem = (itemId: number) => {
+  const handleDeleteItem = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    itemId: number
+  ) => {
     setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
+    handleClickDeleteAdditional(e, itemId);
   };
 
   return (
