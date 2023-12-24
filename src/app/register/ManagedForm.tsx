@@ -7,6 +7,7 @@ import useAuthGuard from "auth/authGuard";
 import { useGlobalSpinnerActionsContext } from "contexts/spinner/GlobalSpinnerContext";
 import TextAreaWithButton from "components/form/TextAreaWithButton";
 import AppearingForm from "./AppearingForm";
+import ToggleStatusButtonGroup from "auth/ToggleStatusButtonGroup";
 
 const ManagedForm = (): JSX.Element => {
   // (volNum, fileNum, fileName) の組と fileId が 1:1 で対応します。
@@ -78,6 +79,9 @@ const ManagedForm = (): JSX.Element => {
         {/* 人物の登録、登場の登録・変更 */}
         <AppearingForm fileId={fileId} />
         <hr></hr>
+        <div className="mt-10">
+          <ToggleStatusButtonGroup />
+        </div>
       </>
     </BaseFrame>
   );

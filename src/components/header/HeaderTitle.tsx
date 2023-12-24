@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import ToggleStatusButtonGroup from "auth/ToggleStatusButtonGroup";
 
 const HeaderTitle: React.FC = () => {
   return (
@@ -20,9 +19,6 @@ const HeaderTitle: React.FC = () => {
               <p className="text-sm">漫画の登場シーンを検索</p>
             </div>
           </div>
-        </div>
-        <div className="md:flex md:justify-end">
-          <ToggleStatusButtonGroup />
         </div>
       </div>
     </div>
