@@ -1,12 +1,18 @@
 import { fetcher } from "./fetcher";
 
-type WisewordBase = {
+type WisewordGet = {
+  id: number;
+  phrase: string;
+  title: string;
+  vol_num: number;
+  file_num: number;
+};
+
+type WisewordCreate = {
   phrase: string;
   task_id: number;
   file_id: number;
 };
-
-type WisewordCreate = WisewordBase;
 
 // export const getTaskByTitle = async (title: string) => {
 //   const url = `${process.env.REACT_APP_DB_API_HOST}/task_by_title`;
@@ -25,6 +31,15 @@ type WisewordCreate = WisewordBase;
 
 export const getWisewordAll = async () => {
   const url = `${process.env.REACT_APP_DB_API_HOST}/wisewords_all`;
+  const data = { method: "GET" };
+  const res = await fetcher(url, data);
+  return res;
+};
+
+export const getWisewordByFileid = async (
+  file_id: number
+): Promise<WisewordGet[]> => {
+  const url = `${process.env.REACT_APP_DB_API_HOST}/wisewords_by_file_id/${file_id}`;
   const data = { method: "GET" };
   const res = await fetcher(url, data);
   return res;
