@@ -1,5 +1,7 @@
 import DuplicateChildren from "components/DuplicateChildren";
 import SingleWisewordForm from "./SingleWisewordForm";
+import { useEffect, useState } from "react";
+import { getWisewordByFileid } from "api/wiseword";
 
 type WisewordFormProps = {
   fileId: number;
@@ -9,6 +11,30 @@ type WisewordFormProps = {
 const WisewordForm = (props: WisewordFormProps): JSX.Element => {
   const { fileId, characters } = props;
 
+  const [registeredWiseword, setRegisteredWiseword] = useState<string[]>([]);
+  const [registeredSpeakers, setRegisteredSpeakers] = useState<string[]>([]);
+
+  const getRegisteredWiseword = async () => {
+    try {
+      const res = await getWisewordByFileid(fileId);
+      const registeredSpeakers = res.map((item) => {
+        return item["title"];
+      });
+      const registeredWisewords = res.map((item) => {
+        return item["phrase"];
+      });
+      setRegisteredSpeakers(registeredSpeakers);
+      setRegisteredWiseword(registeredWisewords);
+      return;
+    } catch {
+      console.error("error");
+    }
+  };
+
+  useEffect(() => {
+    getRegisteredWiseword();
+  }, [fileId]);
+
   return (
     <>
       <div
@@ -17,11 +43,12 @@ const WisewordForm = (props: WisewordFormProps): JSX.Element => {
         }}
       >
         <DuplicateChildren
-          defaultElementList={["d"].map((item) => {
+          defaultElementList={registeredSpeakers.map((item, idx) => {
             return (
               <SingleWisewordForm
                 characters={characters}
-                defaultValueTextArea={item}
+                defaultValueTextArea={registeredWiseword[idx]}
+                defaultValueDropdown={item}
                 fileId={fileId}
               />
             );

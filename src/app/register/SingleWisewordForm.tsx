@@ -3,7 +3,7 @@ import { useEffect, useState, useMemo } from "react";
 import Dropdown from "components/dropdown/Dropdown";
 import TextAreaWithButton from "components/form/TextAreaWithButton";
 
-import { getWisewordAll, createWiseword, updateWiseword } from "api/wiseword";
+import { createWiseword, updateWiseword } from "api/wiseword";
 import { getTaskIdFromDb } from "api/task";
 
 type SingleWisewordFormProps = {
