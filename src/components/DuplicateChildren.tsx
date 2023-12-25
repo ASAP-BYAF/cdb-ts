@@ -51,16 +51,22 @@ const DuplicateChildren = (
     // (1) テキストエリア内の文字のデフォルト値が更新されたらテキストエリアの状態を初期化し、
     // (2) 新たにデフォルト値を設定したテキストエリアを作成。
 
-    // (1)
-    let serialNumber = 0;
-    let textAreaList = [] as ElementObj[];
-
-    // (2)
-    defaultElementList.forEach((defaultElement) => {
-      const res = handleAddItem(defaultElement, serialNumber, textAreaList);
-      serialNumber = res[0];
-      textAreaList = res[1];
-    });
+    // デフォルト値が空のリストの場合 forEach が回らず初期化できなかったので場合分け
+    if (defaultElementList.length === 0) {
+      // (1)
+      setSerialNum(0);
+      setItems([]);
+    } else {
+      // (1)
+      let serialNumber = 0;
+      let textAreaList = [] as ElementObj[];
+      // (2)
+      defaultElementList.forEach((defaultElement) => {
+        const res = handleAddItem(defaultElement, serialNumber, textAreaList);
+        serialNumber = res[0];
+        textAreaList = res[1];
+      });
+    }
   }, [defaultElementList]);
 
   const handleAddItem = (
