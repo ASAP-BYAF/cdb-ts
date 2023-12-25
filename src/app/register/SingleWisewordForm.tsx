@@ -53,12 +53,12 @@ const SingleWisewordForm = (props: SingleWisewordFormProps): JSX.Element => {
     }
   }, [valueDropdown, valueTextArea]);
 
-  const addOrUpdateWisewordonDB = () => {
+  const addOrUpdateWisewordOnDB = async () => {
     try {
       if (wisewordId === undefined) {
-        addWisewordonDB();
+        await addWisewordOnDB();
       } else {
-        updateWisewordonDB();
+        await updateWisewordOnDB();
       }
       setIfChangeValue(false);
     } catch {
@@ -66,7 +66,7 @@ const SingleWisewordForm = (props: SingleWisewordFormProps): JSX.Element => {
     }
   };
 
-  const addWisewordonDB = async () => {
+  const addWisewordOnDB = async () => {
     try {
       const charaId = await getTaskIdFromDb(valueDropdown);
       const res = await createWiseword({
@@ -80,7 +80,7 @@ const SingleWisewordForm = (props: SingleWisewordFormProps): JSX.Element => {
     }
   };
 
-  const updateWisewordonDB = async () => {
+  const updateWisewordOnDB = async () => {
     try {
       const charaId = await getTaskIdFromDb(valueDropdown);
       if (wisewordId !== undefined) {
@@ -99,7 +99,7 @@ const SingleWisewordForm = (props: SingleWisewordFormProps): JSX.Element => {
     <>
       <TextAreaWithButton
         defaultValue={defaultValueTextArea}
-        handleClick={[(e, text) => addOrUpdateWisewordonDB()]}
+        handleClick={[(e, text) => addOrUpdateWisewordOnDB()]}
         plusStyleButton={[ifChangeValue ? "inline-block" : "hidden"]}
         handleOnChangeAdditional={(newText) => setValueTextArea(newText)}
       />
