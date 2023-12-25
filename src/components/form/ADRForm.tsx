@@ -35,7 +35,10 @@ const ADRForm = (props: ADRFormProps): JSX.Element => {
     setOptions(providedOptions);
   }, [providedOptions]);
 
-  const handleClickAdd = async (inputText: string) => {
+  const handleClickAdd = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    inputText: string
+  ) => {
     setOptions((prev) => [...prev, inputText]);
     handleClickAddAdditional(inputText);
   };

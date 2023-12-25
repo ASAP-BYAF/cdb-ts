@@ -3,6 +3,11 @@ import OnClickButton from "components/button/OnClickButton";
 
 type StringToVoidFunction = (arg: string) => {} | void | Promise<void>;
 
+type EventAndStringToVoidFunction = (
+  e: React.MouseEvent<HTMLButtonElement>,
+  arg: string
+) => {} | void | Promise<void>;
+
 type TextAreaWithButtonProps = {
   plusStyleParent?: string;
   plusStyleTextArea?: string;
@@ -11,7 +16,7 @@ type TextAreaWithButtonProps = {
   handleOnChangeAdditional?: StringToVoidFunction;
   plusStyleButton?: string[];
   buttonLabel?: string[];
-  handleClick?: StringToVoidFunction[];
+  handleClick?: EventAndStringToVoidFunction[];
 };
 
 // 質問の追加、削除、名前の変更、選択状況の初期化ができるフォームです。
@@ -40,9 +45,12 @@ const TextAreaWithButton = (props: TextAreaWithButtonProps): JSX.Element => {
     handleOnChangeAdditional(newInputValue);
   };
 
-  const handleOnClick = async (key: number) => {
-    // 定義されているときのみクリック時の処理を実行
-    handleClick[key] && handleClick[key](inputText);
+  const handleOnClick = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    key: number
+  ) => {
+    // 定義されていればクリック時の処理を実行
+    handleClick[key] && handleClick[key](e, inputText);
   };
 
   return (
@@ -53,12 +61,12 @@ const TextAreaWithButton = (props: TextAreaWithButtonProps): JSX.Element => {
         onChange={handleOnChange}
         className={`m-4 px-4 rounded-md outline resize ${plusStyleTextArea}`}
       />
-      {plusStyleButton.map((style, index) => (
+      {buttonLabel.map((label, index) => (
         <OnClickButton
           key={index}
-          label={buttonLabel[index] ?? "確定"}
-          onclick={() => handleOnClick(index)}
-          plusStyle={style}
+          label={label ?? "確定"}
+          onclick={(e) => handleOnClick(e, index)}
+          plusStyle={plusStyleButton[index] ?? ""}
         />
       ))}
     </div>
