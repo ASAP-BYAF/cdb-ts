@@ -96,7 +96,7 @@ const SingleWisewordForm = (props: SingleWisewordFormProps): JSX.Element => {
   };
 
   return (
-    <>
+    <div id={String(registeredWisewordId ?? -1)}>
       <TextAreaWithButton
         defaultValue={defaultValueTextArea}
         handleClick={[(e, text) => addOrUpdateWisewordOnDB()]}
@@ -104,14 +104,14 @@ const SingleWisewordForm = (props: SingleWisewordFormProps): JSX.Element => {
         handleOnChangeAdditional={(newText) => setValueTextArea(newText)}
       />
       <Dropdown
-        label="<-- 発言した人物を選択"
+        label="<-- 発言者"
         providedOptions={characters}
         handleChange={(e) => {
           setValueDropdown(e.currentTarget.value);
         }}
         defaultValue={defaultValueDropdown}
       />
-    </>
+    </div>
   );
 };
 
