@@ -36,7 +36,7 @@ export const getWisewordAll = async () => {
   return res;
 };
 
-export const getWisewordByFileid = async (
+export const getWisewordByFileId = async (
   file_id: number
 ): Promise<WisewordGet[]> => {
   const url = `${process.env.REACT_APP_DB_API_HOST}/wisewords_by_file_id/${file_id}`;
@@ -71,9 +71,9 @@ export const updateWiseword = async (id: number, props: WisewordCreate) => {
   return res;
 };
 
-// export const deleteTaskById = async (task_id: number) => {
-//   const url = `${process.env.REACT_APP_DB_API_HOST}/tasks/${task_id}`;
-//   const data = { method: "DELETE" };
-//   const res = await fetcher(url, data);
-//   return res;
-// };
+export const deleteWisewordById = async (wiseword_id: number) => {
+  const url = `${process.env.REACT_APP_DB_API_HOST}/wiseword_delete/${wiseword_id}`;
+  const data = { method: "DELETE" };
+  const res = await fetcher(url, data);
+  return res;
+};
