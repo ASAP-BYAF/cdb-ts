@@ -48,7 +48,7 @@ const WisewordForm = (props: WisewordFormProps): JSX.Element => {
       // SingleWiseword.tsx で DB に登録されていない名言を囲む div には id = -1 を当ててている。
       return;
     } else {
-      await deleteTaskById(id);
+      await deleteWisewordById(id);
       return;
     }
   };
