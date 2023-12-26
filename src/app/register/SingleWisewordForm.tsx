@@ -1,7 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 
-import Dropdown from "components/dropdown/Dropdown";
-import TextAreaWithButton from "components/form/TextAreaWithButton";
+import TextAreaWithDropdown from "components/form/TextAreaWithDropdown";
 
 import { createWiseword, updateWiseword } from "api/wiseword";
 import { getTaskIdFromDb } from "api/task";
@@ -19,54 +18,37 @@ const SingleWisewordForm = (props: SingleWisewordFormProps): JSX.Element => {
     characters,
     defaultValueTextArea = "",
     defaultValueDropdown = "",
-    registeredWisewordId,
+    registeredWisewordId = -1,
     fileId,
   } = props;
 
-  const [ifChangeValue, setIfChangeValue] = useState<boolean>(false);
-  const [valueTextArea, setValueTextArea] = useState<string>("");
-  const [valueDropdown, setValueDropdown] = useState<string>("");
   const [wisewordId, setWisewordId] = useState<number>();
-
-  useEffect(() => {
-    setValueDropdown(defaultValueDropdown);
-  }, [defaultValueDropdown]);
-
-  useEffect(() => {
-    setValueTextArea(defaultValueTextArea);
-  }, [defaultValueTextArea]);
 
   useEffect(() => {
     setWisewordId(registeredWisewordId);
   }, [registeredWisewordId]);
 
-  useMemo(() => {
-    if (
-      (valueDropdown !== defaultValueDropdown ||
-        valueTextArea !== defaultValueTextArea) &&
-      valueDropdown !== "" &&
-      valueTextArea !== ""
-    ) {
-      setIfChangeValue(true);
-    } else {
-      setIfChangeValue(false);
-    }
-  }, [valueDropdown, valueTextArea]);
-
-  const addOrUpdateWisewordOnDB = async () => {
+  const addOrUpdateWisewordOnDB = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    valueTextArea: string,
+    valueDropdown: string,
+    id: number
+  ): Promise<void> => {
     try {
-      if (wisewordId === undefined) {
-        await addWisewordOnDB();
+      if (id === -1) {
+        await addWisewordOnDB(valueDropdown, valueTextArea);
       } else {
-        await updateWisewordOnDB();
+        await updateWisewordOnDB(id, valueDropdown, valueTextArea);
       }
-      setIfChangeValue(false);
     } catch {
       console.error("error");
     }
   };
 
-  const addWisewordOnDB = async () => {
+  const addWisewordOnDB = async (
+    valueDropdown: string,
+    valueTextArea: string
+  ) => {
     try {
       const charaId = await getTaskIdFromDb(valueDropdown);
       const res = await createWiseword({
@@ -74,13 +56,17 @@ const SingleWisewordForm = (props: SingleWisewordFormProps): JSX.Element => {
         task_id: charaId,
         file_id: fileId,
       });
-      setWisewordId(res.id);
+      setWisewordId(res["id"]);
     } catch {
       console.error("error");
     }
   };
 
-  const updateWisewordOnDB = async () => {
+  const updateWisewordOnDB = async (
+    wisewordId: number,
+    valueDropdown: string,
+    valueTextArea: string
+  ) => {
     try {
       const charaId = await getTaskIdFromDb(valueDropdown);
       if (wisewordId !== undefined) {
@@ -96,22 +82,16 @@ const SingleWisewordForm = (props: SingleWisewordFormProps): JSX.Element => {
   };
 
   return (
-    <div id={String(registeredWisewordId ?? -1)}>
-      <TextAreaWithButton
-        defaultValue={defaultValueTextArea}
-        handleClick={[(e, text) => addOrUpdateWisewordOnDB()]}
-        plusStyleButton={[ifChangeValue ? "inline-block" : "hidden"]}
-        handleOnChangeAdditional={(newText) => setValueTextArea(newText)}
-      />
-      <Dropdown
-        label="<-- 発言者"
-        providedOptions={characters}
-        handleChange={(e) => {
-          setValueDropdown(e.currentTarget.value);
-        }}
-        defaultValue={defaultValueDropdown}
-      />
-    </div>
+    <TextAreaWithDropdown
+      options={characters}
+      defaultValueDropdown={defaultValueDropdown}
+      defaultValueTextArea={defaultValueTextArea}
+      label="<-- 発言者"
+      registeredId={wisewordId && wisewordId}
+      handleClickAdditional={(e, valueTextArea, valueDropdown, id) =>
+        addOrUpdateWisewordOnDB(e, valueTextArea, valueDropdown, id)
+      }
+    />
   );
 };
 
