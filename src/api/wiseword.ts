@@ -1,6 +1,6 @@
 import { fetcher } from "./fetcher";
 
-type WisewordGet = {
+export type WisewordGet = {
   id: number;
   phrase: string;
   title: string;
@@ -8,26 +8,11 @@ type WisewordGet = {
   file_num: number;
 };
 
-type WisewordCreate = {
+export type WisewordCreate = {
   phrase: string;
   task_id: number;
   file_id: number;
 };
-
-// export const getTaskByTitle = async (title: string) => {
-//   const url = `${process.env.REACT_APP_DB_API_HOST}/task_by_title`;
-//   const data = {
-//     method: "POST",
-//     body: JSON.stringify({
-//       title: title,
-//     }),
-//     headers: {
-//       "Content-type": "application/json; charset=UTF-8",
-//     },
-//   };
-//   const res = await fetcher(url, data);
-//   return res;
-// };
 
 export const getWisewordAll = async () => {
   const url = `${process.env.REACT_APP_DB_API_HOST}/wisewords_all`;
