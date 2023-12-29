@@ -1,5 +1,5 @@
 import BaseFrame from "components/BaseFrame";
-import SingleWiseword from "app/home/SingleWiseword";
+import SingleWiseword from "app/wiseword/SingleWiseword";
 import { WisewordGet } from "api/wiseword";
 import { getWisewordAll } from "api/wiseword";
 import { useEffect, useState } from "react";
