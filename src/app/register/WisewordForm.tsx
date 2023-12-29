@@ -2,7 +2,6 @@ import DuplicateChildren from "components/DuplicateChildren";
 import SingleWisewordForm from "./SingleWisewordForm";
 import { useEffect, useState } from "react";
 import { deleteWisewordById, getWisewordByFileId } from "api/wiseword";
-import { deleteTaskById } from "api/task";
 
 type WisewordFormProps = {
   fileId: number;
