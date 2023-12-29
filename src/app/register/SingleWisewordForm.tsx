@@ -87,7 +87,7 @@ const SingleWisewordForm = (props: SingleWisewordFormProps): JSX.Element => {
       defaultValueDropdown={defaultValueDropdown}
       defaultValueTextArea={defaultValueTextArea}
       label="<-- 発言者"
-      registeredId={wisewordId && wisewordId}
+      AreaId={wisewordId}
       handleClickAdditional={(e, valueTextArea, valueDropdown, id) =>
         addOrUpdateWisewordOnDB(e, valueTextArea, valueDropdown, id)
       }
