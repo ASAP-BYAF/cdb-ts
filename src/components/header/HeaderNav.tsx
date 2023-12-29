@@ -1,4 +1,3 @@
-import React from "react";
 import LinkButton from "components/button/LinkButton";
 
 const HeaderNav = (): JSX.Element => {
@@ -11,7 +10,7 @@ const HeaderNav = (): JSX.Element => {
         登場シーン
       </LinkButton>
       <LinkButton
-        to="/"
+        to="/wiseword"
         plusStyle="hover:bg-emerald-100 flex-1 outline outline-1"
       >
         名言

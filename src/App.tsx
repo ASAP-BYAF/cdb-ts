@@ -11,8 +11,9 @@ const App = (): JSX.Element => {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Wiseword />} />
+        <Route path="/" element={<Search />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/wiseword" element={<Wiseword />} />
         <Route path="/admin" element={<Register />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signout" element={<Signout />} />
