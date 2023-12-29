@@ -1,10 +1,10 @@
-type WiseWordProps = {
+type SingleWisewordProps = {
   word: string;
   person: string;
   reference?: string;
 };
 
-const WiseWord = (props: WiseWordProps): JSX.Element => {
+const SingleWiseword = (props: SingleWisewordProps): JSX.Element => {
   const { word, person, reference = "???" } = props;
   return (
     <div className="font-bold py-4 px-8 hover:bg-black hover:text-white outline outline-1 outline-black">
@@ -19,4 +19,4 @@ const WiseWord = (props: WiseWordProps): JSX.Element => {
   );
 };
 
-export default WiseWord;
+export default SingleWiseword;
