@@ -2,13 +2,12 @@ import { useEffect, useState, useMemo } from "react";
 
 import Dropdown from "components/dropdown/Dropdown";
 import TextAreaWithButton from "components/form/TextAreaWithButton";
-import { setTextRange } from "typescript";
 
 type TextAreaWithDropdownProps = {
   options: string[];
   defaultValueTextArea?: string;
   defaultValueDropdown?: string;
-  registeredId?: number;
+  AreaId?: number;
   handleClickAdditional?: (
     e: React.MouseEvent<HTMLButtonElement>,
     valueTextArea: string,
@@ -25,7 +24,7 @@ const TextAreaWithDropdown = (
     options,
     defaultValueTextArea = "",
     defaultValueDropdown = "",
-    registeredId = -1,
+    AreaId = -1,
     handleClickAdditional,
     label = "選択",
   } = props;
@@ -35,7 +34,6 @@ const TextAreaWithDropdown = (
   const [valueDropdown, setValueDropdown] = useState<string>("");
   const [valueTextAreaBefore, setValueTextAreaBefore] = useState<string>("");
   const [valueDropdownBefore, setValueDropdownBefore] = useState<string>("");
-  const [Id, setId] = useState<number>(-1);
 
   useEffect(() => {
     setValueDropdownBefore(defaultValueDropdown);
@@ -46,10 +44,6 @@ const TextAreaWithDropdown = (
     setValueTextAreaBefore(defaultValueTextArea);
     setValueTextArea(defaultValueTextArea);
   }, [defaultValueTextArea]);
-
-  useEffect(() => {
-    setId(registeredId);
-  }, [registeredId]);
 
   useMemo(() => {
     if (
@@ -73,19 +67,20 @@ const TextAreaWithDropdown = (
       setValueDropdownBefore(valueDropdown);
       setValueTextAreaBefore(valueTextArea);
       handleClickAdditional &&
-        handleClickAdditional(e, valueTextArea, valueDropdown, Id);
+        handleClickAdditional(e, valueTextArea, valueDropdown, AreaId);
     } catch {
       console.error("error");
     }
   };
 
   return (
-    <div id={String(Id)}>
+    <>
       <TextAreaWithButton
         defaultValue={defaultValueTextArea}
         handleClick={[(e, text) => handleClick(e, text)]}
         plusStyleButton={[ifChangeValue ? "inline-block" : "hidden"]}
         handleOnChangeAdditional={(newText) => setValueTextArea(newText)}
+        areaId={String(AreaId)}
       />
       <Dropdown
         label={label}
@@ -95,7 +90,7 @@ const TextAreaWithDropdown = (
         }}
         defaultValue={defaultValueDropdown}
       />
-    </div>
+    </>
   );
 };
 

@@ -17,6 +17,7 @@ type TextAreaWithButtonProps = {
   plusStyleButton?: string[];
   buttonLabel?: string[];
   handleClick?: EventAndStringToVoidFunction[];
+  areaId?: string;
 };
 
 // 質問の追加、削除、名前の変更、選択状況の初期化ができるフォームです。
@@ -32,6 +33,7 @@ const TextAreaWithButton = (props: TextAreaWithButtonProps): JSX.Element => {
     plusStyleButton = [""],
     buttonLabel = ["確定"],
     handleClick = [(x) => {}],
+    areaId,
   } = props;
   const [inputText, setInputText] = useState<string>("");
 
@@ -54,7 +56,7 @@ const TextAreaWithButton = (props: TextAreaWithButtonProps): JSX.Element => {
   };
 
   return (
-    <div className={plusStyleParent}>
+    <div id={areaId && areaId} className={plusStyleParent}>
       <textarea
         placeholder={placeholder}
         value={inputText}
