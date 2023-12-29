@@ -72,9 +72,12 @@ const WisewordForm = (props: WisewordFormProps): JSX.Element => {
               />
             );
           })}
+          // 複製する子要素の div 要素に名言の id を持たせている。
+          // TextAreaWithButton の AreaId に名言の id を渡している。
           handleClickDeleteAdditional={(e, serialNum) => {
-            const elem = e.currentTarget.parentNode
-              ?.firstChild as HTMLDivElement;
+            const elem = e.currentTarget.parentNode?.querySelector(
+              "div"
+            ) as HTMLDivElement;
             deleteWisewordOnDB(Number(elem.id));
           }}
           labelForAddButton="名言を追加"
