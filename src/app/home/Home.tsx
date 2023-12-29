@@ -1,10 +1,30 @@
 import BaseFrame from "components/BaseFrame";
 import WiseWord from "app/home/WiseWord";
+import { WisewordGet } from "api/wiseword";
+import { getWisewordAll } from "api/wiseword";
+import { useEffect, useState } from "react";
 
 const Home = (): JSX.Element => {
+  const [wisewords, setWisewords] = useState<WisewordGet[]>([]);
+
+  const getAllWiseword = async () => {
+    try {
+      const res = await getWisewordAll();
+      setWisewords(res);
+      return;
+    } catch {
+      console.error("error");
+    }
+  };
+
+  useEffect(() => {
+    getAllWiseword();
+  }, []);
+
   return (
     <BaseFrame>
       <>
+        {/* DB のスキーマに合わないので登録されていないが書いておきたいもの */}
         <WiseWord person="江戸川コナン" word="真実はいつも一つ" />
         <WiseWord
           person="ホームズ"
@@ -26,6 +46,17 @@ const Home = (): JSX.Element => {
           word="相手はイルカ…そう…海の人気者…暗く冷たい海の底から逃げてきたサメなんかじゃとても歯が立たないでしょうね…"
           reference="31 巻, File5"
         />
+
+        {/* DB から値を取得 */}
+        {wisewords.map((item) => {
+          return (
+            <WiseWord
+              person={item.title}
+              word={item.phrase}
+              reference={`${item.vol_num} 巻, File ${item.file_num}`}
+            />
+          );
+        })}
       </>
     </BaseFrame>
   );
