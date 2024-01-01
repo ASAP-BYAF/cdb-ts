@@ -53,6 +53,7 @@ const ManagedInput = (props: ManagedInputProps): JSX.Element => {
           return (
             <TextAreaWithButton
               key={key_}
+              placeholder="検索する人物を入力"
               handleClick={[() => handleDeleteComponent(key_)]}
               handleOnChangeAdditional={(value) => {
                 // Update the input value for the component
@@ -69,7 +70,7 @@ const ManagedInput = (props: ManagedInputProps): JSX.Element => {
         })}
       </div>
       <Trans2GButton
-        label="AND 検索する人物を追加"
+        label="検索する人物を追加"
         onclick={handleAddComponent}
         plusStyle="mt-4 mb-2 py-2 px-4 "
       />
