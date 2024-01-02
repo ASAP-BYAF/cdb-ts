@@ -51,6 +51,7 @@ const MyCheckBox = (props: MyCheckBoxProps): JSX.Element => {
                     <Checkbox
                       onChange={() => field.onChange(handleCheck(item.id))}
                       defaultChecked={defaultIds.includes(item.id)}
+                      color="secondary"
                     />
                   }
                   key={item.id}
@@ -63,7 +64,12 @@ const MyCheckBox = (props: MyCheckBoxProps): JSX.Element => {
         />
       </FormControl>
       <div>
-        <Button type="submit" variant="contained" size="small" color="success">
+        <Button
+          type="submit"
+          variant="contained"
+          size="small"
+          color="secondary"
+        >
           送信
         </Button>
       </div>
