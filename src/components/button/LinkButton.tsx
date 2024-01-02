@@ -14,7 +14,7 @@ const LinkButton: React.FC<LinkButtonProps> = (props: LinkButtonProps) => {
     <NavLink
       className={({ isActive }) =>
         [
-          `px-4 py-2 ${plusStyle}`,
+          `px-4 py-2 hover:bg-[#9C27B0] hover:text-white hover:font-bold ${plusStyle}`,
           isActive ? ` bg-[#9C27B0] text-white font-bold` : ``,
         ].join(" ")
       }
