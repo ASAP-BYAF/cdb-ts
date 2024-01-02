@@ -1,72 +1,57 @@
-import { useForm, Controller } from "react-hook-form";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import { FormHelperText, FormControl } from "@mui/material";
+import { useState, useEffect } from "react";
+import { getTaskAll } from "api/task";
+import { useGlobalSpinnerActionsContext } from "contexts/spinner/GlobalSpinnerContext";
+import MyCheckBox from "./CheckBox";
 
-const items = [
-  {
-    id: 0,
-    name: "Object 0",
-  },
-  {
-    id: 1,
-    name: "Object 1",
-  },
-  {
-    id: 2,
-    name: "Object 2",
-  },
-  {
-    id: 3,
-    name: "Object 3",
-  },
-  {
-    id: 4,
-    name: "Object 4",
-  },
-];
+type Chara = {
+  id: number;
+  title: string;
+};
 
-const CharaBox = () => {
-  const defaultIds = [1, 3];
+type Item = {
+  id: number;
+  name: string;
+};
 
-  const { control, handleSubmit, getValues, formState } = useForm({
-    defaultValues: { item_ids: defaultIds },
-  });
+const CharaBox = (): JSX.Element => {
+  const [charas, setCharas] = useState<Item[]>([]);
+  const setGlobalSpinner = useGlobalSpinnerActionsContext();
 
-  const handleCheck = (checkedId: number) => {
-    const { item_ids: ids } = getValues();
-    const newIds = ids?.includes(checkedId)
-      ? ids?.filter((id) => id !== checkedId)
-      : [...(ids ?? []), checkedId];
-    return newIds;
+  const renameTitleToName = (arr: Chara[]) => {
+    return arr.map((obj: Chara) => ({
+      ...obj,
+      name: obj.title,
+      title: undefined,
+    }));
   };
 
+  const getAllChara = async () => {
+    try {
+      setGlobalSpinner(true);
+      const res = await getTaskAll();
+      const res_ = renameTitleToName(res);
+      setCharas(res_);
+      return;
+    } catch {
+      console.error("error");
+    } finally {
+      setGlobalSpinner(false);
+    }
+  };
+
+  useEffect(() => {
+    getAllChara();
+  }, []);
+
   return (
-    <form onSubmit={handleSubmit((data) => console.log("data", data.item_ids))}>
-      <FormControl error={!!formState.errors.item_ids?.message}>
-        <FormHelperText>{formState.errors.item_ids?.message}</FormHelperText>
-        <Controller
-          name="item_ids"
-          render={({ field }) => (
-            <>
-              {items.map((item) => (
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      onChange={() => field.onChange(handleCheck(item.id))}
-                      defaultChecked={defaultIds.includes(item.id)}
-                    />
-                  }
-                  key={item.id}
-                  label={item.name}
-                />
-              ))}
-            </>
-          )}
-          control={control}
-        />
-      </FormControl>
-    </form>
+    <MyCheckBox
+      items={charas}
+      handleSubmitProvided={(ids) =>
+        console.log(
+          ids.forEach((id) => console.log(`id = ${id}, name = ${charas}`))
+        )
+      }
+    />
   );
 };
 
