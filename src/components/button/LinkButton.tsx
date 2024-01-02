@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 type LinkButtonProps = {
   to: string;
@@ -11,14 +11,18 @@ type LinkButtonProps = {
 const LinkButton: React.FC<LinkButtonProps> = (props: LinkButtonProps) => {
   const { to, children, plusStyle = "???", target = "" } = props;
   return (
-    <Link
-      className={`px-4 py-2 font-bold ${plusStyle}`}
+    <NavLink
+      className={({ isActive }) =>
+        [
+          `px-4 py-2 ${plusStyle}`,
+          isActive ? ` bg-[#9C27B0] text-white font-bold` : ``,
+        ].join(" ")
+      }
       to={to}
-      // target="_blank"
       target={target}
     >
       {children}
-    </Link>
+    </NavLink>
   );
 };
 
