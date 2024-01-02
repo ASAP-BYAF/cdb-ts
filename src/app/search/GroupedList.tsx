@@ -23,7 +23,7 @@ const makeGroupedList = (data: JsonData) => {
       <AccordionList
         index={volNum}
         label={`${volNum} 巻`}
-        className="border-solid border-t-2 border-emerald-500 bg-emerald-500"
+        className="border-solid border-t-2 border-[#be661f] bg-[#be661f]"
         initOpen={i_vol === 0 ? true : false}
       >
         <ul key={volNum}>
@@ -31,12 +31,12 @@ const makeGroupedList = (data: JsonData) => {
             <AccordionList
               index={`${volNum}-${fileNum}`}
               label={`${fileNum}話: ${items[0]["file_name"]}`}
-              className="border-solid border-t-2 border-emerald-500 bg-white"
+              className="border-solid border-t-2 border-[#be661f] bg-slate-100"
               initOpen={i_file === 0 ? true : false}
             >
               <ul key={fileNum}>
                 {items.map((item, index) => (
-                  <li key={index} className="bg-emerald-100 ">
+                  <li key={index} className="bg-amber-300">
                     <span className="p-2 inline-block">
                       {item.task_title} ({item.appearing_detail_name})
                     </span>

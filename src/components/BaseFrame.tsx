@@ -11,7 +11,12 @@ const BaseFrame = (props: { children: React.ReactElement }): JSX.Element => {
     <div>
       <GlobalSpinner />
       <Header />
-      <main className="min-h-[80vh] pb-10 bg-slate-100">{children}</main>
+      <main
+        className={`min-h-[80vh] pb-10 bg-repeat`}
+        style={{ backgroundImage: `url(/block.png)` }}
+      >
+        {children}
+      </main>
       <Footer />
       <GlobalModal />
       <GlobalModalWithInput />

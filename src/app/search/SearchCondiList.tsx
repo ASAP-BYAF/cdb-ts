@@ -1,7 +1,7 @@
 const SearchCondiList = (props: { charaList: (string | undefined)[] }) => {
   const { charaList } = props;
   return (
-    <div>
+    <div className="mt-4">
       <span>以下の人物で AND 検索しました</span>
       <div className="py-4">
         {charaList.length === 0 || charaList.includes(undefined) ? (

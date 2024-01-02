@@ -50,7 +50,12 @@ const SearchBase = () => {
     <BaseFrame>
       <div>
         <ManagedInput updateAllSelectedCharacterNames={setFilterList} />
-        <ul className="mx-auto md:w-[50%] text-left">{appearingList}</ul>
+        <ul className="mx-auto md:w-[30%] text-left">{appearingList}</ul>
+        {/* <div className="md:flex">
+          <ul className="mx-auto md:w-[30%] text-left">{appearingList}</ul>
+          <ul className="mx-auto md:w-[30%] text-left">{appearingList}</ul>
+          <ul className="mx-auto md:w-[30%] text-left">{appearingList}</ul>
+        </div> */}
       </div>
     </BaseFrame>
   );
