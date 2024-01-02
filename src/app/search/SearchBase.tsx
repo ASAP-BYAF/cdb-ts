@@ -49,7 +49,7 @@ const SearchBase = () => {
   return (
     <BaseFrame>
       <div>
-        <ManagedInput onChangeAllValue={setFilterList} />
+        <ManagedInput updateAllSelectedCharacterNames={setFilterList} />
         <ul className="mx-auto md:w-[50%] text-left">{appearingList}</ul>
       </div>
     </BaseFrame>
