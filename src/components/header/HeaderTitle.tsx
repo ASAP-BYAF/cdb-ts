@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 const HeaderTitle: React.FC = () => {
   return (
     <div className="bg-[#1f4a87]">
-      <div className="p-10 md:flex">
-        <div className="md:flex-grow md:flex md:mb-0 mb-4">
+      <div className="px-10 md:flex">
+        <div className="md:flex-grow md:flex">
           <div className="md:flex md:flex-row bg-slate-100 p-2">
             <div className="">
               <div className="w-9 inline-block">
