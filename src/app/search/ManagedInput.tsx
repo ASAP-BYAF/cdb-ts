@@ -80,7 +80,7 @@ const ManagedInput = (props: ManagedInputProps): JSX.Element => {
           filterAndSetSelectedCharacters(getNamesByIds(ids))
         }
       />
-      {/* <SearchCondiList charaList={selectedItemsName} /> */}
+      <SearchCondiList charaList={selectedItemsName} />
     </div>
   );
 };
