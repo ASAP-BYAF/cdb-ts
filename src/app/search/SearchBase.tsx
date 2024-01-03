@@ -46,17 +46,15 @@ const SearchBase = () => {
 
   return (
     <BaseFrame>
-      <div className="md:flex">
-        <div className="md:flex-1 px-[2.5%] overflow-y-auto max-h-[60vh] mb-4">
-          <ManagedInput updateAllSelectedCharacterNames={setFilterList} />
-        </div>
+      <>
+        <ManagedInput updateAllSelectedCharacterNames={setFilterList} />
         <div
           key={filterList.join()}
-          className="md:w-[30%] px-[2.5%] overflow-y-auto max-h-[60vh]"
+          className="md:w-[30%] mx-auto max-h-[70vh] overflow-y-scroll z-20"
         >
           {appearingList}
         </div>
-      </div>
+      </>
     </BaseFrame>
   );
 };
