@@ -70,18 +70,20 @@ const ManagedInput = (props: ManagedInputProps): JSX.Element => {
   };
 
   return (
-    <div className="text-white">
-      <p className="text-lg md:text-2xl py-4">
-        選択した全てのキャラが登場する話数を検索
-      </p>
-      <MyCheckBox
-        items={items}
-        handleSubmitProvided={(ids) =>
-          filterAndSetSelectedCharacters(getNamesByIds(ids))
-        }
-      />
+    <>
+      <div className="text-white">
+        <p className="text-lg md:text-2xl py-4">
+          選択した全てのキャラが登場する話数を検索
+        </p>
+        <MyCheckBox
+          items={items}
+          handleSubmitProvided={(ids) =>
+            filterAndSetSelectedCharacters(getNamesByIds(ids))
+          }
+        />
+      </div>
       <RefineList charaList={selectedItemsName} />
-    </div>
+    </>
   );
 };
 
