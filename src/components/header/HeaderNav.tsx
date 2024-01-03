@@ -2,7 +2,7 @@ import LinkButton from "components/button/LinkButton";
 
 const HeaderNav = (): JSX.Element => {
   return (
-    <div className="bg-amber-300 flex sticky top-0 z-20">
+    <div className="flex sticky top-0 z-20">
       <LinkButton to="/search" plusStyle="flex-1 outline outline-1">
         登場シーン
       </LinkButton>
