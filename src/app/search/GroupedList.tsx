@@ -24,24 +24,27 @@ const makeGroupedList = (data: JsonData) => {
         <AccordionList
           index={volNum}
           label={`${volNum} 巻`}
-          className="border-solid border-t-2 border-[#be661f] bg-[#be661f]"
-          initOpen={i_vol === 0 ? true : false}
+          className="bg-[#be661f] outline outline-3 outline-white"
+          initOpen={false}
         >
           <ul key={volNum}>
             {Object.entries(fileNumGroup).map(([fileNum, items], i_file) => (
               <AccordionList
                 index={`${volNum}-${fileNum}`}
                 label={`${fileNum}話: ${items[0]["file_name"]}`}
-                className="border-solid border-t-2 border-[#be661f] bg-slate-100"
+                className="bg-slate-100 outline outline-3 outline-white"
                 initOpen={false}
               >
                 <ul key={fileNum}>
                   {items.map((item, index) => (
-                    <li key={index} className="bg-amber-300">
+                    <li
+                      key={index}
+                      className="bg-amber-300 outline outline-3 outline-white"
+                    >
                       <span className="p-2 inline-block">
                         {item.task_title}
                       </span>
-                      {item.appearing_detail_name === "現実の絵" ? (
+                      {item.appearing_detail_name === "現実のコマ" ? (
                         <></>
                       ) : (
                         <span className="p-2 inline-block">
