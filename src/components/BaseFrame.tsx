@@ -12,7 +12,7 @@ const BaseFrame = (props: { children: React.ReactElement }): JSX.Element => {
       <GlobalSpinner />
       <Header />
       <main
-        className={`min-h-[80vh] pb-10 bg-repeat`}
+        className={`min-h-[80vh] pb-2 bg-repeat`}
         style={{ backgroundImage: `url(/block.png)` }}
       >
         {children}
