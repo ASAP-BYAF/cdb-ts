@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import SearchCondiList from "./SearchCondiList";
+import RefineList from "./RefineList";
 import { getTaskAll } from "api/task";
 import { useGlobalSpinnerActionsContext } from "contexts/spinner/GlobalSpinnerContext";
 import MyCheckBox from "./CheckBox";
@@ -70,14 +70,17 @@ const ManagedInput = (props: ManagedInputProps): JSX.Element => {
   };
 
   return (
-    <div>
+    <div className="text-white">
+      <p className="text-lg md:text-2xl py-4">
+        選択した全てのキャラが登場する話数を検索
+      </p>
       <MyCheckBox
         items={items}
         handleSubmitProvided={(ids) =>
           filterAndSetSelectedCharacters(getNamesByIds(ids))
         }
       />
-      <SearchCondiList charaList={selectedItemsName} />
+      <RefineList charaList={selectedItemsName} />
     </div>
   );
 };

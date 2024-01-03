@@ -3,24 +3,24 @@ import LinkButton from "components/button/LinkButton";
 
 const Footer = (): JSX.Element => {
   return (
-    <div className="bg-emerald-100 p-4 text-xl flex gap-x-4 overflow-auto whitespace-nowrap">
+    <div className="bg-[#1f4a87] p-4 flex gap-x-4 overflow-auto whitespace-nowrap">
       <LinkButton
         to="https://github.com/ASAP-BYAF"
-        plusStyle="bg-emerald-500"
+        plusStyle="rounded-md"
         target="_blank"
       >
         github
       </LinkButton>
       <LinkButton
         to="https://comp.chem.tohoku.ac.jp/ComplexRI/"
-        plusStyle="bg-emerald-500"
+        plusStyle="rounded-md"
         target="_blank"
       >
         ComplexRI
       </LinkButton>
       <LinkButton
         to="https://snippet.hopto.org/snippet/snippet/"
-        plusStyle="bg-emerald-500"
+        plusStyle="rounded-md"
         target="_blank"
       >
         SnippetApp

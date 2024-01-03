@@ -2,6 +2,7 @@ import { useForm, Controller } from "react-hook-form";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { FormHelperText, FormControl, Button } from "@mui/material";
+import { amber } from "@mui/material/colors";
 
 type Item = {
   id: number;
@@ -39,23 +40,33 @@ const MyCheckBox = (props: MyCheckBoxProps): JSX.Element => {
     <form
       onSubmit={handleSubmit((data) => handleSubmitProvided(data.item_ids))}
     >
-      <FormControl error={!!formState.errors.item_ids?.message}>
+      <FormControl
+        error={!!formState.errors.item_ids?.message}
+        className="w-[90%]"
+      >
         <FormHelperText>{formState.errors.item_ids?.message}</FormHelperText>
         <Controller
           name="item_ids"
           render={({ field }) => (
-            <div className="flex">
+            <div className="flex flex-wrap justify-center">
               {items.map((item) => (
                 <FormControlLabel
                   control={
                     <Checkbox
                       onChange={() => field.onChange(handleCheck(item.id))}
                       defaultChecked={defaultIds.includes(item.id)}
-                      color="secondary"
+                      // color="secondary"
+                      sx={{
+                        color: amber[50],
+                        "&.Mui-checked": {
+                          color: amber[50],
+                        },
+                      }}
                     />
                   }
                   key={item.id}
                   label={item.name}
+                  className="whitespace-nowrap"
                 />
               ))}
             </div>
@@ -63,14 +74,18 @@ const MyCheckBox = (props: MyCheckBoxProps): JSX.Element => {
           control={control}
         />
       </FormControl>
-      <div>
+      <div className="mt-4">
         <Button
           type="submit"
           variant="contained"
-          size="small"
-          color="secondary"
+          size="large"
+          sx={{
+            "background-color": amber[300],
+            color: "black",
+            ":hover": { background: amber[50] },
+          }}
         >
-          送信
+          検索
         </Button>
       </div>
     </form>
