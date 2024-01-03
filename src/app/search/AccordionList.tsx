@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 type AccordionProps = {
   index: string;
@@ -9,11 +9,13 @@ type AccordionProps = {
 };
 const AccordionList = (props: AccordionProps): JSX.Element => {
   const { index, label, children, className = "", initOpen = false } = props;
-  const [open, setOpen] = useState(initOpen);
+  const [open, setOpen] = useState<boolean>();
 
   const toggleAccordion = () => {
     setOpen((prev) => !prev);
   };
+
+  useEffect(() => setOpen(initOpen), [initOpen]);
 
   return (
     <li key={index} className={className}>
