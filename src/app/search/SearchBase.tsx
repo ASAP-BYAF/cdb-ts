@@ -6,9 +6,7 @@ import BaseFrame from "components/BaseFrame";
 import { useGlobalSpinnerActionsContext } from "contexts/spinner/GlobalSpinnerContext";
 
 const SearchBase = () => {
-  const [appearingList, setAppearingList] = useState<
-    JSX.Element[] | undefined
-  >();
+  const [appearingList, setAppearingList] = useState<JSX.Element | undefined>();
   const [filterList, setFilterList] = useState<string[]>([]);
   const setGlobalSpinner = useGlobalSpinnerActionsContext();
 
@@ -50,7 +48,7 @@ const SearchBase = () => {
     <BaseFrame>
       <div>
         <ManagedInput updateAllSelectedCharacterNames={setFilterList} />
-        <ul className="mx-auto md:w-[30%] text-left">{appearingList}</ul>
+        {appearingList}
         {/* <div className="md:flex">
           <ul className="mx-auto md:w-[30%] text-left">{appearingList}</ul>
           <ul className="mx-auto md:w-[30%] text-left">{appearingList}</ul>
