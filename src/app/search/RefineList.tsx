@@ -1,4 +1,4 @@
-const RefineList = (props: { charaList: (string | undefined)[] }) => {
+const SearchCondiList = (props: { charaList: (string | undefined)[] }) => {
   const { charaList } = props;
   return (
     <div className="py-4">
@@ -22,4 +22,4 @@ const RefineList = (props: { charaList: (string | undefined)[] }) => {
   );
 };
 
-export default RefineList;
+export default SearchCondiList;

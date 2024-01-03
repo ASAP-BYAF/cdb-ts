@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import SearchCondiList from "./SearchCondiList";
+import RefineList from "./RefineList";
 import { getTaskAll } from "api/task";
 import { useGlobalSpinnerActionsContext } from "contexts/spinner/GlobalSpinnerContext";
 import MyCheckBox from "./CheckBox";
@@ -80,7 +80,7 @@ const ManagedInput = (props: ManagedInputProps): JSX.Element => {
           filterAndSetSelectedCharacters(getNamesByIds(ids))
         }
       />
-      <SearchCondiList charaList={selectedItemsName} />
+      <RefineList charaList={selectedItemsName} />
     </div>
   );
 };
