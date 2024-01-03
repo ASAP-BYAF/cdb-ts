@@ -46,14 +46,16 @@ const SearchBase = () => {
 
   return (
     <BaseFrame>
-      <div>
-        <ManagedInput updateAllSelectedCharacterNames={setFilterList} />
-        {appearingList}
-        {/* <div className="md:flex">
-          <ul className="mx-auto md:w-[30%] text-left">{appearingList}</ul>
-          <ul className="mx-auto md:w-[30%] text-left">{appearingList}</ul>
-          <ul className="mx-auto md:w-[30%] text-left">{appearingList}</ul>
-        </div> */}
+      <div className="md:flex">
+        <div className="md:flex-1 px-[2.5%] overflow-y-auto max-h-[70vh] mb-4">
+          <ManagedInput updateAllSelectedCharacterNames={setFilterList} />
+        </div>
+        <div
+          key={filterList.join()}
+          className="md:w-[30%] px-[2.5%] overflow-y-auto max-h-[70vh]"
+        >
+          {appearingList}
+        </div>
       </div>
     </BaseFrame>
   );
