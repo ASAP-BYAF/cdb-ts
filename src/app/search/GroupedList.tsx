@@ -19,13 +19,13 @@ type JsonData = {
 const makeGroupedList = (data: JsonData) => {
   // マップしてJSX生成
   const listItems = (
-    <ul className="mx-auto md:w-[30%] text-left">
+    <ul className="text-left">
       {Object.entries(data).map(([volNum, fileNumGroup], i_vol) => (
         <AccordionList
           index={volNum}
           label={`${volNum} 巻`}
           className="bg-[#be661f] outline outline-3 outline-white"
-          initOpen={false}
+          initOpen={true}
         >
           <ul key={volNum}>
             {Object.entries(fileNumGroup).map(([fileNum, items], i_file) => (
