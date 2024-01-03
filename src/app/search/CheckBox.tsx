@@ -74,7 +74,7 @@ const MyCheckBox = (props: MyCheckBoxProps): JSX.Element => {
           control={control}
         />
       </FormControl>
-      <div className="my-4">
+      <div className="mt-4">
         <Button
           type="submit"
           variant="contained"
