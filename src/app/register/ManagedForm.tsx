@@ -7,7 +7,7 @@ import useAuthGuard from "auth/authGuard";
 import { useGlobalSpinnerActionsContext } from "contexts/spinner/GlobalSpinnerContext";
 import TextAreaWithButton from "components/form/TextAreaWithButton";
 import AppearingForm from "./AppearingForm";
-import ToggleStatusButtonGroup from "auth/ToggleStatusButtonGroup";
+import LinkButton from "components/button/LinkButton";
 
 const ManagedForm = (): JSX.Element => {
   // (volNum, fileNum, fileName) の組と fileId が 1:1 で対応します。
@@ -85,7 +85,12 @@ const ManagedForm = (): JSX.Element => {
         <AppearingForm fileId={fileId} />
         <hr></hr>
         <div className="mt-10">
-          <ToggleStatusButtonGroup />
+          <LinkButton
+            to="/signout"
+            plusStyle="hover:bg-emerald-100 outline outline-1"
+          >
+            サインアウト
+          </LinkButton>
         </div>
       </>
     </BaseFrame>
