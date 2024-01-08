@@ -5,7 +5,7 @@ import Signin from "auth/Signin";
 import Signout from "auth/Signout";
 import { Routes, Route } from "react-router-dom";
 import Register from "app/register/Register";
-import WisewordBase from "app/wiseword/WisewordBase";
+import Wiseword from "app/wiseword/Wiseword";
 
 const App = (): JSX.Element => {
   return (
@@ -13,7 +13,7 @@ const App = (): JSX.Element => {
       <Routes>
         <Route path="/" element={<Search />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/wiseword" element={<WisewordBase />} />
+        <Route path="/wiseword" element={<Wiseword />} />
         <Route path="/admin" element={<Register />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signout" element={<Signout />} />

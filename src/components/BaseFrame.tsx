@@ -18,6 +18,10 @@ const BaseFrame = (props: { children: React.ReactElement }): JSX.Element => {
         <GlobalModalContextProvider>
           <GlobalSpinnerContextProvider>
             <>
+              <GlobalSpinner />
+              <GlobalSnackbar />
+              <GlobalModal />
+              <GlobalModalWithInput />
               <Header />
               <main
                 className={`min-h-[80vh] pb-2 bg-repeat`}
@@ -26,10 +30,6 @@ const BaseFrame = (props: { children: React.ReactElement }): JSX.Element => {
                 {children}
               </main>
               <Footer />
-              <GlobalSpinner />
-              <GlobalSnackbar />
-              <GlobalModal />
-              <GlobalModalWithInput />
             </>
           </GlobalSpinnerContextProvider>
         </GlobalModalContextProvider>

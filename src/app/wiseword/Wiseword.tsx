@@ -1,11 +1,11 @@
-import GlobalSpinnerContextProvider from "contexts/spinner/GlobalSpinnerContext";
 import WisewordBase from "./WisewordBase";
+import BaseFrame from "components/BaseFrame";
 
 const Wiseword = () => {
   return (
-    <GlobalSpinnerContextProvider>
+    <BaseFrame>
       <WisewordBase />
-    </GlobalSpinnerContextProvider>
+    </BaseFrame>
   );
 };
 
