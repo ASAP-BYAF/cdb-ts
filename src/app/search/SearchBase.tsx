@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { getAll, getFilteredByTask } from "api/search";
 import makeGroupedList from "app/search/GroupedList";
 import ManagedInput from "app/search/ManagedInput";
-import BaseFrame from "components/BaseFrame";
 import { useGlobalSpinnerActionsContext } from "contexts/spinner/GlobalSpinnerContext";
 
 const SearchBase = () => {
@@ -45,17 +44,15 @@ const SearchBase = () => {
   }, [filterList]);
 
   return (
-    <BaseFrame>
-      <>
-        <ManagedInput updateAllSelectedCharacterNames={setFilterList} />
-        <div
-          key={filterList.join()}
-          className="md:w-[30%] mx-auto max-h-[70vh] overflow-y-scroll z-20"
-        >
-          {appearingList}
-        </div>
-      </>
-    </BaseFrame>
+    <>
+      <ManagedInput updateAllSelectedCharacterNames={setFilterList} />
+      <div
+        key={filterList.join()}
+        className="md:w-[30%] mx-auto max-h-[70vh] overflow-y-scroll z-20"
+      >
+        {appearingList}
+      </div>
+    </>
   );
 };
 

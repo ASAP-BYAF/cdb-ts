@@ -1,11 +1,11 @@
 import "css/App.css";
 import "css/output.css";
-import Register from "app/register/Register";
 import Search from "app/search/Search";
-import Wiseword from "app/wiseword/Wiseword";
 import Signin from "auth/Signin";
 import Signout from "auth/Signout";
 import { Routes, Route } from "react-router-dom";
+import Register from "app/register/Register";
+import Wiseword from "app/wiseword/Wiseword";
 
 const App = (): JSX.Element => {
   return (
