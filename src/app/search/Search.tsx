@@ -1,11 +1,11 @@
 import SearchBase from "app/search/SearchBase";
-import GlobalSpinnerContextProvider from "contexts/spinner/GlobalSpinnerContext";
+import BaseFrame from "components/BaseFrame";
 
 const Search = () => {
   return (
-    <GlobalSpinnerContextProvider>
+    <BaseFrame>
       <SearchBase />
-    </GlobalSpinnerContextProvider>
+    </BaseFrame>
   );
 };
 
