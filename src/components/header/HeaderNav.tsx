@@ -9,7 +9,7 @@ const HeaderNav = (): JSX.Element => {
       <LinkButton to="/wiseword" plusStyle="flex-1 outline outline-1">
         名言
       </LinkButton>
-      <LinkButton to="/" plusStyle="flex-1 outline outline-1">
+      <LinkButton to="/file" plusStyle="flex-1 outline outline-1">
         事件
       </LinkButton>
     </div>
