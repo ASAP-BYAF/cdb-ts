@@ -5,9 +5,9 @@ import { useGlobalSnackbarContext } from "contexts/snackbar/GlobalSnackbarContex
  * グローバルスピナー
  */
 const GlobalSnackbar = () => {
-  const isGlobalSnackbarOn = useGlobalSnackbarContext();
+  const globalSnackbarProps = useGlobalSnackbarContext();
 
-  return <>{<MySnackbar open={isGlobalSnackbarOn} />}</>;
+  return <>{<MySnackbar {...globalSnackbarProps} />}</>;
 };
 
 export default GlobalSnackbar;

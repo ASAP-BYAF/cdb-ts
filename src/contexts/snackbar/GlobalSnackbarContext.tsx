@@ -1,20 +1,30 @@
 import React, { useState, useContext, createContext } from "react";
+import {
+  Horizontal,
+  Vertical,
+  SnackbarProps,
+} from "components/snackbar/MySnackbar";
 
-const GlobalSnackbarContext = createContext<boolean>(false);
+const GlobalSnackbarContext = createContext<SnackbarProps>({
+  open: false,
+  vertical: "top" as Vertical,
+  horizontal: "right" as Horizontal,
+  message: "test",
+});
 const GlobalSnackbarActionsContext = createContext<
-  React.Dispatch<React.SetStateAction<boolean>>
+  React.Dispatch<React.SetStateAction<SnackbarProps>>
   // eslint-disable-next-line @typescript-eslint/no-empty-function
 >(() => {});
 
-// グローバルスピナーの表示・非表示
-export const useGlobalSnackbarContext = (): boolean =>
-  useContext<boolean>(GlobalSnackbarContext);
+// グローバルスナックバーの props
+export const useGlobalSnackbarContext = (): SnackbarProps =>
+  useContext<SnackbarProps>(GlobalSnackbarContext);
 
-// グローバルスピナーの表示・非表示のアクション
+// グローバルスナックバーの props のアクション
 export const useGlobalSnackbarActionsContext = (): React.Dispatch<
-  React.SetStateAction<boolean>
+  React.SetStateAction<SnackbarProps>
 > =>
-  useContext<React.Dispatch<React.SetStateAction<boolean>>>(
+  useContext<React.Dispatch<React.SetStateAction<SnackbarProps>>>(
     GlobalSnackbarActionsContext
   );
 
@@ -23,16 +33,21 @@ interface GlobalSnackbarContextProviderProps {
 }
 
 /**
- * グローバルスピナーコンテキストプロバイダー
+ * グローバルスナックバーコンテキストプロバイダー
  */
 const GlobalSnackbarContextProvider = ({
   children,
 }: GlobalSnackbarContextProviderProps) => {
-  const [isGlobalSnackbarOn, setGlobalSnackbar] = useState(false);
+  const [globalSnackbarProps, setGlobalSnackbarProps] = useState({
+    open: false,
+    vertical: "top" as Vertical,
+    horizontal: "right" as Horizontal,
+    message: "test",
+  });
 
   return (
-    <GlobalSnackbarContext.Provider value={isGlobalSnackbarOn}>
-      <GlobalSnackbarActionsContext.Provider value={setGlobalSnackbar}>
+    <GlobalSnackbarContext.Provider value={globalSnackbarProps}>
+      <GlobalSnackbarActionsContext.Provider value={setGlobalSnackbarProps}>
         {children}
       </GlobalSnackbarActionsContext.Provider>
     </GlobalSnackbarContext.Provider>
