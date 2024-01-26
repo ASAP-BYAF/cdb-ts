@@ -2,7 +2,7 @@ import { useForm, Controller } from "react-hook-form";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { FormHelperText, FormControl, Button } from "@mui/material";
-import { amber } from "@mui/material/colors";
+import { amber, grey } from "@mui/material/colors";
 
 type Item = {
   id: number;
@@ -48,7 +48,13 @@ const MyCheckBox = (props: MyCheckBoxProps): JSX.Element => {
         <Controller
           name="item_ids"
           render={({ field }) => (
-            <div className="flex flex-wrap justify-center">
+            <div
+              className="
+            flex flex-wrap justify-center
+            border-solid border-4 rounded-md border-gray-400
+            bg-gray-400 bg-opacity-30 text-black
+            "
+            >
               {items.map((item) => (
                 <FormControlLabel
                   control={
@@ -57,9 +63,9 @@ const MyCheckBox = (props: MyCheckBoxProps): JSX.Element => {
                       defaultChecked={defaultIds.includes(item.id)}
                       // color="secondary"
                       sx={{
-                        color: amber[50],
+                        color: grey[900],
                         "&.Mui-checked": {
-                          color: amber[50],
+                          color: grey[900],
                         },
                       }}
                     />

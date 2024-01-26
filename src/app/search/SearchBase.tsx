@@ -48,7 +48,10 @@ const SearchBase = () => {
       <ManagedInput updateAllSelectedCharacterNames={setFilterList} />
       <div
         key={filterList.join()}
-        className="md:w-[30%] mx-auto max-h-[70vh] overflow-y-scroll z-20"
+        className="
+        w-[80%] md:w-[30%] mx-auto max-h-[70vh] overflow-y-scroll  -webkit-overflow-scrolling-touch z-20
+        border-solid border-4 rounded-md border-gray-400
+        "
       >
         {appearingList}
       </div>
