@@ -52,10 +52,13 @@ type AppearingDetailFormProps = {
 const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
   const { options, fileId } = props;
 
+  // 人物リスト
   const [questions, setQuestions] = useState<string[]>([]);
+  // 登録情報がある人物リスト
+  const [selectedQuestions, setSelectedQuestions] = useState<string[]>([]);
+  // 既に登録されている登場データ
   const [selectedOptionBefore, setSelectedOptionBefore] =
     useState<selectedOptionsObj>(arrayToObject(questions, NaN));
-  const [selectedOption, setSelectedOption] = useState<string[]>([]);
 
   const setGlobalSpinner = useGlobalSpinnerActionsContext();
   const setGlobalModal = useGlobalModalActionsContext();
@@ -88,7 +91,7 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
 
   const handleDeleteQuestion = async (questionName: string): Promise<void> => {
     deleteOnDB(questionName);
-    setSelectedOption((prev) => deleteItemFromArray(prev, questionName));
+    setSelectedQuestions((prev) => deleteItemFromArray(prev, questionName));
   };
 
   const deleteOnDB = async (questionName: string) => {
@@ -124,13 +127,13 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
     oldQuestionName: string,
     newQuestionName: string
   ) => {
-    const tmp = deleteItemFromArray(selectedOption, oldQuestionName);
-    setSelectedOption([...tmp, newQuestionName]);
+    const tmp = deleteItemFromArray(selectedQuestions, oldQuestionName);
+    setSelectedQuestions([...tmp, newQuestionName]);
   };
 
   const handleInitQuestion = async (questionName: string): Promise<void> => {
     initOnDB(questionName);
-    setSelectedOption((prev) => deleteItemFromArray(prev, questionName));
+    setSelectedQuestions((prev) => deleteItemFromArray(prev, questionName));
   };
 
   const initOnDB = async (questionName: string) => {
@@ -171,8 +174,8 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
   const createOnSelectedOptions = async (
     questionName: string
   ): Promise<void> => {
-    if (!selectedOption.includes(questionName)) {
-      setSelectedOption((prev) => [questionName, ...prev]);
+    if (!selectedQuestions.includes(questionName)) {
+      setSelectedQuestions((prev) => [questionName, ...prev]);
     }
   };
 
@@ -264,7 +267,7 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
   };
 
   useMemo(() => {
-    setSelectedOption(Object.keys(removeNaNKeys(selectedOptionBefore)));
+    setSelectedQuestions(Object.keys(removeNaNKeys(selectedOptionBefore)));
   }, [selectedOptionBefore]);
 
   const getPreviousValue = async () => {
@@ -339,7 +342,7 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
         handleClickInitAdditional={handleInitQuestion}
       />
       <hr></hr>
-      <WisewordForm fileId={fileId} characters={selectedOption} />
+      <WisewordForm fileId={fileId} characters={selectedQuestions} />
     </>
   );
 };
