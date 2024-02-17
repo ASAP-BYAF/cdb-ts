@@ -58,3 +58,15 @@ export const updateFile = async (
   const res = await fetcher(url, data);
   return res;
 };
+
+export const getPreviousFileId = async (fileId: number) => {
+  const url = `${process.env.REACT_APP_DB_API_HOST}/previous_file_id/${fileId}`;
+  const data = {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  };
+  const res = await fetcher(url, data);
+  return res;
+};
