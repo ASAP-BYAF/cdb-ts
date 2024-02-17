@@ -23,6 +23,7 @@ import { removeNaNKeys } from "util/filter";
 import WisewordForm from "./WisewordForm";
 import { getTaskIdFromDb } from "api/task";
 import G2WButton from "components/button/G2WButton";
+import { useGlobalModalActionsContext } from "contexts/modal/normal/GlobalModalContext";
 
 type Character = {
   title: string;
@@ -57,6 +58,7 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
   const [selectedOption, setSelectedOption] = useState<string[]>([]);
 
   const setGlobalSpinner = useGlobalSpinnerActionsContext();
+  const setGlobalModal = useGlobalModalActionsContext();
 
   // 既に登録されている質問と選択肢を取得しました。
   useEffect(() => {
@@ -266,42 +268,52 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
   }, [selectedOptionBefore]);
 
   const getPreviousValue = async () => {
-    try {
-      const previousFileId = await getPreviousFileId(fileId);
-      if (previousFileId === 404) {
-        console.log("not found");
-      } else {
-        const appearlingList = await getAppearingWithFileId(
-          previousFileId["file_id"]
-        );
-        // 直前の登場情報を DB に登録。
-        appearlingList.forEach(async (elem: Appearing) => {
-          // forEach の引数が async 関数なので forEach のループは引き数の関数の終了を待たずに回り続ける。
-          // 引き数の async 関数内の await はその関数内で呼び出した非同期関数を待っている。
-          const res = await addAppearing(
-            fileId,
-            elem["task_id"],
-            elem["appearing_detail_id"]
+    const ret = await new Promise((resolve) => {
+      setGlobalModal({
+        onClose: resolve,
+        title: "直前のファイルの登場データ反映します。よろしいですか?",
+        message: "既に登録されているデータは上書きされます。",
+      });
+    });
+    setGlobalModal(undefined);
+    if (ret === "ok") {
+      try {
+        const previousFileId = await getPreviousFileId(fileId);
+        if (previousFileId === 404) {
+          console.log("not found");
+        } else {
+          const appearlingList = await getAppearingWithFileId(
+            previousFileId["file_id"]
           );
-          // すでに登場データが登録されている場合は上書き。
-          if (res === 422) {
-            console.log("already exist.");
-            await updateAppearing(
+          // 直前の登場情報を DB に登録。
+          appearlingList.forEach(async (elem: Appearing) => {
+            // forEach の引数が async 関数なので forEach のループは引き数の関数の終了を待たずに回り続ける。
+            // 引き数の async 関数内の await はその関数内で呼び出した非同期関数を待っている。
+            const res = await addAppearing(
               fileId,
               elem["task_id"],
               elem["appearing_detail_id"]
             );
-          }
-        });
+            // すでに登場データが登録されている場合は上書き。
+            if (res === 422) {
+              console.log("already exist.");
+              await updateAppearing(
+                fileId,
+                elem["task_id"],
+                elem["appearing_detail_id"]
+              );
+            }
+          });
 
-        // 新たに登録した登場情報をフォームの初期値に設定。
-        const newSelectedOptionBefore = await appearingListToSelectedBefore(
-          appearlingList
-        );
-        setSelectedOptionBefore(newSelectedOptionBefore);
+          // 新たに登録した登場情報をフォームの初期値に設定。
+          const newSelectedOptionBefore = await appearingListToSelectedBefore(
+            appearlingList
+          );
+          setSelectedOptionBefore(newSelectedOptionBefore);
+        }
+      } catch {
+        console.error("エラーが発生しました。");
       }
-    } catch {
-      console.error("エラーが発生しました。");
     }
   };
 
