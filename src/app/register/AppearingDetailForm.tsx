@@ -280,6 +280,7 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
     });
     setGlobalModal(undefined);
     if (ret === "ok") {
+      setGlobalSpinner(true);
       try {
         const previousFileId = await getPreviousFileId(fileId);
         if (previousFileId === 404) {
@@ -316,6 +317,8 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
         }
       } catch {
         console.error("エラーが発生しました。");
+      } finally {
+        setGlobalSpinner(false);
       }
     }
   };
