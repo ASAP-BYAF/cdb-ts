@@ -3,12 +3,12 @@ import OnClickButton from "./OnClickButton";
 type G2WButtonProps = {
   label: string;
   name?: string;
-  onclick: (args: React.MouseEvent<HTMLButtonElement>) => {} | void;
+  onclick?: (args: React.MouseEvent<HTMLButtonElement>) => {} | void;
   plusStyle?: string;
 };
 
 const G2WButton = (props: G2WButtonProps) => {
-  const { label, onclick, name = "", plusStyle = "" } = props;
+  const { label, onclick = () => {}, name = "", plusStyle = "" } = props;
 
   return (
     <OnClickButton
