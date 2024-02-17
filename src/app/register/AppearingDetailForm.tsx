@@ -15,12 +15,14 @@ import {
   getAppearingWithFileId,
   updateAppearing,
 } from "api/appearing";
+import { getPreviousFileId } from "api/file";
 import { useGlobalSpinnerActionsContext } from "contexts/spinner/GlobalSpinnerContext";
 import ADRIForm from "components/form/ADRIForm";
 import { convertArrayToObj } from "util/convert";
 import { removeNaNKeys } from "util/filter";
 import WisewordForm from "./WisewordForm";
 import { getTaskIdFromDb } from "api/task";
+import G2WButton from "components/button/G2WButton";
 
 type Character = {
   title: string;
@@ -175,6 +177,27 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
   // ==========================================================================
 
   useMemo(async () => {
+    try {
+      setGlobalSpinner(true);
+
+      const appearlingList = await getAppearingWithFileId(fileId);
+
+      const newSelectedBefore = await appearingListToSelectedBefore(
+        appearlingList
+      );
+      setSelectedOptionBefore(newSelectedBefore);
+    } catch {
+      console.error(
+        "Cannot access getAppearingWithFileIdFromDb before initialization"
+      );
+    } finally {
+      setGlobalSpinner(false);
+    }
+  }, [options, fileId]);
+
+  const appearingListToSelectedBefore = async (
+    appearlingList: Appearing[]
+  ): Promise<selectedOptionsObj> => {
     // ===== 役割 =============================================================
     //    質問 questions の各質問の選択肢 options に対して登録済みの値を取得する。
     //
@@ -213,49 +236,83 @@ const AppearingDetailForm = (props: AppearingDetailFormProps): JSX.Element => {
       [key: number]: string;
     };
 
-    try {
-      setGlobalSpinner(true);
-      // API をたたいて (1) を取得。
-      const appearlingList = await getAppearingWithFileId(fileId);
+    // (2) を作成。
+    const questionsList = await getTaskAll();
+    const questionsIdNameObj: QuestionIdNameObj =
+      convertArrayToObj(questionsList);
 
-      // (2) を作成。
-      const questionsList = await getTaskAll();
-      const questionsIdNameObj: QuestionIdNameObj =
-        convertArrayToObj(questionsList);
+    // (3) を作成
+    const optionIdList = Object.keys(options);
 
-      // (3) を作成
-      const optionIdList = Object.keys(options);
+    // (4) を作成。
+    const newSelectedBefore = appearlingList.reduce(
+      (acc: selectedOptionsObj, item: Appearing) => {
+        // (2) を通して questionName を取得
+        const questionId = item["task_id"];
+        const questionName = questionsIdNameObj[questionId];
 
-      // (4) を作成。
-      const tmpSelectedBefore = appearlingList.reduce(
-        (acc: selectedOptionsObj, item: Appearing) => {
-          // (2) を通して questionName を取得
-          const questionId = item["task_id"];
-          const questionName = questionsIdNameObj[questionId];
-
-          // (3) を通して optionNum を取得
-          const optionId = item["appearing_detail_id"];
-          const optionNum = optionIdList.indexOf(String(optionId));
-          return { ...acc, [questionName]: optionNum };
-        },
-        {}
-      );
-      setSelectedOptionBefore(tmpSelectedBefore);
-    } catch {
-      console.error(
-        "Cannot access getAppearingWithFileIdFromDb before initialization"
-      );
-    } finally {
-      setGlobalSpinner(false);
-    }
-  }, [options, fileId]);
+        // (3) を通して optionNum を取得
+        const optionId = item["appearing_detail_id"];
+        const optionNum = optionIdList.indexOf(String(optionId));
+        return { ...acc, [questionName]: optionNum };
+      },
+      {}
+    );
+    return newSelectedBefore;
+  };
 
   useMemo(() => {
     setSelectedOption(Object.keys(removeNaNKeys(selectedOptionBefore)));
   }, [selectedOptionBefore]);
 
+  const getPreviousValue = async () => {
+    try {
+      const previousFileId = await getPreviousFileId(fileId);
+      if (previousFileId === 404) {
+        console.log("not found");
+      } else {
+        const appearlingList = await getAppearingWithFileId(
+          previousFileId["file_id"]
+        );
+        // 直前の登場情報を DB に登録。
+        appearlingList.forEach(async (elem: Appearing) => {
+          // forEach の引数が async 関数なので forEach のループは引き数の関数の終了を待たずに回り続ける。
+          // 引き数の async 関数内の await はその関数内で呼び出した非同期関数を待っている。
+          const res = await addAppearing(
+            fileId,
+            elem["task_id"],
+            elem["appearing_detail_id"]
+          );
+          // すでに登場データが登録されている場合は上書き。
+          if (res === 422) {
+            console.log("already exist.");
+            await updateAppearing(
+              fileId,
+              elem["task_id"],
+              elem["appearing_detail_id"]
+            );
+          }
+        });
+
+        // 新たに登録した登場情報をフォームの初期値に設定。
+        const newSelectedOptionBefore = await appearingListToSelectedBefore(
+          appearlingList
+        );
+        setSelectedOptionBefore(newSelectedOptionBefore);
+      }
+    } catch {
+      console.error("エラーが発生しました。");
+    }
+  };
+
   return (
     <>
+      <G2WButton
+        label="直前のファイルの登場データを反映"
+        onclick={getPreviousValue}
+        plusStyle="my-4"
+      />
+      <br></br>
       <ADRIForm
         providedQuestions={questions}
         providedSelectedOptions={selectedOptionBefore}
